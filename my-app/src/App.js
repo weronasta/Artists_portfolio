@@ -45,7 +45,7 @@ function App() {
       {/* Podpis */}
       <Container sx={{ padding: '20px' }}>
         <Typography variant="h4" align="center" gutterBottom>
-          Witamy w naszej galerii!
+          UwU!
         </Typography>
         <Typography variant="body1" align="center" paragraph>
           Oto kolekcja naszych zdjęć. Kliknij na obrazek, aby go powiększyć.

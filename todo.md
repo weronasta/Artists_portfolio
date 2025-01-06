@@ -1,5 +1,26 @@
-### TODO
-- [ ] zadanie
+# TODO
+
+## Baza danych
+- [ ] lista danych, które będziemy przechowywać
+- [ ] schemat bazy danych
+- [ ] wybór bazy danych
+- [ ] utworzenie bazy danych
+
+## Projekt i struktura podstron
+- [x] lista podstron
+- [ ] struktura strony głównej
+- [ ] struktura galerii prac
+- [ ] struktura widoku pojedynczego dzieła
+- [ ] struktura widoku o autorze
+- [ ] struktura widoku koszyka
+- [ ] struktura widoku składania zamówieniax
+- [ ] struktura panelu artysty
+
+## Backend
+- [ ]
+
+## Frontend 
+- [ ] szablon strony
 
 
 ### Taski napisane przez GPT:
@@ -105,5 +126,3 @@
 
 4. **Stworzenie modelu bazy danych dla koszyka**
    - Tabela `cart` z polami: użytkownik, lista prac.
-
-Te zadania można przypisać do odpowiednich osób i śledzić postępy na tablicy Kanban.

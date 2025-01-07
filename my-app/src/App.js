@@ -1,5 +1,5 @@
 import './App.css';
-import About from './pages/About.js';
+import Gallery from './pages/Gallery.js';
 import Feature1 from './pages/Feature1.js';
 import Feature2 from './pages/Feature2.js';
 import Feature3 from './pages/Feature3.js';
@@ -20,7 +20,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/feature1" element={<Feature1 />} />
           <Route path="/feature2" element={<Feature2 />} />
           <Route path="/feature3" element={<Feature3 />} />

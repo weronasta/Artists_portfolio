@@ -1,161 +1,162 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
+import { Link } from 'react-router-dom';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
+const pages = ['Home', 'Gallery', 'Feature1', 'Feature2', 'Feature3', 'Login', 'Register', 'Myaccount'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-import { useNavigate } from "react-router-dom";
+function ResponsiveAppBar() {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-export default function MenuAppBar() {
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
   
-  let navigate = useNavigate();
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [openNested, setOpenNested] = React.useState(null);
-  const [anchorEl2, setAnchorEl2] = React.useState(null); 
-
-  const clickRightMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
   };
 
-  const clickFeatures = () => {
-    setOpenNested(!openNested);
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
-
-  const clickLeftMenu = event => {
-    setOpenNested(false);
-    setAnchorEl2(event.currentTarget);
-  };
-
-  /* routePaths are defined in App.js */
-  const redirectRoute = routePath => {
-    navigate(routePath);
-    setAnchorEl(null);
-  };
-
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={clickLeftMenu}
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-
-
-          {/* Left hand side */}
-
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl2}
-            open={Boolean(anchorEl2)}
-            onClose={() => {setAnchorEl2(null);setOpenNested(true);}}>
-            <List
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-              >
-                <ListItem button onClick={() => redirectRoute("/")}>
-                  <ListItemText primary="Home" />
-                </ListItem>
-                <ListItem button onClick={clickFeatures}>
-                  <ListItemText primary="Features" />
-                  {openNested ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={openNested} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                  <ListItem button onClick={() => redirectRoute("/Feature1")}>
-                      <ListItemText primary="Feature1" />
-                    </ListItem>
-                  <ListItem button onClick={() => redirectRoute("/Feature2")}>
-                      <ListItemText primary="Feature2" />
-                    </ListItem>
-                    <ListItem button onClick={() => redirectRoute("/Feature3")}>
-                      <ListItemText primary="Feature3" />
-                    </ListItem>
-                  </List>
-                </Collapse>
-                <ListItem button  onClick={() => redirectRoute("/About")}>
-                  <ListItemText primary="About" />
-                </ListItem>
-              </List>
-          </Menu>
-
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            MyReactMaterialApp
+            LOGO
           </Typography>
 
-          {/* Right hand side */}
-
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={clickRightMenu}
-                color="inherit"
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: 'block', md: 'none' } }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu} component={Link} to={`/${page.toLowerCase()}`}>
+                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="div"
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            LOGO
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                component={Link}
+                to={`/${page.toLowerCase()}`}
+                sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <AccountCircle />
+                {page}
+              </Button>
+            ))}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
               </IconButton>
-              
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <ListItem button onClick={() => redirectRoute("/profile")}>
-                  <ListItemText primary="Profile" />
-                </ListItem>
-                <ListItem button onClick={() => redirectRoute("/myaccount")}>
-                  <ListItemText primary="My Account" />
-                </ListItem>                
-                <ListItem button onClick={() => redirectRoute("/login")}>
-                  <ListItemText primary="Login" />
-                </ListItem>
-                <ListItem button onClick={() => redirectRoute("/logout")}>
-                  <ListItemText primary="Logout" />
-                </ListItem>
-                <ListItem button onClick={() => redirectRoute("/register")}>
-                  <ListItemText primary="Register" />
-                </ListItem>
-              </Menu>
-
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
-      </AppBar>
-    </Box>
-
-
-
+      </Container>
+    </AppBar>
   );
 }
+
+export default ResponsiveAppBar;

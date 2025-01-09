@@ -11,10 +11,13 @@ import Profile from './pages/Profile.js';
 import Register from './pages/Register.js';
 import Header from './components/Header.js';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from './theme.js'; // Import pliku theme.js
 
 function App() {
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline /> {/* Resetuje style domyślne i stosuje dark mode */}
     <div className="App">
       <Router>
         <Header />
@@ -34,6 +37,7 @@ function App() {
       </Router>
       
     </div>
+    </ThemeProvider>
   );
 }
 

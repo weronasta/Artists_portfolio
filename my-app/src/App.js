@@ -10,6 +10,7 @@ import Myaccount from './pages/Myaccount.js';
 import Profile from './pages/Profile.js';
 import Register from './pages/Register.js';
 import Header from './components/Header.js';
+import Footer from './components/Footer.js';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js'; // Import pliku theme.js
@@ -34,6 +35,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
         </Routes>
+        <Footer/>
       </Router>
       
     </div>

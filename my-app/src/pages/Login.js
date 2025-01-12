@@ -116,7 +116,7 @@ export default function Login() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Sign in
+            Zaloguj się
           </Typography>
           <Box
             component="form"
@@ -147,7 +147,7 @@ export default function Login() {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Hasło</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -165,7 +165,7 @@ export default function Login() {
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Zapamiętaj mnie"
             />
             <ForgotPassword open={open} handleClose={handleClose} />
             <Button
@@ -174,7 +174,7 @@ export default function Login() {
               variant="contained"
               onClick={validateInputs}
             >
-              Sign in
+              Zaloguj się
             </Button>
             <Link
               component="button"
@@ -183,7 +183,7 @@ export default function Login() {
               variant="body2"
               sx={{ alignSelf: 'center' }}
             >
-              Forgot your password?
+              Zapomniałeś hasła?
             </Link>
           </Box>
           <Divider>or</Divider>
@@ -194,7 +194,7 @@ export default function Login() {
               onClick={() => alert('Sign in with Google')}
               startIcon={<GoogleIcon />}
             >
-              Sign in with Google
+              Zaloguj się z Google
             </Button>
             <Button
               fullWidth
@@ -202,16 +202,16 @@ export default function Login() {
               onClick={() => alert('Sign in with Facebook')}
               startIcon={<FacebookIcon />}
             >
-              Sign in with Facebook
+              Zaloguj się z Facebook
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
-              Don&apos;t have an account?{' '}
+              Nie posiadasz konta?{' '}
               <Link
                 href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Sign up
+                Zarejestruj się
               </Link>
             </Typography>
           </Box>

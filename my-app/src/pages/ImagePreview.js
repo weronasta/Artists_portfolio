@@ -80,13 +80,12 @@ function PreviewImage() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            padding: 2,
           }}
         >
           <img
             src={imageData.img}
             alt={imageData.title}
-            style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </Paper>
 
@@ -97,7 +96,6 @@ function PreviewImage() {
           flexDirection="column"
           padding={2}
           bgcolor="background.paper"
-          borderRadius={2}
           boxShadow={3}
         >
           <Box mb={2}>

@@ -1,6 +1,5 @@
 import React from "react";
 import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
@@ -35,65 +34,79 @@ const itemData = [
 
 function Gallery() {
   return (
-    <ImageList variant="masonry" cols={3} gap={8}>
-      {itemData.map((item) => (
-        <Box
-          key={item.img}
-          sx={{
-            position: "relative",
-            overflow: "hidden",
-            borderRadius: 2,
-            "&:hover .overlay": {
-              opacity: 1,
-            },
-            "&:hover img": {
-              filter: "blur(4px)",
-              transform: "scale(1.1)",
-              transition: "all 0.3s ease-in-out",
-            },
-          }}
-        >
-          {/* Obrazek */}
-          <img
-            src={item.img}
-            alt={item.title}
-            loading="lazy"
-            style={{
-              width: "100%",
-              height: "auto",
-              display: "block",
-              transition: "all 0.3s ease-in-out",
-            }}
-          />
-
-          {/* Warstwa z przyciskiem */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        padding: 2,
+      }}
+    >
+      <ImageList
+        variant="masonry"
+        cols={3} // Liczba kolumn
+        gap={4} // Brak odstępów
+        sx={{
+          width: "80%", // Dynamiczna szerokość w procentach
+        }}
+      >
+        {itemData.map((item) => (
           <Box
-            className="overlay"
+            key={item.img}
             sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              opacity: 0,
-              transition: "opacity 0.3s ease-in-out",
+              position: "relative",
+              overflow: "hidden",
+              "&:hover .overlay": {
+                opacity: 1,
+              },
+              "&:hover img": {
+                filter: "blur(4px)",
+                transform: "scale(1.1)",
+                transition: "all 0.3s ease-in-out",
+              },
             }}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => alert(`Dodano ${item.title} do koszyka!`)}
+            {/* Obrazek */}
+            <img
+              src={item.img}
+              alt={item.title}
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: "auto",
+                display: "block",
+                transition: "all 0.3s ease-in-out",
+              }}
+            />
+
+            {/* Warstwa z przyciskiem */}
+            <Box
+              className="overlay"
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                bgcolor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: 0,
+                transition: "opacity 0.3s ease-in-out",
+              }}
             >
-              Dodaj do koszyka
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => alert(`Dodano ${item.title} do koszyka!`)}
+              >
+                Dodaj do koszyka
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      ))}
-    </ImageList>
+        ))}
+      </ImageList>
+    </Box>
   );
 }
 

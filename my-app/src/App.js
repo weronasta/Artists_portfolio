@@ -2,7 +2,7 @@ import './App.css';
 import Gallery from './pages/Gallery.js';
 import ImagePreview from './pages/ImagePreview.js';
 import Feature2 from './pages/Feature2.js';
-import Feature3 from './pages/Feature3.js';
+import ShoppingCart from './pages/ShoppingCart.js';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import Logout from './pages/Logout.js';
@@ -27,7 +27,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/ImagePreview" element={<ImagePreview />} />
           <Route path="/feature2" element={<Feature2 />} />
-          <Route path="/feature3" element={<Feature3 />} />
+          <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

@@ -155,37 +155,85 @@ function PreviewImage() {
 
       {/* Sekcja Slidera */}
       <Box width="100%">
-        <Typography variant="h5" gutterBottom>
-          Inne obrazy
-        </Typography>
-        <Slider {...sliderSettings}>
-  {sliderImages.map((image, index) => (
-    <Box key={index} px={1}>
-      <Paper
-        elevation={3}
+  <Typography variant="h5" gutterBottom>
+    Inne obrazy
+  </Typography>
+  <Slider {...sliderSettings}>
+    {sliderImages.map((image, index) => (
+      <Box
+        key={index}
+        px={1}
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden", // Dodano, aby ukryć nadmiar obrazka
-          height: "300px", // Wysokość kafelka
+          position: "relative",
+          overflow: "hidden", // Ukryj nadmiar obrazka
+          "&:hover .overlay": {
+            opacity: 1, // Pokaż overlay na hover
+          },
+          "&:hover img": {
+            transform: "scale(1.1)", // Powiększenie obrazka na hover
+            transition: "all 0.3s ease-in-out",
+          },
         }}
       >
-        <img
-          src={image}
-          alt={`Artwork ${index + 1}`}
-          style={{
+        <Paper
+          elevation={3}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "300px", // Wysokość kafelka
+          }}
+        >
+          <img
+            src={image}
+            alt={`Artwork ${index + 1}`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover", // Zachowaj proporcje
+              transition: "all 0.3s ease-in-out",
+            }}
+          />
+        </Paper>
+
+        {/* Warstwa z przyciskami */}
+        <Box
+          className="overlay"
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
             width: "100%",
             height: "100%",
-            objectFit: "cover", // Kluczowa zmiana dla zachowania proporcji
+            bgcolor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column", // Ustaw przyciski w kolumnie
+            gap: 2, // Odstęp między przyciskami
+            opacity: 0, // Ukryj overlay
+            transition: "opacity 0.3s ease-in-out",
           }}
-        />
-      </Paper>
-    </Box>
-  ))}
-</Slider>
-
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => alert(`Dodano obraz ${index + 1} do koszyka!`)}
+          >
+            Dodaj do koszyka
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => alert(`Otworzono szczegóły obrazu ${index + 1}`)}
+          >
+            Zobacz szczegóły
+          </Button>
+        </Box>
       </Box>
+    ))}
+  </Slider>
+</Box>
     </Box>
   );
 }

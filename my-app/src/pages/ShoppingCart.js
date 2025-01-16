@@ -7,6 +7,7 @@ import img1 from "../assets/images/img1.jpg";
 import img2 from "../assets/images/img2.jpg";
 import img3 from "../assets/images/img3.jpg";
 import PaymentMethods from "../components/payment";
+import ShippingMethods from "../components/ShippingMethods";
 
 function ShoppingCart() {
   // Przykładowe dane produktów w koszyku
@@ -147,29 +148,38 @@ function ShoppingCart() {
         ))}
       </Box>
 
+      <Typography
+  variant="h4"
+  gutterBottom
+  sx={{
+    textAlign: "left", // Wyrównanie tekstu do lewej
+    width: "100%", // Dopasowanie do szerokości kontenera
+  }}
+>        Wybierz formę płatności
+      </Typography>
+
       {/* Podsumowanie */}
       <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: 2,
-          borderTop: "1px solid rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Typography variant="h6">Suma: 21,37 zł</Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={() => alert("Przejście do płatności!")}
-        >
-          Przejdź do płatności
-        </Button>
-      </Box>
-      <Box mt={4}>
+  sx={{
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start", // Wyrównanie całości do lewej
+  }}
+>
   <PaymentMethods />
+  <ShippingMethods />
+  <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                onClick={() => alert(`Przeszedłeś dalej!`)}
+              >
+                Przejdź dalej
+              </Button>
+            </Box>
+
 </Box>
     </Box>
     

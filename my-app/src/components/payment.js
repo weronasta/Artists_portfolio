@@ -21,9 +21,6 @@ function PaymentMethods() {
       borderRadius={2}
       bgcolor="background.paper"
     >
-      <Typography variant="h6" gutterBottom>
-        Wybierz formę płatności
-      </Typography>
 
       <FormControl component="fieldset">
         <RadioGroup

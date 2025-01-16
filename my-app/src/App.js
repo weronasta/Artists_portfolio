@@ -1,7 +1,7 @@
 import './App.css';
 import Gallery from './pages/Gallery.js';
 import ImagePreview from './pages/ImagePreview.js';
-import Feature2 from './pages/Feature2.js';
+import AddPic from './pages/AddPic.js';
 import ShoppingCart from './pages/ShoppingCart.js';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
@@ -26,7 +26,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/ImagePreview" element={<ImagePreview />} />
-          <Route path="/feature2" element={<Feature2 />} />
+          <Route path="/AddPic" element={<AddPic />} />
           <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />

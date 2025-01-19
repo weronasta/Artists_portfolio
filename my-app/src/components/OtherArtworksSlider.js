@@ -10,7 +10,7 @@ import ArtworkCard from "./ArtworkCard";
 function OtherArtworksSlider() {
   const { id } = useParams(); // Pobieramy id z URL głównego dzieła
   const [otherArtworks, setOtherArtworks] = useState([]);
-  
+
   useEffect(() => {
     const fetchOtherArtworks = async () => {
       try {
@@ -20,14 +20,19 @@ function OtherArtworksSlider() {
 
         // Pobieramy inne dzieła tego samego artysty
         const otherArtworksResponse = await axios.get(`http://127.0.0.1:5000/artworks/artist/${artistId}`);
-        setOtherArtworks(otherArtworksResponse.data.filter(artwork => artwork.id !== id)); // Filtrowanie głównego dzieła
+        
+        // Filtrujemy dzieła tego artysty, aby nie wyświetlać głównego dzieła (id z useParams)
+        const filteredArtworks = otherArtworksResponse.data.filter(artwork => parseInt(artwork.id) !== parseInt(id));
+        console.log("filteredArtworks", filteredArtworks);
+        console.log("id", id);
+        setOtherArtworks(filteredArtworks); // Ustawiamy przefiltrowane dzieła
       } catch (error) {
         console.error("Error fetching other artworks:", error);
       }
     };
 
     fetchOtherArtworks();
-  }, [id]);
+  }, [id]); // Zależność na id z useParams, żeby ponownie pobierać dane, gdy id się zmieni
 
   const sliderSettings = {
     dots: true,

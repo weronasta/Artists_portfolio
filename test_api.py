@@ -106,7 +106,7 @@ def get_artists():
     return jsonify(result)
 
 # Endpoint GET, który pobiera dane o wszystkich dziełach sztuki danego artysty
-@app.route('artworks/artist/<int:artist_id>', methods=['GET'])
+@app.route('/artworks/artist/<int:artist_id>', methods=['GET'])
 def get_artworks_by_artist(artist_id):
     conn = get_db_connection()
     cursor = conn.cursor()

@@ -7,14 +7,15 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useParams } from "react-router-dom"; // Dodajemy React Router do obsługi parametrów URL
+import { useParams } from "react-router-dom";
+// import OtherArtworksSlider from "./OtherArtworksSlider"; // Zaimportowanie komponentu slidera
 
 function ArtworkDetails() {
-  const { id } = useParams(); // Użycie useParams do pobrania id z URL
+  const { id } = useParams();
   const [artwork, setArtwork] = useState({});
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  
+
   const handleIncrease = () => {
     if (quantity < artwork.numberOf) {
       setQuantity(quantity + 1);
@@ -30,10 +31,9 @@ function ArtworkDetails() {
   useEffect(() => {
     const fetchArtwork = async () => {
       try {
-        // Używamy id z URL do pobrania danych dzieła
         const response = await axios.get(`http://127.0.0.1:5000/artworks/${id}`);
-        setArtwork(response.data);  // Załaduj dzieło sztuki z odpowiedzi API
-        setQuantity(1); // Resetowanie ilości do 1 po załadowaniu danych
+        setArtwork(response.data);
+        setQuantity(1);
       } catch (error) {
         console.error("Error fetching artwork:", error);
       } finally {
@@ -42,7 +42,7 @@ function ArtworkDetails() {
     };
 
     fetchArtwork();
-  }, [id]); // Używamy id jako zależności, aby za każdym razem, gdy id się zmieni, odświeżyć dane
+  }, [id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -51,103 +51,23 @@ function ArtworkDetails() {
   const imageUrl = require(`../assets/images/${artwork.imageLink}`);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
-      maxWidth="1200px"
-      mx="auto"
-      padding={4}
-      bgcolor="background.default"
-    >
-      {/* Główna sekcja */}
-      <Box
-        display="flex"
-        flexDirection={["column", "row"]}
-        width="100%"
-        gap={4}
-        mb={4}
-      >
-        {/* Sekcja z obrazkiem */}
-        <Paper
-          elevation={3}
-          sx={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={imageUrl}
-            alt={artwork.name}
-            style={{ width: "100%", height: "auto" }}
-          />
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" width="100%" maxWidth="1200px" mx="auto" padding={4} bgcolor="background.default">
+      <Box display="flex" flexDirection={["column", "row"]} width="100%" gap={4} mb={4}>
+        <Paper elevation={3} sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <img src={imageUrl} alt={artwork.name} style={{ width: "100%", height: "auto" }} />
         </Paper>
-
-        {/* Sekcja z opisem */}
-        <Box
-          flex={1}
-          display="flex"
-          flexDirection="column"
-          padding={2}
-          bgcolor="background.paper"
-          boxShadow={3}
-        >
-          <Box mb={2}>
-            <Typography variant="h4" gutterBottom>
-              {artwork.name}
-            </Typography>
-          </Box>
-          <Box mb={2}>
-            <Typography variant="body1" color="text.secondary">
-              {artwork.description}
-            </Typography>
-          </Box>
-          <Box mb={1}>
-            <Typography variant="body1" fontWeight="bold" color="text.primary">
-              Dostępność: {artwork.availabilityType}
-            </Typography>
-          </Box>
-          <Box mb={3}>
-            <Typography variant="h6" color="text.primary">
-              Cena: {artwork.currentPrice} zł
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            mb={3}
-            gap={2}
-          >
-            <Typography variant="body1" fontWeight="bold">
-              Ilość:
-            </Typography>
-            <IconButton
-              color="primary"
-              onClick={handleDecrease}
-              disabled={quantity <= 1}
-            >
-              <RemoveIcon />
-            </IconButton>
+        <Box flex={1} display="flex" flexDirection="column" padding={2} bgcolor="background.paper" boxShadow={3}>
+          <Typography variant="h4" gutterBottom>{artwork.name}</Typography>
+          <Typography variant="body1" color="text.secondary">{artwork.description}</Typography>
+          <Typography variant="body1" fontWeight="bold" color="text.primary">Dostępność: {artwork.availabilityType}</Typography>
+          <Typography variant="h6" color="text.primary">Cena: {artwork.currentPrice} zł</Typography>
+          <Box display="flex" alignItems="center" justifyContent="flex-start" mb={3} gap={2}>
+            <Typography variant="body1" fontWeight="bold">Ilość:</Typography>
+            <IconButton color="primary" onClick={handleDecrease} disabled={quantity <= 1}><RemoveIcon /></IconButton>
             <Typography variant="body1">{quantity}</Typography>
-            <IconButton color="primary" onClick={handleIncrease}>
-              <AddIcon />
-            </IconButton>
+            <IconButton color="primary" onClick={handleIncrease}><AddIcon /></IconButton>
           </Box>
-          <Box>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={() => alert(`Dodano ${quantity} sztuk do koszyka!`)}
-            >
-              Dodaj do koszyka
-            </Button>
-          </Box>
+          <Button variant="contained" color="primary" size="large" onClick={() => alert(`Dodano ${quantity} sztuk do koszyka!`)}>Dodaj do koszyka</Button>
         </Box>
       </Box>
     </Box>

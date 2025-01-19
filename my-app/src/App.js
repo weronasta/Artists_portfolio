@@ -14,7 +14,7 @@ import Footer from './components/Footer.js';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js'; // Import pliku theme.js
-import ArtworkDetails from './components/ArtworkDetails.js';
+// import ArtworkDetails from './components/ArtworkDetails.js';
 
 function App() {
   return (

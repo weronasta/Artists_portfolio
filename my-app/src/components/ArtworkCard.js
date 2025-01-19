@@ -1,4 +1,3 @@
-// ArtworkCard.js
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom"; 
@@ -27,9 +26,12 @@ function ArtworkCard({ artwork }) {
         src={imageUrl}  // Załadowany obraz lokalny
         alt={artwork.name}
         style={{
-          width: "100%",
-          height: "auto",
+          maxWidth: "600px",  // Maksymalna szerokość obrazu
+          maxHeight: "600px", // Maksymalna wysokość obrazu
+          width: "100%", // Ustaw szerokość na 100% dostępnej przestrzeni
+          height: "auto",  // Zachowaj proporcje wysokości
           display: "block",
+          objectFit: "contain",  // Zapewnia zachowanie proporcji, nie przycinając obrazu
           transition: "all 0.3s ease-in-out",
         }}
       />

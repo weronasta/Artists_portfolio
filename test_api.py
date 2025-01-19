@@ -41,10 +41,9 @@ def get_artworks():
     conn.close()  # Zamykamy połączenie z bazą danych
     
     # Zwracamy dane w formacie JSON
-    response = jsonify(result)
-    response.headers['Access-Control-Allow-Origin'] = '*'  # Zezwolenie na dostęp z dowolnego źródła
-    return response
+    return jsonify(result)
 
+# Endpoint GET, który pobiera dane o konkretnym dziele sztuki
 @app.route('/artworks/<int:id>', methods=['GET'])
 def get_artwork(id):
     conn = get_db_connection()
@@ -77,7 +76,6 @@ def get_artwork(id):
     # Zwracamy dane w formacie JSON
     return jsonify(result)
 
-
 # Endpoint GET, który pobiera wszystkich artystów
 @app.route('/artists', methods=['GET'])
 def get_artists():
@@ -100,6 +98,37 @@ def get_artists():
             'password': artist['password'],
             'bio': artist['bio'],
             'isAdmin': artist['isAdmin']
+        })
+    
+    conn.close()  # Zamykamy połączenie z bazą danych
+    
+    # Zwracamy dane w formacie JSON
+    return jsonify(result)
+
+# Endpoint GET, który pobiera dane o wszystkich dziełach sztuki danego artysty
+@app.route('artworks/artist/<int:artist_id>', methods=['GET'])
+def get_artworks_by_artist(artist_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Zapytanie SQL, które pobiera dzieła sztuki dla konkretnego artysty
+    cursor.execute('SELECT * FROM pieces WHERE artist_id = ?', (artist_id,))
+    
+    # Pobieramy wszystkie wiersze z tabeli
+    artworks = cursor.fetchall()
+    
+    # Konwertujemy wyniki do listy słowników (JSON)
+    result = []
+    for artwork in artworks:
+        result.append({
+            'id': artwork['id'],
+            'artist_id': artwork['artist_id'],
+            'name': artwork['name'],
+            'description': artwork['description'],
+            'currentPrice': artwork['currentPrice'],
+            'imageLink': artwork['imageLink'],
+            'availabilityType': artwork['availabilityType'],
+            'numberOf': artwork['numberOf']
         })
     
     conn.close()  # Zamykamy połączenie z bazą danych

@@ -61,7 +61,7 @@ function Artwork() {
       {/* Sekcja Slidera */}
       <Box width="100%">
   <Typography variant="h5" gutterBottom>
-    Inne obrazy
+    Inne prace tego artysty
   </Typography>
   <Slider {...sliderSettings}>
     {sliderImages.map((image, index) => (

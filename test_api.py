@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request, abort
 import sqlite3
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/artworks": {"origins": "http://localhost:3000"}})
 
 # Funkcja do połączenia się z bazą danych SQLite
 def get_db_connection():

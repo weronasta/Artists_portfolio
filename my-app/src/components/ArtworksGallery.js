@@ -10,7 +10,7 @@ function ArtworksGallery() {
     const fetchArtworks = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:5000/artworks");
-        setArtworks(response.data);  // Załaduj obrazy z odpowiedzi API
+        setArtworks(response.data);  // Załaduj dzieła sztuki z odpowiedzi API
       } catch (error) {
         console.error("Error fetching artworks:", error);
       } finally {
@@ -58,7 +58,6 @@ function ArtworksGallery() {
               <img
                 src={imageUrl}  // Załadowany obraz lokalny
                 alt={artwork.name}
-                // loading="lazy"
                 style={{
                   width: "100%",
                   height: "auto",
@@ -71,27 +70,36 @@ function ArtworksGallery() {
               <Box
                 className="overlay"
                 sx={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  bgcolor: "rgba(0, 0, 0, 0.5)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  opacity: 0,
-                  transition: "opacity 0.3s ease-in-out",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    bgcolor: "rgba(0, 0, 0, 0.5)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column", // Ustaw przyciski w kolumnie
+                    gap: 2, // Odstęp między przyciskami
+                    opacity: 0, // Ukryj overlay
+                    transition: "opacity 0.3s ease-in-out",
                 }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => alert(`Dodano ${artwork.name} do koszyka!`)}
                 >
-                  Dodaj do koszyka
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => alert(`Dodano obraz do koszyka!`)}
+                >
+                    Dodaj do koszyka
                 </Button>
-              </Box>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => alert(`Otworzono szczegóły obrazu!`)}
+                >
+                    Zobacz szczegóły
+                </Button>
+                </Box>
             </Box>
           );
         })}

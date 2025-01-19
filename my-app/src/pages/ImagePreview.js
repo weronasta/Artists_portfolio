@@ -10,6 +10,7 @@ import Slider from "react-slick";
 import img1 from "../assets/images/img1.jpg";
 import img2 from "../assets/images/img2.jpg";
 import img3 from "../assets/images/img3.jpg";
+import ArtworkDetails from "../components/ArtworkDetails";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,14 +18,6 @@ import "slick-carousel/slick/slick-theme.css";
 function PreviewImage() {
   const [quantity, setQuantity] = useState(1);
 
-  const imageData = {
-    img: img1,
-    title: "Sample Artwork",
-    description:
-      "This is a sample description of the artwork. You can replace this with any text you like.",
-    availability: "Dostępne",
-    price: "21.37 zł",
-  };
 
   const sliderImages = [img1, img2, img3];
 
@@ -64,95 +57,7 @@ function PreviewImage() {
       padding={4}
       bgcolor="background.default"
     >
-      {/* Główna sekcja */}
-      <Box
-        display="flex"
-        flexDirection={["column", "row"]}
-        width="100%"
-        gap={4}
-        mb={4}
-      >
-        {/* Sekcja z obrazkiem */}
-        <Paper
-          elevation={3}
-          sx={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={imageData.img}
-            alt={imageData.title}
-            style={{ width: "100%", height: "auto" }}
-          />
-        </Paper>
-
-        {/* Sekcja z opisem */}
-        <Box
-          flex={1}
-          display="flex"
-          flexDirection="column"
-          padding={2}
-          bgcolor="background.paper"
-          boxShadow={3}
-        >
-          <Box mb={2}>
-            <Typography variant="h4" gutterBottom>
-              {imageData.title}
-            </Typography>
-          </Box>
-          <Box mb={2}>
-            <Typography variant="body1" color="text.secondary">
-              {imageData.description}
-            </Typography>
-          </Box>
-          <Box mb={1}>
-            <Typography variant="body1" fontWeight="bold" color="text.primary">
-              Dostępność: {imageData.availability}
-            </Typography>
-          </Box>
-          <Box mb={3}>
-            <Typography variant="h6" color="text.primary">
-              Cena: {imageData.price}
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            mb={3}
-            gap={2}
-          >
-            <Typography variant="body1" fontWeight="bold">
-              Ilość:
-            </Typography>
-            <IconButton
-              color="primary"
-              onClick={handleDecrease}
-              disabled={quantity <= 1}
-            >
-              <RemoveIcon />
-            </IconButton>
-            <Typography variant="body1">{quantity}</Typography>
-            <IconButton color="primary" onClick={handleIncrease}>
-              <AddIcon />
-            </IconButton>
-          </Box>
-          <Box>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={() => alert(`Dodano ${quantity} sztuk do koszyka!`)}
-            >
-              Dodaj do koszyka
-            </Button>
-          </Box>
-        </Box>
-      </Box>
-
+      <ArtworkDetails /> 
       {/* Sekcja Slidera */}
       <Box width="100%">
   <Typography variant="h5" gutterBottom>

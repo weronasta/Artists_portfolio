@@ -3,7 +3,8 @@ import sqlite3
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/artworks": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
 
 # Funkcja do połączenia się z bazą danych SQLite
 def get_db_connection():
@@ -40,7 +41,9 @@ def get_artworks():
     conn.close()  # Zamykamy połączenie z bazą danych
     
     # Zwracamy dane w formacie JSON
-    return jsonify(result)
+    response = jsonify(result)
+    response.headers['Access-Control-Allow-Origin'] = '*'  # Zezwolenie na dostęp z dowolnego źródła
+    return response
 
 @app.route('/artworks/<int:id>', methods=['GET'])
 def get_artwork(id):

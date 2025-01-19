@@ -42,6 +42,39 @@ def get_artworks():
     # Zwracamy dane w formacie JSON
     return jsonify(result)
 
+@app.route('/artworks/<int:id>', methods=['GET'])
+def get_artwork(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Zapytanie SQL, które pobiera dzieło sztuki o konkretnym id
+    cursor.execute('SELECT * FROM pieces WHERE id = ?', (id,))
+
+    # Pobieramy jeden wiersz z tabeli
+    artwork = cursor.fetchone()
+
+    conn.close()  # Zamykamy połączenie z bazą danych
+
+    # Sprawdzamy, czy znaleziono dzieło sztuki
+    if artwork is None:
+        return {'error': 'Artwork not found'}, 404
+
+    # Konwertujemy wynik do słownika (JSON)
+    result = {
+        'id': artwork['id'],
+        'artist_id': artwork['artist_id'],
+        'name': artwork['name'],
+        'description': artwork['description'],
+        'currentPrice': artwork['currentPrice'],
+        'imageLink': artwork['imageLink'],
+        'availabilityType': artwork['availabilityType'],
+        'numberOf': artwork['numberOf']
+    }
+
+    # Zwracamy dane w formacie JSON
+    return jsonify(result)
+
+
 # Endpoint GET, który pobiera wszystkich artystów
 @app.route('/artists', methods=['GET'])
 def get_artists():

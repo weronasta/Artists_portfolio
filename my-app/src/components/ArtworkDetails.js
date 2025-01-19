@@ -7,31 +7,36 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
+import { useParams } from "react-router-dom"; // Dodajemy React Router do obsługi parametrów URL
 
 function ArtworkDetails() {
-const [artwork, setArtwork] = useState([]);
+  const { id } = useParams(); // Użycie useParams do pobrania id z URL
+  const [artwork, setArtwork] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
 
+  console.log(id);
+
   useEffect(() => {
     const fetchArtwork = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/artworks/4");
+        // Używamy id z URL do pobrania danych dzieła
+        const response = await axios.get(`http://127.0.0.1:5000/artworks/${id}`);
         setArtwork(response.data);  // Załaduj dzieło sztuki z odpowiedzi API
       } catch (error) {
-        console.error("Error fetching artworks:", error);
+        console.error("Error fetching artwork:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchArtwork();
-  }, []);
+  }, [id]); // Używamy id jako zależności, aby za każdym razem, gdy id się zmieni, odświeżyć dane
 
   if (loading) {
     return <div>Loading...</div>;
@@ -138,9 +143,9 @@ const [artwork, setArtwork] = useState([]);
             </Button>
           </Box>
         </Box>
+      </Box>
     </Box>
-    </Box>
-  )}
-  ;
+  );
+}
 
 export default ArtworkDetails;

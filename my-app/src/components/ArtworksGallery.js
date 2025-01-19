@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, ImageList, Button } from "@mui/material";
+import { useNavigate } from 'react-router-dom'; // Importujemy useNavigate
 
 function ArtworksGallery() {
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Tworzymy funkcję navigate
 
   useEffect(() => {
     const fetchArtworks = async () => {
@@ -70,36 +72,36 @@ function ArtworksGallery() {
               <Box
                 className="overlay"
                 sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    bgcolor: "rgba(0, 0, 0, 0.5)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column", // Ustaw przyciski w kolumnie
-                    gap: 2, // Odstęp między przyciskami
-                    opacity: 0, // Ukryj overlay
-                    transition: "opacity 0.3s ease-in-out",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  bgcolor: "rgba(0, 0, 0, 0.5)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column", // Ustaw przyciski w kolumnie
+                  gap: 2, // Odstęp między przyciskami
+                  opacity: 0, // Ukryj overlay
+                  transition: "opacity 0.3s ease-in-out",
                 }}
-                >
+              >
                 <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => alert(`Dodano obraz do koszyka!`)}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => alert(`Dodano obraz do koszyka!`)}
                 >
-                    Dodaj do koszyka
+                  Dodaj do koszyka
                 </Button>
                 <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => alert(`Otworzono szczegóły obrazu!`)}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => navigate(`/artworks/${artwork.id}`)} // Nawigacja do szczegółów obrazu
                 >
-                    Zobacz szczegóły
+                  Zobacz szczegóły
                 </Button>
-                </Box>
+              </Box>
             </Box>
           );
         })}

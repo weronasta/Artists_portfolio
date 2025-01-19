@@ -15,7 +15,7 @@ import ArtworkDetails from "../components/ArtworkDetails";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function PreviewImage() {
+function Artwork() {
   const [quantity, setQuantity] = useState(1);
 
 
@@ -143,4 +143,4 @@ function PreviewImage() {
   );
 }
 
-export default PreviewImage;
+export default Artwork;

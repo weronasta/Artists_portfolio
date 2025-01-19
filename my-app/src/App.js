@@ -1,6 +1,6 @@
 import './App.css';
 import Gallery from './pages/Gallery.js';
-import ImagePreview from './pages/ImagePreview.js';
+import Artwork from './pages/Artwork.js';
 import AddPic from './pages/AddPic.js';
 import ShoppingCart from './pages/ShoppingCart.js';
 import Home from './pages/Home.js';
@@ -14,6 +14,7 @@ import Footer from './components/Footer.js';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js'; // Import pliku theme.js
+import ArtworkDetails from './components/ArtworkDetails.js';
 
 function App() {
   return (
@@ -25,7 +26,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/ImagePreview" element={<ImagePreview />} />
           <Route path="/AddPic" element={<AddPic />} />
           <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route path="/home" element={<Home />} />
@@ -34,6 +34,7 @@ function App() {
           <Route path="/myaccount" element={<Myaccount />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/artworks/:id" element={<Artwork/>} />
         </Routes>
         <Footer/>
       </Router>

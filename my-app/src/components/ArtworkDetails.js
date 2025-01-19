@@ -11,16 +11,21 @@ import { useParams } from "react-router-dom"; // Dodajemy React Router do obsłu
 
 function ArtworkDetails() {
   const { id } = useParams(); // Użycie useParams do pobrania id z URL
-  const [artwork, setArtwork] = useState([]);
+  const [artwork, setArtwork] = useState({});
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+  const handleIncrease = () => {
+    if (quantity < artwork.numberOf) {
+      setQuantity(quantity + 1);
+    }
   };
 
-  console.log(id);
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
   useEffect(() => {
     const fetchArtwork = async () => {
@@ -28,6 +33,7 @@ function ArtworkDetails() {
         // Używamy id z URL do pobrania danych dzieła
         const response = await axios.get(`http://127.0.0.1:5000/artworks/${id}`);
         setArtwork(response.data);  // Załaduj dzieło sztuki z odpowiedzi API
+        setQuantity(1); // Resetowanie ilości do 1 po załadowaniu danych
       } catch (error) {
         console.error("Error fetching artwork:", error);
       } finally {

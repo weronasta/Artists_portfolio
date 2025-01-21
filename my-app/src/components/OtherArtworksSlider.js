@@ -38,7 +38,7 @@ function OtherArtworksSlider() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: "0", 
@@ -67,7 +67,9 @@ function OtherArtworksSlider() {
       </Typography>
       <Slider {...sliderSettings} style={{ width: '100%' }}> {/* Dodajemy szerokość 100% na slider */}
         {otherArtworks.map((artwork) => (
-          <Box key={artwork.id} sx={{ padding: "0 15px" }}>
+          <Box key={artwork.id} sx={{ 
+            padding: "0 15px",
+           }}>
             <ArtworkCard artwork={artwork} />
           </Box>
         ))}

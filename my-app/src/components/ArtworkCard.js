@@ -1,17 +1,19 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 function ArtworkCard({ artwork }) {
-  const navigate = useNavigate(); // Funkcja do nawigacji
+  const navigate = useNavigate(); // Function for navigation
 
-  const imageUrl = require(`../assets/images/${artwork.imageLink}`); // Załaduj obraz
+  const imageUrl = require(`../assets/images/${artwork.imageLink}`); // Load local image
 
   return (
     <Box
       sx={{
         position: "relative",
         overflow: "hidden",
+        width: "100%",
+        paddingTop: "100%", // Aspect ratio 1:1 for square shape
         "&:hover .overlay": {
           opacity: 1,
         },
@@ -23,20 +25,20 @@ function ArtworkCard({ artwork }) {
       }}
     >
       <img
-        src={imageUrl}  // Załadowany obraz lokalny
+        src={imageUrl} // Loaded local image
         alt={artwork.name}
         style={{
-          maxWidth: "600px",  // Maksymalna szerokość obrazu
-          maxHeight: "600px", // Maksymalna wysokość obrazu
-          width: "100%", // Ustaw szerokość na 100% dostępnej przestrzeni
-          height: "auto",  // Zachowaj proporcje wysokości
-          display: "block",
-          objectFit: "contain",  // Zapewnia zachowanie proporcji, nie przycinając obrazu
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover", // Cover behavior to fill the square
           transition: "all 0.3s ease-in-out",
         }}
       />
-      
-      {/* Warstwa z przyciskami */}
+
+      {/* Overlay with buttons */}
       <Box
         className="overlay"
         sx={{
@@ -49,9 +51,9 @@ function ArtworkCard({ artwork }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          flexDirection: "column", // Ustaw przyciski w kolumnie
-          gap: 2, // Odstęp między przyciskami
-          opacity: 0, // Ukryj overlay
+          flexDirection: "column", // Stack buttons vertically
+          gap: 2, // Space between buttons
+          opacity: 0, // Hide overlay
           transition: "opacity 0.3s ease-in-out",
         }}
       >
@@ -65,7 +67,7 @@ function ArtworkCard({ artwork }) {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate(`/artworks/${artwork.id}`)} // Nawigacja do szczegółów obrazu
+          onClick={() => navigate(`/artworks/${artwork.id}`)} // Navigate to artwork details
         >
           Zobacz szczegóły
         </Button>

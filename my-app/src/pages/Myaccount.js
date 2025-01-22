@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Avatar, Typography, Button, Container} from "@mui/material";
-import ImageGallery from "../components/ImageGallery"; // Import galerii
+import ImageGalleryEdit from "../components/ImageGalleryEdit"; // Import galerii
 
 function Myaccount() {
   return (
@@ -74,7 +74,7 @@ function Myaccount() {
       </Box>
 
       {/* Galeria zdjęć */}
-      <ImageGallery />
+      <ImageGalleryEdit />
     </Box>
     </Container>
   );

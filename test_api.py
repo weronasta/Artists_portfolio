@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, abort
 import sqlite3
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -162,6 +163,38 @@ def get_artworks_by_artist(artist_id):
     
     # Zwracamy dane w formacie JSON
     return jsonify(result)
+
+# Endpoint do logowania użytkownika
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()  # Pobieramy dane z żądania
+    
+    # Sprawdzamy, czy dane są prawidłowe
+    if not data.get('email') or not data.get('password'):
+        abort(400, description="Email and password are required.")
+    
+    login = data['email']
+    password = data['password']
+    
+    # Sprawdzamy, czy użytkownik istnieje
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM artists WHERE login = ?', (login,))
+    user = cursor.fetchone()
+    
+    if not user:
+        conn.close()
+        abort(401, description="Invalid email or password.")
+    
+    # Sprawdzamy, czy hasło jest poprawne
+    if not check_password_hash(user['password'], password):
+        conn.close()
+        abort(401, description="Invalid email or password.")
+    
+    conn.close()
+    return jsonify({"message": "Login successful!"}), 200
+
+
 
 
 

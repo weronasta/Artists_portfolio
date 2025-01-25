@@ -7,11 +7,6 @@ import OtherArtworksSlider from "../components/OtherArtworksSlider"; // Slider z
 function Artwork() {
   const [quantity, setQuantity] = useState(1);
 
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
-
   return (
     <Box
       display="flex"
@@ -24,10 +19,7 @@ function Artwork() {
       padding={4}
       bgcolor="background.default"
     >
-      {/* Wyświetlanie szczegółów głównego dzieła */}
       <ArtworkDetails />
-
-      {/* Wyświetlanie slidera z innymi dziełami */}
       <OtherArtworksSlider />
     </Box>
   );

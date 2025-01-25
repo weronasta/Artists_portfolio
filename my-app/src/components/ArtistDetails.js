@@ -40,7 +40,7 @@ function ArtistDetails() {
           sx={{
             width: "100%",
             height: "250px",
-            backgroundImage: artist.avatarLink,
+            backgroundColor: "#871EEB",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
@@ -50,8 +50,8 @@ function ArtistDetails() {
             src={require(`../assets/images/artists/${artist.avatarLink}`)}
             alt={artist.username}
             sx={{
-              width: 100,
-              height: 100,
+              width: 200,
+              height: 200,
               position: "absolute",
               bottom: 0,
               left: 20,
@@ -61,26 +61,24 @@ function ArtistDetails() {
         </Box>
 
         {/* Nazwa konta i liczniki */}
-        <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 3 }}>
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+        <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 8 }}>
+          <Typography variant="h2" sx={{ fontWeight: "bold" }}>
             {artist.username || "Artysta"}
           </Typography>
           <Box sx={{ display: "flex", gap: 5 }}>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                 {artist.artworksCount || 0}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Dodane prace
               </Typography>
             </Box>
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                {artist.followersCount || 0}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Obserwujący
-              </Typography>
+            {/* Przyciski */}
+            <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
+            <Button variant="contained" color="primary">
+                Zamów dzieło sztuki
+            </Button>
             </Box>
           </Box>
         </Box>
@@ -93,12 +91,6 @@ function ArtistDetails() {
           </Typography>
         </Box>
 
-        {/* Przyciski */}
-        <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
-          <Button variant="outlined" color="secondary">
-            Udostępnij profil
-          </Button>
-        </Box>
       </Box>
     </Container>
   );

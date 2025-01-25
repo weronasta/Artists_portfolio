@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, ImageList } from "@mui/material";
 import ArtistCard from "./ArtistCard"; // Importujemy komponent ArtistCard
 
-function ArtistsGallery() {
+const ArtistsGallery = () => {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,11 +44,11 @@ function ArtistsGallery() {
     >
       <ImageList variant="masonry" cols={3} gap={4} sx={{ width: "80%" }}>
         {artists.map((artist) => (
-          <ArtistCard key={artist.id} artist={artist} /> // Przekazujemy dane do ArtistCard
+          <ArtistCard key={artist.id} artist={artist} /> // Renderujemy ArtistCard dla każdego artysty
         ))}
       </ImageList>
     </Box>
   );
-}
+};
 
 export default ArtistsGallery;

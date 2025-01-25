@@ -181,15 +181,23 @@ def login():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM artists WHERE login = ?', (login,))
     user = cursor.fetchone()
+    # print(f"{login=}, {password=}, {user=}")
     
-    if not user:
+    if user is None:
         conn.close()
+        # return jsonify({"message": "Invalid email or password from api."}), 401
         abort(401, description="Invalid email or password.")
     
     # Sprawdzamy, czy hasło jest poprawne
-    if not check_password_hash(user['password'], password):
+    if not user['password'] == password:
+        # print("Invalid password")
         conn.close()
+        # return jsonify({"message": "Invalid email or password from api."}), 401
         abort(401, description="Invalid email or password.")
+    # if not check_password_hash(user['password'], password):
+    #     print("Invalid password")
+    #     conn.close()
+    #     abort(401, description="Invalid email or password.")
     
     conn.close()
     return jsonify({"message": "Login successful!"}), 200

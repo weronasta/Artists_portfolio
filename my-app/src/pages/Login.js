@@ -10,8 +10,9 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/material';  // Importuj ThemeProvider z MUI
-import theme from '../theme';  // Załaduj motyw z theme.js
+import { ThemeProvider } from '@mui/material';
+import theme from '../theme';
+import axios from 'axios';  // Importowanie axios
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -52,26 +53,37 @@ export default function Login() {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [loginError, setLoginError] = React.useState('');
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();  // Zatrzymujemy domyślne działanie formularza
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password');
+
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/login', {
+        email,
+        password
+      });
+
+      if (response.status === 200) {
+        // Jeśli logowanie się powiodło, przejdź np. do innej strony
+        console.log(response.data.message);  // np. 'Login successful!'
+      }
+    } catch (error) {
+      if (error.status === 401) {
+        // Jeśli błąd z backendu
+        setLoginError('Invalid email or password.');
+      } else {
+        setLoginError('An error occurred. Please try again later.');
+      }
+    }
   };
 
   const validateInputs = () => {
@@ -102,7 +114,7 @@ export default function Login() {
   };
 
   return (
-    <ThemeProvider theme={theme}> {/* Owijamy komponent w ThemeProvider, aby zastosować motyw */}
+    <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
@@ -113,6 +125,11 @@ export default function Login() {
           >
             Zaloguj się
           </Typography>
+          {loginError && (
+            <Typography color="error" sx={{ textAlign: 'center' }}>
+              {loginError}
+            </Typography>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -132,7 +149,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="your@email.com"
+                placeholder=""
                 autoComplete="email"
                 autoFocus
                 required
@@ -147,7 +164,7 @@ export default function Login() {
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
-                placeholder="••••••"
+                placeholder=""
                 type="password"
                 id="password"
                 autoComplete="current-password"

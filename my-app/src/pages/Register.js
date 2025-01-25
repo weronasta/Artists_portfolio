@@ -1,10 +1,8 @@
 import React from "react";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -12,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { GoogleIcon, FacebookIcon } from '../components/CustomIcons';
 import { ThemeProvider } from '@mui/material'; // Import ThemeProvider
 import theme from '../theme'; // Import custom theme
 
@@ -117,7 +114,7 @@ function Register() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Załóż konto
+            Zarejestruj się
           </Typography>
           <Box
             component="form"
@@ -191,24 +188,17 @@ function Register() {
               Załóż konto
             </Button>
           </Box>
-          <Divider>lub</Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Register with Google')}
-              startIcon={<GoogleIcon />}
-            >
-              Zarejestruj się z Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert('Register with Facebook')}
-              startIcon={<FacebookIcon />}
-            >
-              Zarejestruj się z Facebook
-            </Button>
+            <Typography sx={{ textAlign: 'center' }}>
+              Masz konto?{' '}
+              <Link
+                href="/login"
+                variant="body2"
+                sx={{ alignSelf: 'center' }}
+              >
+                Zaloguj się
+              </Link>
+            </Typography>
           </Box>
         </Card>
       </RegisterContainer>

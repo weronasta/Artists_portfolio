@@ -73,8 +73,8 @@ export default function Login() {
       });
 
       if (response.status === 200) {
-        // Jeśli logowanie się powiodło, przejdź np. do innej strony
-        console.log(response.data.message);  // np. 'Login successful!'
+        // Przekieruj na stronę główną
+        window.location.href = '/home';
       }
     } catch (error) {
       if (error.status === 401) {

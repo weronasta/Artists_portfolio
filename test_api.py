@@ -202,6 +202,42 @@ def login():
     conn.close()
     return jsonify({"message": "Login successful!"}), 200
 
+# Endpoint POST do rejestracji użytkownika
+@app.route('/register', methods=['POST'])
+def register():
+    # Pobieramy dane z żądania
+    data = request.get_json()
+
+    # Walidujemy dane wejściowe
+    if not data or not data.get('username') or not data.get('login') or not data.get('password'):
+        abort(400, description="Missing required fields: username, login, or password")
+
+    username = data['username']
+    login = data['login']
+    password = data['password']
+
+    # Hashujemy hasło
+    hashed_password = generate_password_hash(password)
+
+    # Sprawdzamy, czy login już istnieje
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM artists WHERE login = ?', (login,))
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+        conn.close()
+        abort(400, description="Login already exists")
+
+    # Wstawiamy nowego użytkownika do tabeli artists
+    cursor.execute('''
+        INSERT INTO artists (username, login, password)
+        VALUES (?, ?, ?)
+    ''', (username, login, hashed_password))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "User registered successfully"}), 201
 
 
 

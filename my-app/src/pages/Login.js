@@ -75,6 +75,8 @@ export default function Login() {
       if (response.status === 200) {
         // Przekieruj na stronę główną
         window.location.href = '/home';
+         // Zapisz token w localStorage
+         localStorage.setItem("authToken", response.data.token);
       }
     } catch (error) {
       if (error.response.status === 401) {

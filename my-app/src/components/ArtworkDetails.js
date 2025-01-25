@@ -48,7 +48,7 @@ function ArtworkDetails() {
     return <div>Loading...</div>;
   }
 
-  const imageUrl = require(`../assets/images/${artwork.imageLink}`);
+  const imageUrl = require(`../assets/images/artworks/${artwork.imageLink}`);
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" width="100%" maxWidth="1200px" mx="auto" padding={4} bgcolor="background.default">

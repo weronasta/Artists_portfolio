@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function ArtworkCard({ artwork }) {
   const navigate = useNavigate(); // Function for navigation
 
-  const imageUrl = require(`../assets/images/${artwork.imageLink}`); // Load local image
+  const imageUrl = require(`../assets/images/artworks/${artwork.imageLink}`); // Load local image
 
   return (
     <Box

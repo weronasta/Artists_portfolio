@@ -71,7 +71,7 @@ function ArtistDetails() {
                 {artist.artworksCount || 0}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Dodane prace
+                Dodane prace - NICE TO HAVE
               </Typography>
             </Box>
             {/* Przyciski */}

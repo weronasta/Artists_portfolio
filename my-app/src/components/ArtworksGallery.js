@@ -3,15 +3,20 @@ import axios from "axios";
 import { Box, ImageList } from "@mui/material";
 import ArtworkCard from "./ArtworkCard"; // Importujemy nowy komponent
 
-function ArtworksGallery() {
+function ArtworksGallery({artistId}) {
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArtworks = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/artworks");
-        setArtworks(response.data);  // Załaduj dzieła sztuki z odpowiedzi API
+        let url = "http://127.0.0.1:5000/artworks"; // Domyślny URL dla wszystkich dzieł
+        if (artistId) {
+          url = `http://127.0.0.1:5000/artworks/artist/${artistId}`; // Zaktualizowany URL z parametrem artist_id
+        }
+
+        const response = await axios.get(url);
+        setArtworks(response.data);
       } catch (error) {
         console.error("Error fetching artworks:", error);
       } finally {
@@ -20,7 +25,7 @@ function ArtworksGallery() {
     };
 
     fetchArtworks();
-  }, []);
+  }, [artistId]); // UseEffect uruchomi się przy zmianie artist_id
 
   if (loading) {
     return <div>Loading...</div>;

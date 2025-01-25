@@ -1,9 +1,11 @@
 import React from "react";
-import { Box, Avatar, Typography, Button, Container } from "@mui/material";
-import ImageGallery from "../components/ImageGallery"; // Import galerii
+import { Box, Typography, Button, Container } from "@mui/material";
 import ArtistDetails from "../components/ArtistDetails"; // Import danych artysty
+import ArtworksGallery from "../components/ArtworksGallery"; // Import galerii prac artysty
+import { useParams } from "react-router-dom";
 
 function ArtistProfile() {
+  const { id } = useParams(); 
   return (
     <Container>
     <Box>
@@ -13,8 +15,8 @@ function ArtistProfile() {
       <Typography variant="h5" sx={{ mb: 2 }}>
         Galeria prac
       </Typography>
+      <ArtworksGallery artistId={id} />
     </Box>
-    <ImageGallery />
   </Box>
   </Container>
   );

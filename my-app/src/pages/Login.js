@@ -77,8 +77,7 @@ export default function Login() {
         window.location.href = '/home';
       }
     } catch (error) {
-      if (error.status === 401) {
-        // Jeśli błąd z backendu
+      if (error.response.status === 401) {
         setLoginError('Invalid email or password.');
       } else {
         setLoginError('An error occurred. Please try again later.');

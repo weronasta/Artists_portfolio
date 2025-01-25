@@ -19,7 +19,7 @@ def get_artworks():
     cursor = conn.cursor()
     
     # Zapytanie SQL, które pobiera wszystkie dzieła sztuki
-    cursor.execute('SELECT * FROM pieces')
+    cursor.execute('SELECT * FROM artworks')
     
     # Pobieramy wszystkie wiersze z tabeli
     artworks = cursor.fetchall()
@@ -50,7 +50,7 @@ def get_artwork(id):
     cursor = conn.cursor()
 
     # Zapytanie SQL, które pobiera dzieło sztuki o konkretnym id
-    cursor.execute('SELECT * FROM pieces WHERE id = ?', (id,))
+    cursor.execute('SELECT * FROM artworks WHERE id = ?', (id,))
 
     # Pobieramy jeden wiersz z tabeli
     artwork = cursor.fetchone()
@@ -83,7 +83,7 @@ def get_artists():
     cursor = conn.cursor()
     
     # Zapytanie SQL, które pobiera wszystkich artystów
-    cursor.execute('SELECT * FROM artists')
+    cursor.execute('SELECT id, username, avatarLink, bio FROM artists')
     
     # Pobieramy wszystkie wiersze z tabeli
     artists = cursor.fetchall()
@@ -94,10 +94,8 @@ def get_artists():
         result.append({
             'id': artist['id'],
             'username': artist['username'],
-            'login': artist['login'],
-            'password': artist['password'],
+            'avatarLink': artist['avatarLink'],
             'bio': artist['bio'],
-            'isAdmin': artist['isAdmin']
         })
     
     conn.close()  # Zamykamy połączenie z bazą danych
@@ -112,7 +110,7 @@ def get_artworks_by_artist(artist_id):
     cursor = conn.cursor()
     
     # Zapytanie SQL, które pobiera dzieła sztuki dla konkretnego artysty
-    cursor.execute('SELECT * FROM pieces WHERE artist_id = ?', (artist_id,))
+    cursor.execute('SELECT * FROM artworks WHERE artist_id = ?', (artist_id,))
     
     # Pobieramy wszystkie wiersze z tabeli
     artworks = cursor.fetchall()
@@ -161,7 +159,7 @@ def add_artwork():
     cursor = conn.cursor()
     
     cursor.execute('''
-        INSERT INTO pieces (artist_id, name, description, currentPrice, imageLink, availabilityType, numberOf)
+        INSERT INTO artworks (artist_id, name, description, currentPrice, imageLink, availabilityType, numberOf)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ''', (artist_id, name, description, currentPrice, imageLink, availabilityType, numberOf))
     
@@ -178,7 +176,7 @@ def delete_artwork(artwork_id):
     cursor = conn.cursor()
     
     # Zapytanie SQL, które sprawdza, czy dzieło sztuki istnieje
-    cursor.execute('SELECT * FROM pieces WHERE id = ?', (artwork_id,))
+    cursor.execute('SELECT * FROM artworks WHERE id = ?', (artwork_id,))
     artwork = cursor.fetchone()
     
     if not artwork:
@@ -186,7 +184,7 @@ def delete_artwork(artwork_id):
         abort(404, description="Artwork not found")  # Zwracamy błąd, jeśli dzieło nie istnieje
     
     # Usuwamy dzieło sztuki z bazy danych
-    cursor.execute('DELETE FROM pieces WHERE id = ?', (artwork_id,))
+    cursor.execute('DELETE FROM artworks WHERE id = ?', (artwork_id,))
     conn.commit()  # Zatwierdzamy zmiany w bazie danych
     conn.close()   # Zamykamy połączenie
     

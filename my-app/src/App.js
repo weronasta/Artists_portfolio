@@ -8,7 +8,7 @@ import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import Logout from './pages/Logout.js';
 import Myaccount from './pages/Myaccount.js';
-import Profile from './pages/Profile.js';
+import Profile from './pages/ArtistProfile.js';
 import Register from './pages/Register.js';
 import Header from './components/Header.js';
 import Footer from './components/Footer.js';
@@ -37,6 +37,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
           <Route path="/artworks/:id" element={<Artwork/>} />
+          <Route path="/artists/profile/:id" element={<Profile/>} />
         </Routes>
         <Footer/>
       </Router>

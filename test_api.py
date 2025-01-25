@@ -189,15 +189,15 @@ def login():
         abort(401, description="Invalid email or password.")
     
     # Sprawdzamy, czy hasło jest poprawne
-    if not user['password'] == password:
-        # print("Invalid password")
-        conn.close()
-        # return jsonify({"message": "Invalid email or password from api."}), 401
-        abort(401, description="Invalid email or password.")
-    # if not check_password_hash(user['password'], password):
-    #     print("Invalid password")
+    # if not user['password'] == password:
+    #     # print("Invalid password")
     #     conn.close()
+    #     # return jsonify({"message": "Invalid email or password from api."}), 401
     #     abort(401, description="Invalid email or password.")
+    if not check_password_hash(user['password'], password):
+        print("Invalid password")
+        conn.close()
+        abort(401, description="Invalid email or password.")
     
     conn.close()
     return jsonify({"message": "Login successful!"}), 200
@@ -235,8 +235,8 @@ def register():
             abort(400, description="Username already exists")
     # Wstawiamy nowego użytkownika do tabeli artists
     cursor.execute('''
-        INSERT INTO artists (username, login, password)
-        VALUES (?, ?, ?)
+        INSERT INTO artists (username, login, password, isAdmin, avatarLink, bio)
+        VALUES (?, ?, ?, 0, 'avatar_placeholder.png', 'placeholder bio')
     ''', (username, login, hashed_password))
     conn.commit()
     conn.close()

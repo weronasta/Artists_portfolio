@@ -1,5 +1,6 @@
 import './App.css';
 import Gallery from './pages/Gallery.js';
+import GalleryOfArtists from './pages/GalleryOfArtists.js';
 import Artwork from './pages/Artwork.js';
 import AddPic from './pages/AddPic.js';
 import ShoppingCart from './pages/ShoppingCart.js';
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/artists" element={<GalleryOfArtists />} />
           <Route path="/AddPic" element={<AddPic />} />
           <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route path="/home" element={<Home />} />

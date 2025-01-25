@@ -1,9 +1,11 @@
+// ArtistsSlider.js
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import Slider from "react-slick"; // Slider z react-slick
 import "slick-carousel/slick/slick.css"; // Styl slidera
 import "slick-carousel/slick/slick-theme.css"; // Styl slidera
 import axios from "axios";
+import ArtistCard from "./ArtistCard"; // Importujemy nasz komponent
 
 const ArtistsSlider = () => {
   const [artists, setArtists] = useState([]); // Stan do przechowywania artystów
@@ -12,7 +14,6 @@ const ArtistsSlider = () => {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        
         const response = await axios.get("http://127.0.0.1:5000/artists");
         const data = response.data;
 
@@ -72,16 +73,7 @@ const ArtistsSlider = () => {
       ) : (
         <Slider {...sliderSettings}>
           {artists.map((artist) => (
-            <Box key={artist.id} textAlign="center" p={2}>
-              <Avatar
-                src={artist.avatar}
-                alt={artist.name}
-                sx={{ width: 100, height: 100, margin: "0 auto" }}
-              />
-              <Typography variant="body1" mt={1}>
-                {artist.name}
-              </Typography>
-            </Box>
+            <ArtistCard key={artist.id} artist={artist} />
           ))}
         </Slider>
       )}

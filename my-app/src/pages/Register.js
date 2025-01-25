@@ -12,6 +12,7 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material'; // Import ThemeProvider
 import theme from '../theme'; // Import custom theme
+import axios from 'axios';  // Importowanie axios
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -52,6 +53,7 @@ function Register() {
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
+  const [registrationError, setRegistrationError] = React.useState('');
 
   const validateInputs = () => {
     const username = document.getElementById('username');
@@ -92,16 +94,41 @@ function Register() {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    // Walidacja danych wejściowych
     if (!validateInputs()) return;
-
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  
+    // Pobranie danych z formularza
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    console.log(username);
+    console.log(email);
+    console.log(password);
+  
+    try {
+      // Wysyłanie danych za pomocą axios
+      const response = await axios.post('http://127.0.0.1:5000/register', {
+        username: username,
+        login: email, // Dopasuj do backendu
+        password: password,
+      });
+  
+      // Sprawdzenie odpowiedzi backendu
+      alert('Rejestracja zakończona sukcesem! Możesz się teraz zalogować.');
+      console.log(response.data); // Obsługa wyniku
+    } catch (error) {
+      // Obsługa błędów
+      if (error.response) {
+        if (error.response.status === 400) { // Poprawiony dostęp do statusu
+          setRegistrationError('Login or email already exists.');
+        } else {
+          setRegistrationError('An error occurred. Please try again.');
+        }
+      }
+    }
   };
 
   return (
@@ -115,7 +142,12 @@ function Register() {
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
             Zarejestruj się
-          </Typography>
+            </Typography>
+            {registrationError && (
+            <Typography color="error" sx={{ textAlign: 'center' }}>
+              {registrationError}
+            </Typography>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}

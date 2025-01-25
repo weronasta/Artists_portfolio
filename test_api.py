@@ -224,11 +224,15 @@ def register():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM artists WHERE login = ?', (login,))
     existing_user = cursor.fetchone()
+    cursor.execute('SELECT * FROM artists WHERE username = ?', (username,))
+    existing_user2 = cursor.fetchone()
 
     if existing_user:
         conn.close()
         abort(400, description="Login already exists")
-
+    elif existing_user2:
+            conn.close()
+            abort(400, description="Username already exists")
     # Wstawiamy nowego użytkownika do tabeli artists
     cursor.execute('''
         INSERT INTO artists (username, login, password)

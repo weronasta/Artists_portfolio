@@ -2,6 +2,8 @@ import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useCart } from "../contexts/CartContext"; // Użycie kontekstu koszyka
+import ShippingMethods from "../components/ShippingMethods";
+import PaymentMethods from "../components/PaymentMethods";
 
 function ShoppingCart() {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
@@ -109,19 +111,8 @@ function ShoppingCart() {
       {/* Metody płatności i dostawy wyświetlane tylko wtedy, gdy koszyk nie jest pusty */}
       {!isEmpty && (
         <Box sx={{ width: "100%", marginTop: 4 }}>
-          <Typography variant="h6" gutterBottom>
-            Metody płatności i dostawy
-          </Typography>
-          <Paper sx={{ padding: 2, marginBottom: 2 }}>
-            {/* Wyświetlanie metod płatności */}
-            <Typography>Wybierz metodę płatności</Typography>
-            {/* Można dodać konkretne metody płatności */}
-          </Paper>
-          <Paper sx={{ padding: 2 }}>
-            {/* Wyświetlanie metod dostawy */}
-            <Typography>Wybierz metodę dostawy</Typography>
-            {/* Można dodać konkretne metody dostawy */}
-          </Paper>
+           <ShippingMethods />
+           <PaymentMethods />
         </Box>
       )}
     </Box>

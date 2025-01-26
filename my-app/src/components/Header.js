@@ -16,8 +16,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Ikona koszyk
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext'; // Importowanie kontekstu koszyka
 
-const pages = ['Home', 'Gallery', 'Artists', 'AddPic', 'ShoppingCart'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Home', 'Gallery', 'Artists', 'AddPic'];
+const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);

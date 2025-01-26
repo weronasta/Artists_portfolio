@@ -7,7 +7,7 @@ import AddPic from './pages/AddPic.js';
 import ShoppingCart from './pages/ShoppingCart.js';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
-import Myaccount from './pages/Myaccount.js';
+import MyProfile from './pages/MyProfile.js';
 import ArtistProfile from './pages/ArtistProfile.js';
 import Register from './pages/Register.js';
 import Header from './components/Header.js';
@@ -15,9 +15,18 @@ import Footer from './components/Footer.js';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js';
+import axios from 'axios';
 
 // Tworzenie kontekstu autoryzacji
 export const AuthContext = createContext(null);
+axios.defaults.baseURL = 'http://127.0.0.1:5000';
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+});
 
 function App() {
   // Stan logowania użytkownika
@@ -78,7 +87,8 @@ function App() {
               <Route path="/ShoppingCart" element={<ShoppingCart />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/myaccount" element={<Myaccount />} />
+              {/* <Route path="/profile" element={auth.isLoggedIn ? <MyProfile /> : <Login/>} /> */}
+              <Route path="/profile" element={<MyProfile />} />
               <Route path="/register" element={<Register />} />
               <Route path="/artworks/:id" element={<Artwork />} />
               <Route path="/artists/:id" element={<ArtistProfile />} />

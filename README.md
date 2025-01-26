@@ -14,4 +14,5 @@ npm install @emotion/styled
 npm install @mui/icons-material
 npm install slick-carousel
 npm install axios
+pip install pyjwt
 

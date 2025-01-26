@@ -2,9 +2,22 @@ from flask import Flask, jsonify, request, abort
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
+import jwt
+import datetime
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+SECRET_KEY = 'your_secret_key'  # Klucz tajny do podpisywania tokenów JWT
+# Funkcja do weryfikacji JWT
+def verify_token(token):
+    try:
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        return decoded
+    except jwt.ExpiredSignatureError:
+        return None  # Token wygasł
+    except jwt.InvalidTokenError:
+        return None  # Nieprawidłowy toke
 
 
 # Funkcja do połączenia się z bazą danych SQLite
@@ -181,26 +194,94 @@ def login():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM artists WHERE login = ?', (login,))
     user = cursor.fetchone()
-    # print(f"{login=}, {password=}, {user=}")
     
     if user is None:
         conn.close()
-        # return jsonify({"message": "Invalid email or password from api."}), 401
         abort(401, description="Invalid email or password.")
     
-    # Sprawdzamy, czy hasło jest poprawne
-    # if not user['password'] == password:
-    #     # print("Invalid password")
-    #     conn.close()
-    #     # return jsonify({"message": "Invalid email or password from api."}), 401
-    #     abort(401, description="Invalid email or password.")
     if not check_password_hash(user['password'], password):
         print("Invalid password")
         conn.close()
         abort(401, description="Invalid email or password.")
     
+    token = jwt.encode({
+        'id': user['id'],
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Ważność tokenu na 1 godzinę
+    }, SECRET_KEY, algorithm='HS256')
     conn.close()
-    return jsonify({"message": "Login successful!"}), 200
+    return jsonify({"message": "Login successful!", "token": token}), 200
+    # return jsonify({"message": "Login successful!"}), 200
+
+# Middleware do weryfikacji tokenu w chronionych endpointach
+# @app.before_request
+# def before_request():
+#     if request.endpoint in ['profile']:  # Endpointy, które wymagają autoryzacji
+#         token = request.headers.get('Authorization')  # Pobieramy token z nagłówka
+#         if token is None:
+#             print("Sraka")
+#             abort(401, description="Token is missing.")
+        
+#         # Usuwamy "Bearer" z tokena
+#         token = token.split(" ")[1]
+#         decoded = verify_token(token)
+        
+#         if decoded is None:
+#             print("Invalid or expired token")
+#             abort(401, description="Invalid or expired token.")
+        
+#         request.user = decoded  # Dodajemy dane użytkownika do obiektu request (np. id artysty)
+
+# Endpoint GET, który pobiera dane użytkownika (profil)
+@app.route('/profile', methods=['GET'])
+def profile():
+    # Pobieramy token z nagłówka 'Authorization'
+    token = request.headers.get('Authorization')
+    print(token)
+    
+    if token is None:
+        print("Dupa")
+        abort(401, description="Token is missing.")
+    
+    # Usuwamy "Bearer" z tokena
+    token = token.split(" ")[1]
+    
+    # Weryfikujemy token
+    decoded = verify_token(token)
+    print(f"{decoded=}")
+    
+    if decoded is None:
+        print("Kotek")
+        abort(401, description="Invalid or expired token.")      
+    
+    # Pobieramy ID użytkownika z dekodowanego tokenu
+    user_id = decoded['id']
+    print(f"{user_id=}")
+    
+    # Tworzymy połączenie z bazą danych
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Pobieramy dane użytkownika na podstawie jego ID
+    cursor.execute('SELECT * FROM artists WHERE id = ?', (user_id,))
+    user = cursor.fetchone()
+    print(f"{user=}")
+
+    conn.close()
+    
+    if user is None:
+        abort(404, description="User not found.")
+    
+    # Konwertujemy dane użytkownika na słownik (JSON)
+    result = {
+        'id': user['id'],
+        'username': user['username'],
+        'avatarLink': user['avatarLink'],
+        'bio': user['bio'],
+    }
+    print(f"{result=}")
+
+    return jsonify(result), 200
+     
 
 # Endpoint POST do rejestracji użytkownika
 @app.route('/register', methods=['POST'])

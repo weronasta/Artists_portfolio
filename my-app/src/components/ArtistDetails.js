@@ -3,17 +3,32 @@ import { Box, Avatar, Typography, Button, Container } from "@mui/material";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-function ArtistDetails() {
-  const { id } = useParams(); 
+function ArtistDetails({artistID}) {
+  const { id } = useParams();
   const [artist, setArtist] = useState({});
   const [loading, setLoading] = useState(true);
+
+  // const { id } = useParams() || artistID;
+  console.log("id", id);
+  console.log("artist", artist);
+  console.log("artistID", artistID);
 
   useEffect(() => {
     const fetchArtist = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/artists/${id}`);
+        // if artistID is not undefined then fetch artist by artistID, else fetch artist by id
+        var request_id = artistID ? artistID : id;
+        console.log("request_id", request_id);
+        const response = await axios.get(`http://127.0.0.1:5000/artists/${request_id}`);
+
+        // if (artistID) {
+        //   const response = await axios.get(`http://127.0.0.1:5000/artists/${artistID}`);
+        // } else {
+
+        //   const response = await axios.get(`http://127.0.0.1:5000/artists/${id}`);
+        // }
         setArtist(response.data);
-        artist.avatarLink = require(`../assets/images/artists/${artist.avatarLink}`);
+        // artist.avatarLink = require(`../assets/images/artists/${artist.avatarLink}`);
       } catch (error) {
         console.error("Błąd podczas pobierania artysty", error);
       } finally {

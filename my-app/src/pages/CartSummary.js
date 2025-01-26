@@ -95,23 +95,8 @@ function CartSummary() {
       </Box>
 
       {/* Przycisk złożenia zamówienia */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            width: "200px",
-            fontSize: "16px",
-            textTransform: "none",
-          }}
-        >
-          Złóż zamówienie
-        </Button>
-      </Box>
-
-      {/* Przycisk powrotu */}
-      <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%", marginTop: 4 }}>
-        <Button
+      <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", marginTop: 4 }}>
+      <Button
           variant="contained"
           color="secondary"
           component={Link}
@@ -123,6 +108,18 @@ function CartSummary() {
           }}
         >
           Wstecz
+        </Button>
+        
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{
+            width: "200px",
+            fontSize: "16px",
+            textTransform: "none",
+          }}
+        >
+          Złóż zamówienie
         </Button>
       </Box>
     </Box>

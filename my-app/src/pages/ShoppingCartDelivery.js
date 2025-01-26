@@ -65,7 +65,21 @@ function ShoppingCartDelivery() {
       </Box>
 
       {/* Przycisk przejścia do kolejnego kroku */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", marginTop: 4 }}>
+      <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to="/cart"
+          sx={{
+            width: "200px",
+            fontSize: "16px",
+            textTransform: "none",
+          }}
+        >
+          Wstecz
+        </Button>
+
               <Button
                 variant="contained"
                 color="primary"
@@ -80,23 +94,6 @@ function ShoppingCartDelivery() {
                 Przejdź dalej
               </Button>
             </Box>
-
-      {/* Przycisk przejścia do poprzedniego kroku */}
-      <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%", marginTop: 4 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          component={Link}
-          to="/cart"
-          sx={{
-            width: "200px",
-            fontSize: "16px",
-            textTransform: "none",
-          }}
-        >
-          Wstecz
-        </Button>
-      </Box>
     </Box>
   );
 }

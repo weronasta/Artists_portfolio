@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 import { useCart } from "../contexts/CartContext"; // Użycie kontekstu koszyka
 import ShippingMethods from "../components/ShippingMethods";
 import PaymentMethods from "../components/PaymentMethods";
+import { Stepper, Step, StepLabel } from "@mui/material";
 
 function ShoppingCart() {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   // Sprawdzamy, czy koszyk jest pusty
   const isEmpty = cartItems.length === 0;
+
+  // Ustalamy kroki Steppera
+  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
 
   return (
     <Box
@@ -24,6 +28,17 @@ function ShoppingCart() {
         bgcolor: "background.default",
       }}
     >
+      {/* Stepper */}
+      <Box sx={{ width: "100%", mb: 4 }}>
+        <Stepper activeStep={0} alternativeLabel>
+          {steps.map((label, index) => (
+            <Step key={index}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </Box>
+
       <Typography variant="h4" gutterBottom>
         Koszyk
       </Typography>
@@ -108,13 +123,29 @@ function ShoppingCart() {
         </Box>
       )}
 
-      {/* Metody płatności i dostawy wyświetlane tylko wtedy, gdy koszyk nie jest pusty */}
-      {!isEmpty && (
-        <Box sx={{ width: "100%", marginTop: 4 }}>
-           <ShippingMethods />
-           <PaymentMethods />
-        </Box>
-      )}
+      {/* Suma cen */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          Suma: 21,37 zł
+        </Typography>
+      </Box>
+
+      {/* Przycisk przejścia do kolejnego kroku */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="/shopping-cart-delivery" // Zmiana linku do kolejnej strony
+          sx={{
+            width: "200px",
+            fontSize: "16px",
+            textTransform: "none",
+          }}
+        >
+          Przejdź dalej
+        </Button>
+      </Box>
     </Box>
   );
 }

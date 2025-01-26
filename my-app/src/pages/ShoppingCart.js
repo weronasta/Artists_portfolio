@@ -4,6 +4,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "../contexts/CartContext";
+import ShippingMethods from "../components/ShippingMethods";
+import PaymentMethods from "../components/PaymentMethods";
 
 function ShoppingCart() {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
@@ -53,7 +55,7 @@ function ShoppingCart() {
             <Box sx={{ flex: 1 }}>
               <Typography variant="h6">{item.name}</Typography>
               <Typography variant="body1" color="text.secondary">
-                Cena: {item.currentPrice.toFixed(2)} zł
+                Cena: {(item.currentPrice * item.quantity).toFixed(2)} zł
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -70,6 +72,7 @@ function ShoppingCart() {
                 onClick={() =>
                   updateQuantity(item.id, item.quantity + 1)
                 }
+                disabled={item.quantity === item.numberOf}
               >
                 <AddIcon />
               </IconButton>
@@ -80,7 +83,10 @@ function ShoppingCart() {
           </Paper>
         ))}
       </Box>
+      <ShippingMethods />
+      <PaymentMethods />
     </Box>
+
   );
 }
 

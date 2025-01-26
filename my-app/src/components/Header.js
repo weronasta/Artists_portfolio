@@ -12,7 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Ikona koszyka
 import { Link } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext'; // Importowanie kontekstu koszyka
 
 const pages = ['Home', 'Gallery', 'Artists', 'AddPic', 'ShoppingCart'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -21,6 +23,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Stan logowania
+  const { cartItems } = useCart(); // Pobieranie przedmiotów z koszyka
 
   useEffect(() => {
     // Sprawdzamy, czy użytkownik jest zalogowany (np. czy `authToken` istnieje w localStorage)
@@ -43,6 +46,9 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  // Obliczamy łączną liczbę produktów w koszyku
+  const totalItemsInCart = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <AppBar position="static" enableColorOnDark>
@@ -133,7 +139,34 @@ function ResponsiveAppBar() {
           </Box>
 
           {/* Prawa strona headera */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
+            {/* Koszyk */}
+            <IconButton
+              component={Link}
+              to="/cart"
+              sx={{ color: 'white', mx: 2 }}
+            >
+              <ShoppingCartIcon />
+              {/* Liczba przedmiotów w koszyku */}
+              {totalItemsInCart > 0 && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: -4,
+                    right: -4,
+                    backgroundColor: 'red',
+                    color: 'white',
+                    borderRadius: '50%',
+                    padding: '4px 8px',
+                    fontSize: '12px',
+                  }}
+                >
+                  {totalItemsInCart}
+                </Box>
+              )}
+            </IconButton>
+
+            {/* Jeśli użytkownik jest zalogowany */}
             {isLoggedIn ? (
               <>
                 <Tooltip title="Open settings">

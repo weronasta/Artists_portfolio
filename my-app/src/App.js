@@ -86,7 +86,7 @@ function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/artists" element={<GalleryOfArtists />} />
               <Route path="/AddPic" element={<AddPic />} />
-              <Route path="/ShoppingCart" element={<ShoppingCart />} />
+              <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<MyProfile />} />

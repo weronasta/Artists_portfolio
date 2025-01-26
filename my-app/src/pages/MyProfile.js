@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Avatar, Typography, Container } from "@mui/material";
 import ArtistDetails from "../components/ArtistDetails";
-import Gallery from "./Gallery";
+import ArtworksGallery from "../components/ArtworksGallery";
 import axios from "axios";
 
 function MyProfile() {
@@ -59,7 +59,7 @@ function MyProfile() {
           <Typography variant="h5" sx={{ mb: 2 }}>
             Galeria prac
           </Typography>
-          <Gallery artistId={user.id} /> {/* Przekazujemy id artysty do galerii */}
+          <ArtworksGallery artistId={user.id} /> {/* Przekazujemy id artysty do galerii */}
         </Box>
       </Box>
     </Container>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Box, Typography } from "@mui/material";
 import ArtistsSlider from "../components/ArtistsSlider"; // Import slidera
-import ImageGallery from "../components/ImageGallery";
+import ArtworksGallery from "../components/ArtworksGallery";
 
 function Home() {
   return (
@@ -16,7 +16,7 @@ function Home() {
         <Typography variant="h4" gutterBottom>
           Najnowsze Prace
         </Typography>
-        <ImageGallery />
+        <ArtworksGallery artistId={1}/>
       </Box>
     </Container>
   );

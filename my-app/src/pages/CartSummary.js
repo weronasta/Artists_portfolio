@@ -1,23 +1,17 @@
 import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useCart } from "../contexts/CartContext"; // Użycie kontekstu koszyka
+import { useCart } from "../contexts/CartContext";
 import { Stepper, Step, StepLabel } from "@mui/material";
 
-function ShoppingCart() {
-  const { cartItems, removeFromCart, updateQuantity } = useCart();
+function CartSummary() {
+  const { cartItems } = useCart();
 
-  // Sprawdzamy, czy koszyk jest pusty
-  const isEmpty = cartItems.length === 0;
+  // Obliczanie sumy cen produktów
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.currentPrice * item.quantity, 0);
 
-  // Ustalamy kroki Steppera
+  // Kroki dla Steppera
   const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
-
-  // Obliczamy sumę cen w koszyku
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.currentPrice * item.quantity,
-    0
-  );
 
   return (
     <Box
@@ -34,7 +28,7 @@ function ShoppingCart() {
     >
       {/* Stepper */}
       <Box sx={{ width: "100%", mb: 4 }}>
-        <Stepper activeStep={0} alternativeLabel>
+        <Stepper activeStep={2} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>
               <StepLabel>{label}</StepLabel>
@@ -44,32 +38,15 @@ function ShoppingCart() {
       </Box>
 
       <Typography variant="h4" gutterBottom>
-        Koszyk
+        Podsumowanie zamówienia
       </Typography>
 
-      {isEmpty ? (
-        // Wyświetlanie komunikatu i przycisku, jeśli koszyk jest pusty
-        <Box sx={{ textAlign: "center", padding: 4 }}>
-          <Typography variant="h6" color="text.secondary">
-            Twój koszyk jest pusty
-          </Typography>
-          <Button
-            component={Link}
-            to="/gallery"
-            sx={{
-              marginTop: 2,
-              backgroundColor: "primary.main",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "primary.dark",
-              },
-            }}
-          >
-            Zobacz galerię prac
-          </Button>
-        </Box>
+      {/* Lista kupionych produktów */}
+      {cartItems.length === 0 ? (
+        <Typography variant="h6" color="text.secondary">
+          Twój koszyk jest pusty
+        </Typography>
       ) : (
-        // Renderowanie koszyka, gdy są produkty
         <Box width="100%" mb={4}>
           {cartItems.map((item) => (
             <Paper
@@ -101,27 +78,10 @@ function ShoppingCart() {
                 <Typography variant="body1" color="text.secondary">
                   Cena: {item.currentPrice.toFixed(2)} zł
                 </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Ilość: {item.quantity}
+                </Typography>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Button
-                  onClick={() =>
-                    updateQuantity(item.id, item.quantity - 1)
-                  }
-                  disabled={item.quantity <= 1}
-                >
-                  -
-                </Button>
-                <Typography>{item.quantity}</Typography>
-                <Button
-                  onClick={() =>
-                    updateQuantity(item.id, item.quantity + 1)
-                  }
-                  disabled={item.quantity === item.numberOf}
-                >
-                  +
-                </Button>
-              </Box>
-              <Button onClick={() => removeFromCart(item.id)}>Usuń</Button>
             </Paper>
           ))}
         </Box>
@@ -134,24 +94,39 @@ function ShoppingCart() {
         </Typography>
       </Box>
 
-      {/* Przycisk przejścia do kolejnego kroku */}
+      {/* Przycisk złożenia zamówienia */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
         <Button
           variant="contained"
           color="primary"
-          component={Link}
-          to="/cartdelivery" // Zmiana linku do kolejnej strony
           sx={{
             width: "200px",
             fontSize: "16px",
             textTransform: "none",
           }}
         >
-          Przejdź dalej
+          Złóż zamówienie
+        </Button>
+      </Box>
+
+      {/* Przycisk powrotu */}
+      <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%", marginTop: 4 }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to="/cartdelivery"
+          sx={{
+            width: "200px",
+            fontSize: "16px",
+            textTransform: "none",
+          }}
+        >
+          Wstecz
         </Button>
       </Box>
     </Box>
   );
 }
 
-export default ShoppingCart;
+export default CartSummary;

@@ -6,6 +6,7 @@ import Artwork from './pages/Artwork.js';
 import AddPic from './pages/AddPic.js';
 import ShoppingCart from './pages/ShoppingCart.js';
 import ShoppingCartDelivery from "./pages/ShoppingCartDelivery.js";
+import CartSummary from "./pages/CartSummary.js";
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import MyProfile from './pages/MyProfile.js';
@@ -89,6 +90,7 @@ function App() {
               <Route path="/AddPic" element={<AddPic />} />
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/cartdelivery" element={<ShoppingCartDelivery />} />
+              <Route path="/cartsummary" element={<CartSummary />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<MyProfile />} />

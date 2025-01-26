@@ -3,6 +3,8 @@ import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ShippingMethods from "../components/ShippingMethods";
 import PaymentMethods from "../components/PaymentMethods";
+import { Link } from "react-router-dom";
+import { Stepper, Step, StepLabel } from "@mui/material";
 
 function ShoppingCartDelivery() {
   const [email, setEmail] = useState(""); // Stan do przechowywania maila
@@ -13,10 +15,8 @@ function ShoppingCartDelivery() {
     setEmail(event.target.value);
   };
 
-  // Funkcja przechodzenia do kolejnego kroku
-  const handleNextStep = () => {
-    navigate("/shopping-cart-summary"); // Tu zmienisz na docelowy URL kolejnego kroku
-  };
+  // Ustalamy kroki Steppera
+  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
 
   return (
     <Box
@@ -31,6 +31,18 @@ function ShoppingCartDelivery() {
         bgcolor: "background.default",
       }}
     >
+
+{/* Stepper */}
+<Box sx={{ width: "100%", mb: 4 }}>
+        <Stepper activeStep={1} alternativeLabel>
+          {steps.map((label, index) => (
+            <Step key={index}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </Box>
+
       <Typography variant="h4" gutterBottom>
         Wybór metody dostawy i płatności
       </Typography>
@@ -54,17 +66,35 @@ function ShoppingCartDelivery() {
 
       {/* Przycisk przejścia do kolejnego kroku */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/cartsummary" // Zmiana linku do kolejnej strony
+                sx={{
+                  width: "200px",
+                  fontSize: "16px",
+                  textTransform: "none",
+                }}
+              >
+                Przejdź dalej
+              </Button>
+            </Box>
+
+      {/* Przycisk przejścia do poprzedniego kroku */}
+      <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%", marginTop: 4 }}>
         <Button
           variant="contained"
-          color="primary"
-          onClick={handleNextStep}
+          color="secondary"
+          component={Link}
+          to="/cart"
           sx={{
             width: "200px",
             fontSize: "16px",
             textTransform: "none",
           }}
         >
-          Przejdź dalej
+          Wstecz
         </Button>
       </Box>
     </Box>

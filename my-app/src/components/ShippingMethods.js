@@ -29,7 +29,7 @@ function ShippingMethods() {
       <Typography
         variant="h4"
         sx={{
-          textAlign: "left", // Wyrównanie do lewej
+          textAlign: "left",
           width: "100%",
         }}
       >
@@ -45,10 +45,7 @@ function ShippingMethods() {
               marginBottom: 1,
               display: "flex",
               alignItems: "center",
-              border:
-                selectedShipping === option.id
-                  ? "2px solid #9c27b0" // Podświetlenie aktywnej opcji
-                  : "1px solid rgba(0, 0, 0, 0.12)",
+              border: "2px solid #9c27b0", // Fioletowa ramka dla wszystkich opcji
               transition: "border-color 0.3s",
             }}
           >

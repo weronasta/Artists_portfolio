@@ -28,8 +28,8 @@ const ArtistCard = ({ artist }) => {
         src={artist.avatar}
         alt={artist.name}
         sx={{
-          width: { xs: 96, sm: 120, md: 200, lg: 240 }, // Zmienny rozmiar w zależności od ekranu
-          height: { xs: 96, sm: 120, md: 200, lg: 240 },
+          width: { xs: 60, sm: 100, md: 140, lg: 180 }, // Zmienny rozmiar w zależności od ekranu
+          height: { xs: 60, sm: 100, md: 140, lg: 180 },
           margin: "0 auto",
           transition: "all 0.3s ease-in-out",
         }}

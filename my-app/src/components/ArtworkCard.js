@@ -20,6 +20,7 @@ function ArtworkCard({ artwork }) {
         overflow: "hidden",
         width: "100%",
         paddingTop: "100%",
+        marginBottom: "4px", // Dodanie odstępu od dołu
         "&:hover .overlay": { opacity: 1 },
         "&:hover img": {
           filter: "blur(4px)",

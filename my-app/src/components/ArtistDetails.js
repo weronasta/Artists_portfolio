@@ -54,9 +54,9 @@ function ArtistDetails({artistID}) {
               width: 200,
               height: 200,
               position: "absolute",
-              bottom: 0,
+              bottom: -20,
               left: 20,
-              border: "3px solid white",
+              border: "2px solid white",
             }}
           />
         </Box>

@@ -5,6 +5,7 @@ import GalleryOfArtists from './pages/GalleryOfArtists.js';
 import Artwork from './pages/Artwork.js';
 import AddPic from './pages/AddPic.js';
 import ShoppingCart from './pages/ShoppingCart.js';
+import ShoppingCartDelivery from "./pages/ShoppingCartDelivery.js";
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import MyProfile from './pages/MyProfile.js';
@@ -87,6 +88,7 @@ function App() {
               <Route path="/artists" element={<GalleryOfArtists />} />
               <Route path="/AddPic" element={<AddPic />} />
               <Route path="/cart" element={<ShoppingCart />} />
+              <Route path="/cartdelivery" element={<ShoppingCartDelivery />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<MyProfile />} />

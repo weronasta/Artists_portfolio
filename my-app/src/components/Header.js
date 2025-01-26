@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import PersonIcon from '@mui/icons-material/Person'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Ikona koszyka
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext'; // Importowanie kontekstu koszyka
@@ -171,7 +172,7 @@ function ResponsiveAppBar() {
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+                  <PersonIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Tooltip>
                 <Menu

@@ -3,10 +3,15 @@ import { Box} from "@mui/material";
 
 function Gallery() {
   return (
-
-    <div>
-      <ArtworksGallery/>
-    </div>
+    <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      padding: 2,
+    }}
+  > 
+   <ArtworksGallery/>
+  </Box>
   );
 }
 

@@ -16,7 +16,9 @@ function Home() {
         <Typography variant="h4" gutterBottom>
           Najnowsze Prace
         </Typography>
+        <Box>
         <ArtworksGallery artistId={1}/>
+        </Box>
       </Box>
     </Container>
   );

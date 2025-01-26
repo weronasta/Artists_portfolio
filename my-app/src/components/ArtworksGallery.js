@@ -32,7 +32,7 @@ function ArtworksGallery({artistId}) {
   }
 
   return (
-      <ImageList variant="masonry" cols={3} gap={4} sx={{ width: "80%" }}>
+      <ImageList variant="masonry" cols={3} gap={4} sx={{ width: "100%" }}>
         {artworks.map((artwork) => (
           <ArtworkCard key={artwork.id} artwork={artwork} /> // Przekazujemy dane do ArtworkCard
         ))}

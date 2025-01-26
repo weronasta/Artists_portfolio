@@ -1,10 +1,11 @@
 import ArtistsGallery from '../components/ArtistsGallery';
+import {Container} from "@mui/material";
 
 function GalleryOfArtists() {
   return (
-    <div>
+    <Container>
       <ArtistsGallery />
-    </div>
+    </Container>
   );
 }
 

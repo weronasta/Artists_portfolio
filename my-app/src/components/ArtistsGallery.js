@@ -35,19 +35,11 @@ const ArtistsGallery = () => {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        padding: 2,
-      }}
-    >
-      <ImageList variant="masonry" cols={3} gap={4} sx={{ width: "80%" }}>
+      <ImageList variant="masonry" cols={3} gap={4} sx={{ width: "100%" }}>
         {artists.map((artist) => (
-          <ArtistCard key={artist.id} artist={artist} /> // Renderujemy ArtistCard dla każdego artysty
+          <ArtistCard key={artist.id} artist={artist} />
         ))}
       </ImageList>
-    </Box>
   );
 };
 

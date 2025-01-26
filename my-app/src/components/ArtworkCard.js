@@ -1,11 +1,17 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
 
 function ArtworkCard({ artwork }) {
-  const navigate = useNavigate(); // Function for navigation
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const handleAddToCart = () => {
+    addToCart({ ...artwork, quantity: 1 }); // Dodanie do koszyka z podaną ilością
+    alert(`Dodano do koszyka!`);
+  };
 
-  const imageUrl = require(`../assets/images/artworks/${artwork.imageLink}`); // Load local image
+  const imageUrl = require(`../assets/images/artworks/${artwork.imageLink}`);
 
   return (
     <Box
@@ -13,10 +19,8 @@ function ArtworkCard({ artwork }) {
         position: "relative",
         overflow: "hidden",
         width: "100%",
-        paddingTop: "100%", // Aspect ratio 1:1 for square shape
-        "&:hover .overlay": {
-          opacity: 1,
-        },
+        paddingTop: "100%",
+        "&:hover .overlay": { opacity: 1 },
         "&:hover img": {
           filter: "blur(4px)",
           transform: "scale(1.1)",
@@ -25,7 +29,7 @@ function ArtworkCard({ artwork }) {
       }}
     >
       <img
-        src={imageUrl} // Loaded local image
+        src={imageUrl}
         alt={artwork.name}
         style={{
           position: "absolute",
@@ -33,12 +37,10 @@ function ArtworkCard({ artwork }) {
           left: 0,
           width: "100%",
           height: "100%",
-          objectFit: "cover", // Cover behavior to fill the square
+          objectFit: "cover",
           transition: "all 0.3s ease-in-out",
         }}
       />
-
-      {/* Overlay with buttons */}
       <Box
         className="overlay"
         sx={{
@@ -51,23 +53,24 @@ function ArtworkCard({ artwork }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          flexDirection: "column", // Stack buttons vertically
-          gap: 2, // Space between buttons
-          opacity: 0, // Hide overlay
+          flexDirection: "column",
+          gap: 2,
+          opacity: 0,
           transition: "opacity 0.3s ease-in-out",
         }}
       >
         <Button
-          variant="contained"
-          color="primary"
-          onClick={() => alert(`Dodano obraz do koszyka!`)}
-        >
-          Dodaj do koszyka
-        </Button>
+        variant="contained"
+        color="primary"
+        onClick={handleAddToCart}
+      >
+        Dodaj do koszyka
+      </Button>
+
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate(`/artworks/${artwork.id}`)} // Navigate to artwork details
+          onClick={() => navigate(`/artworks/${artwork.id}`)}
         >
           Zobacz szczegóły
         </Button>

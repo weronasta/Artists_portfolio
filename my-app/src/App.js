@@ -16,6 +16,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js';
 import axios from 'axios';
+import { CartProvider } from "./contexts/CartContext";
 
 // Tworzenie kontekstu autoryzacji
 export const AuthContext = createContext(null);
@@ -74,6 +75,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>
+     <CartProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline /> {/* Resetuje style domyślne i stosuje dark mode */}
         <div className="App">
@@ -87,7 +89,6 @@ function App() {
               <Route path="/ShoppingCart" element={<ShoppingCart />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/profile" element={auth.isLoggedIn ? <MyProfile /> : <Login/>} /> */}
               <Route path="/profile" element={<MyProfile />} />
               <Route path="/register" element={<Register />} />
               <Route path="/artworks/:id" element={<Artwork />} />
@@ -97,6 +98,7 @@ function App() {
           </Router>
         </div>
       </ThemeProvider>
+      </CartProvider>
     </AuthContext.Provider>
   );
 }

@@ -325,7 +325,51 @@ def register():
     return jsonify({"message": "User registered successfully"}), 201
 
 
+# endpoint for adding a sale with sale items
+@app.route('/add_sale', methods=['POST'])
+def add_sale():
+    # Odczytujemy dane z JSON w żądaniu
+    try:
+        new_sale = request.get_json()["saleData"]
+    except:
+        new_sale = None
+    
+    # Walidacja danych wejściowych
+    if not new_sale or not new_sale.get('user_email') or not new_sale.get('items'):
+        abort(400, description="Missing required fields: user_email or items")
 
+    user_email = new_sale['user_email']
+    items = new_sale['items']
+    created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        INSERT INTO sales (user_email, created_at)
+        VALUES (?, ?)
+    ''', (user_email, created_at))
+
+    cursor.execute('SELECT max(id) FROM sales')
+    sale_id = cursor.fetchone()[0]
+
+    for item in items:
+        cursor.execute('''
+            INSERT INTO sale_items (sale_id, piece_id, quantity, total_price)
+            VALUES (?, ?, ?, ?)
+        ''', (sale_id, item['piece'], item['quantity'], item['total_price']))
+    
+    for item in items:
+        cursor.execute('''
+            UPDATE artworks
+            SET numberOf = numberOf - ?
+            WHERE id = ?
+        ''', (item['quantity'], item['piece']))
+    
+    conn.commit()  # Zatwierdzamy zmiany w bazie danych
+    conn.close()
+
+    return jsonify({"message": "Sale added successfully"}), 201  # Zwracamy odpowiedź z komunikatem
 
 # Endpoint POST do dodawania dzieła sztuki
 @app.route('/add_artwork', methods=['POST'])

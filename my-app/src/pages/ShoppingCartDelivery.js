@@ -57,6 +57,7 @@ function ShoppingCartDelivery() {
           onChange={handleEmailChange}
         />
       </Box>
+      
 
       {/* Komponenty do wyboru metod dostawy i płatności */}
       <Box sx={{ width: "100%", mb: 4 }}>
@@ -80,20 +81,20 @@ function ShoppingCartDelivery() {
           Wstecz
         </Button>
 
-              <Button
-                variant="contained"
-                color="primary"
-                component={Link}
-                to="/cartsummary" // Zmiana linku do kolejnej strony
-                sx={{
-                  width: "200px",
-                  fontSize: "16px",
-                  textTransform: "none",
-                }}
-              >
-                Przejdź dalej
-              </Button>
-            </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/cartsummary"
+            state={{ email }} // Pass the email value here
+            sx={{
+              width: "200px",
+              fontSize: "16px",
+              textTransform: "none",
+            }}>
+              Przejdź dalej
+          </Button>
+        </Box>
     </Box>
   );
 }

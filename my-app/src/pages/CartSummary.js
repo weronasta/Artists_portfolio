@@ -1,12 +1,14 @@
 import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useCart, clearCart } from "../contexts/CartContext";
+import { Link, useLocation} from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
 import { Stepper, Step, StepLabel } from "@mui/material";
 import axios from "axios";
 
 function CartSummary() {
   const { cartItems, clearCart } = useCart();
+  const location = useLocation();
+  const email = location.state?.email || "test@test.com";
 
   // Obliczanie sumy cen produktów
   const totalPrice = cartItems.reduce((acc, item) => acc + item.currentPrice * item.quantity, 0);
@@ -16,7 +18,7 @@ function CartSummary() {
 
   const handlePlaceOrder = async () => {
     const saleData = {
-      user_email: "test@test.com",
+      user_email: email,
       items: cartItems.map((item) => ({
         piece: item.id,
         quantity: item.quantity,
@@ -27,7 +29,7 @@ function CartSummary() {
     try {
       const response = await axios.post("http://127.0.0.1:5000/add_sale", {saleData});
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         clearCart();
         alert("Zamówienie zostało złożone pomyślnie!");
         window.location.reload();

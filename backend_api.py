@@ -404,6 +404,21 @@ def add_sale():
             (item["quantity"], item["piece"]),
         )
 
+    # if any of the artworks numberOf somehow is below 0, rollback the transaction and return an error
+
+    cursor.execute(
+        """
+        SELECT numberOf
+        FROM artworks
+        WHERE numberOf < 0
+    """
+    )
+
+    if cursor.fetchone():
+        conn.rollback()
+        conn.close()
+        abort(400, description="Not enough items in stock")
+
     cursor.execute(
         """
         UPDATE artworks

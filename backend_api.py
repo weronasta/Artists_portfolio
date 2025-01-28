@@ -404,6 +404,14 @@ def add_sale():
             (item["quantity"], item["piece"]),
         )
 
+    cursor.execute(
+        """
+        UPDATE artworks
+        SET availabilityType = "Wyprzedane"
+        WHERE numberOf = 0
+    """
+    )
+
     conn.commit()  # Zatwierdzamy zmiany w bazie danych
     conn.close()
 

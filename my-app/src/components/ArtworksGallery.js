@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, ImageList } from "@mui/material";
 import ArtworkCard from "./ArtworkCard"; // Importujemy nowy komponent
 
-function ArtworksGallery({artistId}) {
+function ArtworksGallery({artistId, cardType}) {
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,7 +34,7 @@ function ArtworksGallery({artistId}) {
   return (
       <ImageList variant="masonry" cols={3} gap={4} sx={{ width: "100%" }}>
         {artworks.map((artwork) => (
-          <ArtworkCard key={artwork.id} artwork={artwork} /> // Przekazujemy dane do ArtworkCard
+          <ArtworkCard key={artwork.id} artwork={artwork} cardType={cardType}/> // Przekazujemy dane do ArtworkCard
         ))}
       </ImageList>
   );

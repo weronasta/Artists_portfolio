@@ -59,7 +59,7 @@ function MyProfile() {
           <Typography variant="h5" sx={{ mb: 2 }}>
             Galeria prac
           </Typography>
-          <ArtworksGallery artistId={user.id} /> {/* Przekazujemy id artysty do galerii */}
+          <ArtworksGallery artistId={user.id} cardType={"edit"}/> {/* Przekazujemy id artysty do galerii */}
         </Box>
       </Box>
     </Container>

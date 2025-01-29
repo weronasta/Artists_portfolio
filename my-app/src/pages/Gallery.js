@@ -4,7 +4,7 @@ import {Container} from "@mui/material";
 function Gallery() {
   return (
     <Container>
-   <ArtworksGallery/>
+   <ArtworksGallery cardType={"cart"}/>
     </Container>
   );
 }

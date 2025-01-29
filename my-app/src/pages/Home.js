@@ -17,7 +17,7 @@ function Home() {
           Najnowsze Prace
         </Typography>
         <Box>
-        <ArtworksGallery artistId={1}/>
+        <ArtworksGallery artistId={1} cardType={"cart"}/>
         </Box>
       </Box>
     </Container>

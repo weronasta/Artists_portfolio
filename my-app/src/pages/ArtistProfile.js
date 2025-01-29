@@ -15,7 +15,7 @@ function ArtistProfile() {
       <Typography variant="h5" sx={{ mb: 2 }}>
         Galeria prac
       </Typography>
-      <ArtworksGallery artistId={id} />
+      <ArtworksGallery artistId={id} cardType={"cart"} />
     </Box>
   </Box>
   </Container>

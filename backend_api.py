@@ -3,7 +3,7 @@ import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 import jwt
-import datetime
+import datetime, time
 import os
 
 app = Flask(__name__)
@@ -443,7 +443,12 @@ UPLOAD_FOLDER = './my-app/src/assets/images/artworks'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Dozwolone rozszerzenia plików
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def get_unique_filename(filename):
+    base, extension = os.path.splitext(filename)
+    timestamp = int(time.time() * 1000)  # Użyj milisekund jako unikalnego sufiksu
+    return f"{base}_{timestamp}{extension}"
 
 # Sprawdzanie czy plik ma prawidłowe rozszerzenie
 def allowed_file(filename):
@@ -461,13 +466,19 @@ def upload_file():
         return jsonify({'message': 'Nie wybrano pliku'}), 400
 
     if file and allowed_file(file.filename):
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-
         # Upewnij się, że folder istnieje
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        filename = file.filename
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
 
+        # Jeśli plik istnieje, generujemy nową nazwę
+        if os.path.exists(file_path):
+            filename = get_unique_filename(filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+        
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(save_path)
-        return jsonify({'message': 'Plik został zapisany!', 'path': f'{file.filename}'}), 200
+        return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
 
     return jsonify({'message': 'Niedozwolony format pliku'}), 400
 

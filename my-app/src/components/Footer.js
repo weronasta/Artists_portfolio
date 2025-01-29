@@ -7,6 +7,8 @@ const Footer = () => {
     <Box mt={4} py={4} sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}>
       <Box
         sx={{
+          marginLeft: "50px",
+          marginRight: "50px",
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap", // Pozwoli na lepsze dopasowanie na mniejszych ekranach
@@ -90,10 +92,6 @@ const Footer = () => {
           </Box>
         </Box>
       </Box>
-
-      <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-        &copy; {new Date().getFullYear()} LOGO. Wszystkie prawa zastrzeżone.
-      </Typography>
     </Box>
   );
 };

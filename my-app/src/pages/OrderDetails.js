@@ -1,21 +1,13 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  Paper,
-  Card,
-  CardContent,
-  CardMedia,
-} from "@mui/material";
+import { Box, Typography, Grid, Card, CardContent, CardMedia, Button } from "@mui/material";
 import { useParams } from "react-router-dom";
 
-// Przykładowe losowe produkty dla zamówienia
+// Przykładowe lokalne obrazy dla zamówienia
 const sampleProducts = [
-  { id: 1, title: "Obraz 'Kwiaty'", price: 150.0, image: "https://source.unsplash.com/300x200/?art,flowers" },
-  { id: 2, title: "Obraz 'Pejzaż'", price: 220.0, image: "https://source.unsplash.com/300x200/?art,landscape" },
-  { id: 3, title: "Obraz 'Abstrakcja'", price: 180.0, image: "https://source.unsplash.com/300x200/?art,abstract" },
-  { id: 4, title: "Obraz 'Portret'", price: 95.0, image: "https://source.unsplash.com/300x200/?art,portrait" },
+  { id: 1, title: "Obraz 'Kwiaty'", price: 150.0, image: "img1.jpg" },
+  { id: 2, title: "Obraz 'Pejzaż'", price: 220.0, image: "img2.jpg" },
+  { id: 3, title: "Obraz 'Abstrakcja'", price: 180.0, image: "img3.jpg" },
+  { id: 4, title: "Obraz 'Portret'", price: 95.0, image: "img4.jpg" },
 ];
 
 export default function OrderDetails() {
@@ -31,20 +23,33 @@ export default function OrderDetails() {
         Produkty w zamówieniu:
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={1}>
         {sampleProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.id}>
-            <Card>
+          <Grid item xs={12} key={product.id}>
+            <Card sx={{ display: "flex", padding: 2, marginBottom: 2 }}>
+              {/* Obrazek po lewej */}
               <CardMedia
                 component="img"
-                height="140"
-                image={product.image}
+                sx={{ width: 100, height: 100, objectFit: "cover" }}
+                image={require(`../assets/images/artworks/${product.image}`)} // Załaduj obrazek lokalnie
                 alt={product.title}
               />
-              <CardContent>
-                <Typography variant="h6">{product.title}</Typography>
-                <Typography color="text.secondary">{product.price.toFixed(2)} zł</Typography>
-              </CardContent>
+              {/* Kontener dla tekstu i przycisku */}
+              <Box sx={{ marginLeft: 2, display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                {/* Tekst po lewej */}
+                <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <Typography variant="h6" gutterBottom>
+                    {product.title}
+                  </Typography>
+                  <Typography color="text.secondary">{product.price.toFixed(2)} zł</Typography>
+                </Box>
+                {/* Przycisk po prawej */}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Button variant="outlined" color="secondary">
+                    Zamów ponownie
+                  </Button>
+                </Box>
+              </Box>
             </Card>
           </Grid>
         ))}

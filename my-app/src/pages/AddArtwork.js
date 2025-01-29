@@ -3,7 +3,7 @@ import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import axios from "axios";
 
-function AddPic() {
+function AddArtwork() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
@@ -253,4 +253,4 @@ function AddPic() {
   );
 }
 
-export default AddPic;
+export default AddArtwork;

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Box, Avatar, Typography, Button, Container } from "@mui/material";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ArtistDetails({artistID}) {
   const { id } = useParams();
   const [artist, setArtist] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchArtist = async () => {
@@ -67,20 +69,23 @@ function ArtistDetails({artistID}) {
             {artist.username || "Artysta"}
           </Typography>
           <Box sx={{ display: "flex", gap: 5 }}>
-            <Box>
+            {/* <Box>
               <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                 {artist.artworksCount || 0}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Dodane prace - NICE TO HAVE
               </Typography>
-            </Box>
-            {/* Przyciski
-            <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
-            <Button variant="contained" color="primary">
-                Zamów dzieło sztuki
-            </Button>
             </Box> */}
+            {/* Przyciski */}
+            <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
+            <Button variant="contained" color="primary"  onClick={() => navigate(`/add`)}>
+                Dodaj pracę
+            </Button>
+            <Button variant="contained" color="secondary">
+                Edytuj profil
+            </Button>
+            </Box>
           </Box>
         </Box>
 

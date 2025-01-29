@@ -3,7 +3,7 @@ import './App.css';
 import Gallery from './pages/Gallery.js';
 import GalleryOfArtists from './pages/GalleryOfArtists.js';
 import Artwork from './pages/Artwork.js';
-import AddPic from './pages/AddPic.js';
+import AddArtwork from './pages/AddArtwork.js';
 import ShoppingCart from './pages/ShoppingCart.js';
 import ShoppingCartDelivery from "./pages/ShoppingCartDelivery.js";
 import CartSummary from "./pages/CartSummary.js";
@@ -89,7 +89,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/artists" element={<GalleryOfArtists />} />
-              <Route path="/AddPic" element={<AddPic />} />
+              <Route path="/add" element={<AddArtwork />} />
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/cartdelivery" element={<ShoppingCartDelivery />} />
               <Route path="/cartsummary" element={<CartSummary />} />

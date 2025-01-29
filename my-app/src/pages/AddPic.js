@@ -11,6 +11,12 @@ function AddPic() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [dragOver, setDragOver] = useState(false);
 
+  // Stany błędów
+  const [titleError, setTitleError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
+  const [quantityError, setQuantityError] = useState(false);
+
   const handleDragOver = (event) => {
     event.preventDefault();
     setDragOver(true);
@@ -33,6 +39,12 @@ function AddPic() {
   };
 
   const handleImageUpload = async () => {
+    const token = localStorage.getItem("authToken");
+      if (!token) {
+        alert("Brak autoryzacji. Zaloguj się ponownie.");
+        return;
+      }
+    
     if (!selectedImage) {
       alert("Proszę wybrać obrazek.");
       return;
@@ -40,10 +52,15 @@ function AddPic() {
 
     const formData = new FormData();
     formData.append("image", selectedImage);
+    formData.append("name", title);
+    formData.append("description", description);
+    formData.append("currentPrice", currentPrice);
+    formData.append("numberOf", numberOf);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     try {
-
-      const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
+      const response = await axios.post("http://127.0.0.1:5000/add_artwork", formData,
+        {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -54,9 +71,52 @@ function AddPic() {
     }
   };
 
+  // Walidacja pól formularza
+  const validateInputs = () => {
+    let isValid = true;
+
+    // Walidacja tytułu
+    if (!title.trim()) {
+      setTitleError(true);
+      isValid = false;
+    } else {
+      setTitleError(false);
+    }
+
+    // Walidacja opisu
+    if (!description.trim()) {
+      setDescriptionError(true);
+      isValid = false;
+    } else {
+      setDescriptionError(false);
+    }
+
+    // Walidacja ceny (czy jest liczbą)
+    if (!currentPrice || isNaN(currentPrice)) {
+      setPriceError(true);
+      isValid = false;
+    } else {
+      setPriceError(false);
+    }
+
+    // Walidacja ilości (czy jest liczbą całkowitą)
+    if (!numberOf || !Number.isInteger(Number(numberOf))) {
+      setQuantityError(true);
+      isValid = false;
+    } else {
+      setQuantityError(false);
+    }
+
+    return isValid;
+  };
+
   const handlePublish = () => {
+    if (!validateInputs()) {
+      alert('Proszę poprawić błędy w formularzu.');
+      return;
+    }
+
     handleImageUpload();
-    alert("Opublikowano zdjęcie!");
   };
 
   return (
@@ -138,6 +198,8 @@ function AddPic() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
+          error={titleError}
+          helperText={titleError ? "To pole nie może być puste" : ""}
         />
 
         <TextField
@@ -150,8 +212,9 @@ function AddPic() {
           inputProps={{
             maxLength: 1000,
           }}
-          helperText={`${description.length}/1000 znaków`}
           fullWidth
+          error={descriptionError}
+          helperText={descriptionError ? "To pole nie może być puste" : ""}
         />
 
         <TextField
@@ -160,14 +223,18 @@ function AddPic() {
           value={currentPrice}
           onChange={(e) => setCurrentPrice(e.target.value)}
           fullWidth
+          error={priceError}
+          helperText={priceError ? "Cena musi być liczbą" : ""}
         />
 
         <TextField
-          label="Dostępna ilość"
+          label="Dostępna liczba prac"
           variant="outlined"
           value={numberOf}
           onChange={(e) => setNumberOf(e.target.value)}
           fullWidth
+          error={quantityError}
+          helperText={quantityError ? "Liczba prac musi być liczbą całkowitą" : ""}
         />
 
         <Button

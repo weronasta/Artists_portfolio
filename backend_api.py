@@ -455,8 +455,8 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Endpoint do uploadu pliku
-@app.route('/upload', methods=['POST'])
-def upload_file():
+@app.route('/add_artwork', methods=['POST'])
+def add_artwork():
     if 'image' not in request.files:
         return jsonify({'message': 'Nie przesłano pliku'}), 400
 
@@ -464,6 +464,20 @@ def upload_file():
 
     if file.filename == '':
         return jsonify({'message': 'Nie wybrano pliku'}), 400
+    
+    # token is stored in the headers
+    token = request.headers.get("Authorization")
+    if token is None:
+        abort(401, description="Token is missing.")
+
+    # Usuwamy "Bearer" z tokena
+    token = token.split(" ")[1]
+    decoded = verify_token(token)
+
+    if decoded is None:
+        abort(401, description="Invalid or expired token.")
+
+    artist_id = decoded["id"]
 
     if file and allowed_file(file.filename):
         # Upewnij się, że folder istnieje
@@ -478,60 +492,34 @@ def upload_file():
         
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(save_path)
+
+        artwork_name = request.form.get("name")
+        artwork_description = request.form.get("description")
+        artwork_price = request.form.get("currentPrice")
+        artwork_imagelink = filename
+        artwork_availability = "Dostępne"
+        artwork_number = request.form.get("numberOf")
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO artworks (artist_id, name, description, currentPrice, imageLink, availabilityType, numberOf)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+                (artist_id, artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number),
+            )
+
+            conn.commit()  # Zatwierdzamy zmiany w bazie danych
+            conn.close()
+        except:
+            return jsonify({'message': 'Błąd podczas dodawania dzieła do bazy danych'}), 400
+
         return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
 
     return jsonify({'message': 'Niedozwolony format pliku'}), 400
 
-
-# Endpoint POST do dodawania dzieła sztuki
-@app.route("/add_artwork", methods=["POST"])
-def add_artwork():
-    # Odczytujemy dane z JSON w żądaniu
-    new_artwork = request.get_json()
-
-    # Walidacja danych wejściowych
-    if (
-        not new_artwork
-        or not new_artwork.get("name")
-        or not new_artwork.get("artist_id")
-    ):
-        abort(400, description="Missing required fields: name or artist_id")
-
-    name = new_artwork["name"]
-    artist_id = new_artwork["artist_id"]
-    description = new_artwork.get("description", "")
-    currentPrice = new_artwork.get("currentPrice", 0.0)
-    imageLink = new_artwork.get("imageLink", "")
-    availabilityType = new_artwork.get("availabilityType", "Available")
-    numberOf = new_artwork.get("numberOf", 1)
-
-    # Tworzymy połączenie z bazą danych i wykonujemy zapytanie INSERT
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        """
-        INSERT INTO artworks (artist_id, name, description, currentPrice, imageLink, availabilityType, numberOf)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """,
-        (
-            artist_id,
-            name,
-            description,
-            currentPrice,
-            imageLink,
-            availabilityType,
-            numberOf,
-        ),
-    )
-
-    conn.commit()  # Zatwierdzamy zmiany w bazie danych
-    conn.close()  # Zamykamy połączenie
-
-    return (
-        jsonify({"message": "Artwork added successfully"}),
-        201,
-    )  # Zwracamy odpowiedź z komunikatem
 
 
 # Endpoint DELETE do usuwania dzieła sztuki

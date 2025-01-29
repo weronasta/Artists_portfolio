@@ -14,6 +14,8 @@ import ArtistProfile from './pages/ArtistProfile.js';
 import Register from './pages/Register.js';
 import Header from './components/Header.js';
 import Footer from './components/Footer.js';
+import Orders from './pages/Orders.js'
+import OrderDetails from "./pages/OrderDetails";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js';
@@ -97,6 +99,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/artworks/:id" element={<Artwork />} />
               <Route path="/artists/:id" element={<ArtistProfile />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/:id" element={<OrderDetails />} />
             </Routes>
             <Footer />
           </Router>

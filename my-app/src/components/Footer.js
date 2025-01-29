@@ -7,6 +7,8 @@ const Footer = () => {
     <Box mt={4} py={4} sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}>
       <Box
         sx={{
+          marginLeft: "50px",
+          marginRight: "50px",
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap", // Pozwoli na lepsze dopasowanie na mniejszych ekranach
@@ -55,7 +57,7 @@ const Footer = () => {
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/returns-exchanges" style={{ color: "inherit", textDecoration: "none" }}>
-                Zwroty i wymiana
+                Zwroty
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
@@ -84,16 +86,12 @@ const Footer = () => {
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/order-status" style={{ color: "inherit", textDecoration: "none" }}>
-                Status zamówienia
+                Zamówienia
               </Link>
             </Typography>
           </Box>
         </Box>
       </Box>
-
-      <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-        &copy; {new Date().getFullYear()} LOGO. Wszystkie prawa zastrzeżone.
-      </Typography>
     </Box>
   );
 };

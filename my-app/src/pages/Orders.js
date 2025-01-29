@@ -19,11 +19,11 @@ function createOrder(id, date, status, value) {
 
 // Lista przykładowych zamówień
 const orders = [
-  createOrder(1001, "2024-01-25", "Opłacone", 150.99),
-  createOrder(1002, "2024-01-26", "Wysłane", 89.50),
-  createOrder(1003, "2024-01-27", "Dostarczone", 220.00),
-  createOrder(1004, "2024-01-28", "Opłacone", 75.25),
-  createOrder(1005, "2024-01-29", "Wysłane", 130.99),
+  createOrder(1001, "2024-01-25", "user1@email.com", 150.99),
+  createOrder(1002, "2024-01-26", "user2@email.com", 89.50),
+  createOrder(1003, "2024-01-27", "user3@email.com", 220.00),
+  createOrder(1004, "2024-01-28", "user4@email.com", 75.25),
+  createOrder(1005, "2024-01-29", "user5@email.com", 130.99),
 ];
 
 export default function OrdersPage() {
@@ -40,9 +40,9 @@ export default function OrdersPage() {
             <TableRow>
               <TableCell>ID zamówienia</TableCell>
               <TableCell>Data</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>E-mail klienta</TableCell>
               <TableCell align="right">Wartość&nbsp;(zł)</TableCell>
-              <TableCell align="center">Akcje</TableCell>
+              <TableCell align="center">Szczegóły</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

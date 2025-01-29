@@ -1,20 +1,61 @@
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import axios from "axios";
 
 function AddPic() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
   const [numberOf, setNumberOf] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [dragOver, setDragOver] = useState(false);
 
-  // Obsługa upload obrazka
-  const handleImageUpload = () => {
-    alert("Dodano obrazek!");
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setDragOver(true);
   };
 
-  // Obsługa publikowania
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setDragOver(false);
+    const file = event.dataTransfer.files[0];
+    if (file) setSelectedImage(file);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) setSelectedImage(file);
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedImage) {
+      alert("Proszę wybrać obrazek.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+
+    try {
+
+      const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      alert(`Obrazek przesłany! Ścieżka: ${response.data.path}`);
+    } catch (error) {
+      alert("Błąd podczas przesyłania pliku.");
+    }
+  };
+
   const handlePublish = () => {
+    handleImageUpload();
     alert("Opublikowano zdjęcie!");
   };
 
@@ -34,7 +75,6 @@ function AddPic() {
       {/* Sekcja upload obrazka */}
       <Paper
         elevation={3}
-        onClick={handleImageUpload}
         sx={{
           width: "40%",
           height: "600px",
@@ -44,13 +84,43 @@ function AddPic() {
           cursor: "pointer",
           border: "1px solid",
           borderColor: "primary.main",
-          "&:hover": {
-            bgcolor: "primary.light",
-            opacity: 0.8,
-          },
+          backgroundColor: dragOver ? "primary.light" : "inherit",
         }}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
-        <AddIcon sx={{ fontSize: 48, color: "primary.main" }} />
+        {selectedImage ? (
+          <img
+            src={URL.createObjectURL(selectedImage)}
+            alt="Preview"
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+          />
+        ) : (
+          <>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              accept="image/*"
+              style={{ display: "none" }}
+              id="upload-image"
+            />
+            <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: 1,
+                }}
+              >
+                <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
+                <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
+              </Box>
+            </label>
+          </>
+        )}
       </Paper>
 
       {/* Sekcja formularza */}
@@ -62,7 +132,6 @@ function AddPic() {
           gap: 3,
         }}
       >
-        {/* Pole na tytuł */}
         <TextField
           label="Tytuł"
           variant="outlined"
@@ -71,7 +140,6 @@ function AddPic() {
           fullWidth
         />
 
-        {/* Pole na opis */}
         <TextField
           label="Opis"
           variant="outlined"
@@ -86,27 +154,22 @@ function AddPic() {
           fullWidth
         />
 
-        {/* Pole na cenę */}
         <TextField
           label="Cena"
           variant="outlined"
           value={currentPrice}
           onChange={(e) => setCurrentPrice(e.target.value)}
-          placeholder="#hashtag1 #hashtag2"
           fullWidth
         />
 
-        {/* Pole na liczbę */}
         <TextField
           label="Dostępna ilość"
           variant="outlined"
           value={numberOf}
           onChange={(e) => setNumberOf(e.target.value)}
-          placeholder="#hashtag1 #hashtag2"
           fullWidth
         />
 
-        {/* Button opublikuj */}
         <Button
           variant="contained"
           color="primary"

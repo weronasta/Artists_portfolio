@@ -439,7 +439,7 @@ def add_sale():
 
 
 # Ścieżka do folderu assets w aplikacji React
-UPLOAD_FOLDER = '/my-app/src/assets/artworks'
+UPLOAD_FOLDER = './my-app/src/assets/images/artworks'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Dozwolone rozszerzenia plików
@@ -467,7 +467,7 @@ def upload_file():
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
         file.save(save_path)
-        return jsonify({'message': 'Plik został zapisany!', 'path': f'/assets/{file.filename}'}), 200
+        return jsonify({'message': 'Plik został zapisany!', 'path': f'{file.filename}'}), 200
 
     return jsonify({'message': 'Niedozwolony format pliku'}), 400
 

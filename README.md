@@ -5,6 +5,7 @@ Zainstaluj Node.js jak nie masz (my juz to mamy)
 Zainstaluj flask
 
 Otwórz terminal
+```bash
 pip install flask-cors
 cd my-app
 npm install --save react-router-dom
@@ -15,4 +16,5 @@ npm install @mui/icons-material
 npm install slick-carousel
 npm install axios
 pip install pyjwt
+```
 

@@ -75,12 +75,12 @@ function ArtistDetails({artistID}) {
                 Dodane prace - NICE TO HAVE
               </Typography>
             </Box>
-            {/* Przyciski */}
+            {/* Przyciski
             <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
             <Button variant="contained" color="primary">
                 Zamów dzieło sztuki
             </Button>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
 

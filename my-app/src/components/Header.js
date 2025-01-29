@@ -201,6 +201,10 @@ function ResponsiveAppBar() {
                           setIsLoggedIn(false);
                           alert('Wylogowano pomyślnie');
                         }
+                        else if (setting === 'Profile') {
+                          // Przekierowanie do strony o adresie /profile
+                          window.location.href = '/profile';
+                        }
                       }}
                     >
                       <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>

@@ -31,6 +31,9 @@ function ArtworkDetails() {
   };
 
   const handleAddToCart = () => {
+    if (artwork.numberOf <= 0) {
+      return;
+    }
     addToCart({ ...artwork, quantity }); // Dodanie do koszyka z podaną ilością
     alert(`Dodano do koszyka liczbę sztuk: ${quantity} !`);
   };
@@ -127,6 +130,7 @@ function ArtworkDetails() {
             color="primary"
             size="large"
             onClick={handleAddToCart}
+            disabled={artwork.numberOf <= 0}
           >
             Dodaj do koszyka
           </Button>

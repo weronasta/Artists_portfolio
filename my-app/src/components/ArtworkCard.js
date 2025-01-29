@@ -7,6 +7,9 @@ function ArtworkCard({ artwork }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const handleAddToCart = () => {
+    if (artwork.numberOf <= 0) {
+      return;
+    }
     addToCart({ ...artwork, quantity: 1 }); // Dodanie do koszyka z podaną ilością
     alert(`Dodano do koszyka!`);
   };
@@ -64,6 +67,7 @@ function ArtworkCard({ artwork }) {
         variant="contained"
         color="primary"
         onClick={handleAddToCart}
+        disabled={artwork.numberOf <= 0}
       >
         Dodaj do koszyka
       </Button>

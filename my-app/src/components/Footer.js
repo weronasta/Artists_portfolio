@@ -57,7 +57,7 @@ const Footer = () => {
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/returns-exchanges" style={{ color: "inherit", textDecoration: "none" }}>
-                Zwroty i wymiana
+                Zwroty
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
@@ -86,7 +86,7 @@ const Footer = () => {
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/order-status" style={{ color: "inherit", textDecoration: "none" }}>
-                Status zamówienia
+                Zamówienia
               </Link>
             </Typography>
           </Box>

@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 import jwt
 import datetime
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
@@ -434,6 +435,41 @@ def add_sale():
         jsonify({"message": "Sale added successfully"}),
         201,
     )  # Zwracamy odpowiedź z komunikatem
+
+
+
+# Ścieżka do folderu assets w aplikacji React
+UPLOAD_FOLDER = '/my-app/src/assets/artworks'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Dozwolone rozszerzenia plików
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Sprawdzanie czy plik ma prawidłowe rozszerzenie
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Endpoint do uploadu pliku
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'image' not in request.files:
+        return jsonify({'message': 'Nie przesłano pliku'}), 400
+
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({'message': 'Nie wybrano pliku'}), 400
+
+    if file and allowed_file(file.filename):
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+
+        # Upewnij się, że folder istnieje
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+        file.save(save_path)
+        return jsonify({'message': 'Plik został zapisany!', 'path': f'/assets/{file.filename}'}), 200
+
+    return jsonify({'message': 'Niedozwolony format pliku'}), 400
 
 
 # Endpoint POST do dodawania dzieła sztuki

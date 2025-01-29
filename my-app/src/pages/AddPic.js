@@ -5,7 +5,8 @@ import AddIcon from "@mui/icons-material/Add";
 function AddPic() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [hashtags, setHashtags] = useState("");
+  const [currentPrice, setCurrentPrice] = useState("");
+  const [numberOf, setNumberOf] = useState("");
 
   // Obsługa upload obrazka
   const handleImageUpload = () => {
@@ -85,12 +86,22 @@ function AddPic() {
           fullWidth
         />
 
-        {/* Pole na hashtagi */}
+        {/* Pole na cenę */}
         <TextField
-          label="Tagi"
+          label="Cena"
           variant="outlined"
-          value={hashtags}
-          onChange={(e) => setHashtags(e.target.value)}
+          value={currentPrice}
+          onChange={(e) => setCurrentPrice(e.target.value)}
+          placeholder="#hashtag1 #hashtag2"
+          fullWidth
+        />
+
+        {/* Pole na liczbę */}
+        <TextField
+          label="Dostępna ilość"
+          variant="outlined"
+          value={numberOf}
+          onChange={(e) => setNumberOf(e.target.value)}
           placeholder="#hashtag1 #hashtag2"
           fullWidth
         />
@@ -105,7 +116,7 @@ function AddPic() {
             alignSelf: "flex-start",
           }}
         >
-          Opublikuj
+          Dodaj pracę
         </Button>
       </Box>
     </Box>

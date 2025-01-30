@@ -83,117 +83,75 @@ function ArtworkForm({ artwork, onSubmit }) {
       >
         <Box sx={{ maxWidth: "600px", margin: "0 auto" }}>
   {/* Current Image Preview Container */}
-  {currentImage ? (
-    <Box
-      sx={{
-        width: "100%",
-        maxHeight: "150px",
-        mb: 2,
-        border: "1px solid #ddd",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <img
-        src={require(`../assets/images/artworks/${artwork.imageLink}`) // Existing image preview
-        }
-        alt="Current Artwork"
-        style={{
-          maxWidth: "100%",
-          maxHeight: "100%",
-          objectFit: "contain",
-        }}
-      />
-    </Box>
-  ) : (
-    <Typography></Typography>
-  )}
 
   {/* File Upload Section */}
-  {selectedImage ? (
-          <img
-          src={URL.createObjectURL(selectedImage)}
-            alt="Preview"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transition: "all 0.3s ease-in-out",
-            }}
-          />
-          
-        ) : (
-          <>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              style={{ display: "none" }}
-              id="upload-image"
-            />
-            <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: 1,
-                }}
-              >
-                <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
-                <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
-              </Box>
-            </label>
-          </>
-        )} 
+{selectedImage ? (
+  <img
+    src={URL.createObjectURL(selectedImage)}
+    alt="Preview"
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      transition: "all 0.3s ease-in-out",
+    }}
+  />
+) : currentImage ? (
+  <Box
+    sx={{
+      width: "100%",
+      maxHeight: "400px",
+      mb: 2,
+      border: "1px solid #ddd",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      opacity: 0.2,
+    }}
+  >
+    <img
+      src={require(`../assets/images/artworks/${artwork.imageLink}`)} // Existing image preview
+      alt="Current Artwork"
+      style={{
+        maxWidth: "100%",
+        maxHeight: "100%",
+        objectFit: "contain",
+      }}
+    />
+  </Box>
+) : (
+  <Typography></Typography>
+)}
+
+<>
+  <input
+    type="file"
+    onChange={handleImageChange}
+    accept="image/*"
+    style={{ display: "none" }}
+    id="upload-image"
+  />
+  <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        gap: 1,
+      }}
+    >
+      <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
+      <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
+    </Box>
+  </label>
+</>
+
 </Box>
 
-
-        {/* {selectedImage ? (
-          <img
-          src={URL.createObjectURL(selectedImage)}
-            alt="Preview"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transition: "all 0.3s ease-in-out",
-            }}
-          />
-          
-        ) : (
-          <>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              style={{ display: "none" }}
-              id="upload-image"
-            />
-            <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: 1,
-                }}
-              >
-                <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
-                <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
-              </Box>
-            </label>
-          </>
-        )} */}
 
         {/* Overlay z przyciskiem "Zmień zdjęcie" */}
         {imagePreview && isHovered && (

@@ -524,14 +524,12 @@ def add_artwork():
 @app.route("/update_artwork/<int:artwork_id>", methods=["PUT"])
 def update_artwork(artwork_id):
     if 'image' not in request.files:
-        print("Nie przesłano pliku")
-        return jsonify({'message': 'Nie przesłano pliku'}), 400
-
-    file = request.files['image']
-
-    if file.filename == '':
-        print("Nie wybrano pliku")
-        return jsonify({'message': 'Nie wybrano pliku'}), 400
+        file = None
+    else:
+        file = request.files['image']
+        # if file.filename == '':
+        #     print("Nie wybrano pliku")
+        #     return jsonify({'message': 'Nie wybrano pliku'}), 400
     
     # token is stored in the headers
     token = request.headers.get("Authorization")
@@ -560,24 +558,43 @@ def update_artwork(artwork_id):
         
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(save_path)
+    elif file:
+        print("Niedozwolony format pliku")
+        return jsonify({'message': 'Niedozwolony format pliku'}), 400
+    
 
-        artwork_name = request.form.get("name")
-        artwork_description = request.form.get("description")
-        artwork_price = request.form.get("currentPrice")
+    artwork_name = request.form.get("name")
+    artwork_description = request.form.get("description")
+    artwork_price = request.form.get("currentPrice")
+    artwork_availability = "Dostępne"
+    artwork_number = request.form.get("numberOf")
+
+    if file:
         artwork_imagelink = filename
-        artwork_availability = "Dostępne"
-        artwork_number = request.form.get("numberOf")
+    else:
+        artwork_imagelink = None
+    
 
-        try:
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            # see if the artwork is owned by the artist
-            cursor.execute("SELECT artist_id FROM artworks WHERE id = ?", (artwork_id,))
-            artwork = cursor.fetchone()
-            if artwork["artist_id"] != artist_id:
-                print("Nie jesteś właścicielem dzieła")
-                return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        # see if the artwork is owned by the artist
+        cursor.execute("SELECT artist_id FROM artworks WHERE id = ?", (artwork_id,))
+        artwork = cursor.fetchone()
+        if artwork["artist_id"] != artist_id:
+            print("Nie jesteś właścicielem dzieła")
+            return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
 
+        if artwork_imagelink is None:
+            cursor.execute(
+                """
+                UPDATE artworks
+                SET name = ?, description = ?, currentPrice = ?, availabilityType = ?, numberOf = ?
+                WHERE id = ?
+            """,
+                (artwork_name, artwork_description, artwork_price, artwork_availability, artwork_number, artwork_id),
+            )
+        else:
             cursor.execute(
                 """
                 UPDATE artworks
@@ -586,16 +603,27 @@ def update_artwork(artwork_id):
             """,
                 (artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number, artwork_id),
             )
+        
+        # cursor.execute(
+        #     """
+        #     UPDATE artworks
+        #     SET name = ?, description = ?, currentPrice = ?, imageLink = ?, availabilityType = ?, numberOf = ?
+        #     WHERE id = ?
+        # """,
+        #     (artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number, artwork_id),
+        # )
 
-            conn.commit()  # Zatwierdzamy zmiany w bazie danych
-            conn.close()
-        except:
-            print("Błąd podczas edycji dzieła")
-            return jsonify({'message': 'Błąd podczas edycji dzieła'}), 400
+        conn.commit()  # Zatwierdzamy zmiany w bazie danych
+        conn.close()
+    except:
+        print("Błąd podczas edycji dzieła")
+        return jsonify({'message': 'Błąd podczas edycji dzieła'}), 400
 
-        return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
-    print("Niedozwolony format pliku")
-    return jsonify({'message': 'Niedozwolony format pliku'}), 400
+    return jsonify({'message': 'Dzieło zostało zaktualizowane'}), 200
+
+        # return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
+    # print("Niedozwolony format pliku")
+    # return jsonify({'message': 'Niedozwolony format pliku'}), 400
 
 
 

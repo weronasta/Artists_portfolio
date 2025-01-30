@@ -82,9 +82,9 @@ function ArtistDetails({artistID}) {
             <Button variant="contained" color="primary"  onClick={() => navigate(`/add`)}>
                 Dodaj pracę
             </Button>
-            <Button variant="contained" color="secondary">
+            {/* <Button variant="contained" color="secondary">
                 Edytuj profil
-            </Button>
+            </Button> */}
             </Box>
           </Box>
         </Box>

@@ -520,34 +520,116 @@ def add_artwork():
 
     return jsonify({'message': 'Niedozwolony format pliku'}), 400
 
+# endpoint for updating an artwork
+@app.route("/update_artwork/<int:artwork_id>", methods=["PUT"])
+def update_artwork(artwork_id):
+    if 'image' not in request.files:
+        print("Nie przesłano pliku")
+        return jsonify({'message': 'Nie przesłano pliku'}), 400
+
+    file = request.files['image']
+
+    if file.filename == '':
+        print("Nie wybrano pliku")
+        return jsonify({'message': 'Nie wybrano pliku'}), 400
+    
+    # token is stored in the headers
+    token = request.headers.get("Authorization")
+    if token is None:
+        abort(401, description="Token is missing.")
+
+    # Usuwamy "Bearer" z tokena
+    token = token.split(" ")[1]
+    decoded = verify_token(token)
+
+    if decoded is None:
+        abort(401, description="Invalid or expired token.")
+
+    artist_id = decoded["id"]
+
+    if file and allowed_file(file.filename):
+        # Upewnij się, że folder istnieje
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        filename = file.filename
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+        # Jeśli plik istnieje, generujemy nową nazwę
+        if os.path.exists(file_path):
+            filename = get_unique_filename(filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+        
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_path)
+
+        artwork_name = request.form.get("name")
+        artwork_description = request.form.get("description")
+        artwork_price = request.form.get("currentPrice")
+        artwork_imagelink = filename
+        artwork_availability = "Dostępne"
+        artwork_number = request.form.get("numberOf")
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            # see if the artwork is owned by the artist
+            cursor.execute("SELECT artist_id FROM artworks WHERE id = ?", (artwork_id,))
+            artwork = cursor.fetchone()
+            if artwork["artist_id"] != artist_id:
+                print("Nie jesteś właścicielem dzieła")
+                return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
+
+            cursor.execute(
+                """
+                UPDATE artworks
+                SET name = ?, description = ?, currentPrice = ?, imageLink = ?, availabilityType = ?, numberOf = ?
+                WHERE id = ?
+            """,
+                (artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number, artwork_id),
+            )
+
+            conn.commit()  # Zatwierdzamy zmiany w bazie danych
+            conn.close()
+        except:
+            print("Błąd podczas edycji dzieła")
+            return jsonify({'message': 'Błąd podczas edycji dzieła'}), 400
+
+        return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
+    print("Niedozwolony format pliku")
+    return jsonify({'message': 'Niedozwolony format pliku'}), 400
+
 
 
 # Endpoint DELETE do usuwania dzieła sztuki
 @app.route("/delete_artwork/<int:artwork_id>", methods=["DELETE"])
 def delete_artwork(artwork_id):
-    # Tworzymy połączenie z bazą danych
+    # token is stored in the headers
+    token = request.headers.get("Authorization")
+    if token is None:
+        abort(401, description="Token is missing.")
+
+    # Usuwamy "Bearer" z tokena
+    token = token.split(" ")[1]
+    decoded = verify_token(token)
+
+    if decoded is None:
+        abort(401, description="Invalid or expired token.")
+
+    artist_id = decoded["id"]
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Zapytanie SQL, które sprawdza, czy dzieło sztuki istnieje
-    cursor.execute("SELECT * FROM artworks WHERE id = ?", (artwork_id,))
+    # see if the artwork is owned by the artist
+    cursor.execute("SELECT artist_id FROM artworks WHERE id = ?", (artwork_id,))
     artwork = cursor.fetchone()
-
-    if not artwork:
-        conn.close()  # Zamykamy połączenie, jeśli dzieło nie istnieje
-        abort(
-            404, description="Artwork not found"
-        )  # Zwracamy błąd, jeśli dzieło nie istnieje
-
-    # Usuwamy dzieło sztuki z bazy danych
+    if artwork["artist_id"] != artist_id:
+        return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
+    
     cursor.execute("DELETE FROM artworks WHERE id = ?", (artwork_id,))
-    conn.commit()  # Zatwierdzamy zmiany w bazie danych
-    conn.close()  # Zamykamy połączenie
+    conn.commit()
+    conn.close()
 
-    return (
-        jsonify({"message": "Artwork deleted successfully"}),
-        200,
-    )  # Zwracamy komunikat o powodzeniu
+    return jsonify({'message': 'Dzieło zostało usunięte'}), 200
 
 
 if __name__ == "__main__":

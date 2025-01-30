@@ -37,7 +37,7 @@ def get_artworks():
     cursor = conn.cursor()
 
     # Zapytanie SQL, które pobiera wszystkie dzieła sztuki
-    cursor.execute("SELECT * FROM artworks")
+    cursor.execute("SELECT * FROM artworks WHERE availabilityType <> 'Deleted'")
 
     # Pobieramy wszystkie wiersze z tabeli
     artworks = cursor.fetchall()
@@ -165,7 +165,7 @@ def get_artworks_by_artist(artist_id):
     cursor = conn.cursor()
 
     # Zapytanie SQL, które pobiera dzieła sztuki dla konkretnego artysty
-    cursor.execute("SELECT * FROM artworks WHERE artist_id = ?", (artist_id,))
+    cursor.execute("SELECT * FROM artworks WHERE artist_id = ? AND availabilityType <> 'Deleted'", (artist_id,))
 
     # Pobieramy wszystkie wiersze z tabeli
     artworks = cursor.fetchall()
@@ -624,7 +624,17 @@ def delete_artwork(artwork_id):
     if artwork["artist_id"] != artist_id:
         return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
     
-    cursor.execute("DELETE FROM artworks WHERE id = ?", (artwork_id,))
+    # instead of deleting the artwork, we can just set the availabilityType to "Usunięte"
+    cursor.execute(
+        """
+        UPDATE artworks
+        SET availabilityType = "Deleted"
+        WHERE id = ?
+    """,
+        (artwork_id,),
+    )
+    
+    # cursor.execute("DELETE FROM artworks WHERE id = ?", (artwork_id,))
     conn.commit()
     conn.close()
 

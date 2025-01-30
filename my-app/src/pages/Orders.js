@@ -6,9 +6,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Card,
+  CardContent,
   Typography,
   Button,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -30,42 +32,50 @@ export default function OrdersPage() {
   const navigate = useNavigate();
 
   return (
-    <Paper sx={{ padding: 3, maxWidth: 900, margin: "auto", marginTop: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Lista zamówień
-      </Typography>
-      <TableContainer>
-        <Table sx={{ minWidth: 650 }} aria-label="orders table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID zamówienia</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell>E-mail klienta</TableCell>
-              <TableCell align="right">Wartość&nbsp;(zł)</TableCell>
-              <TableCell align="center">Szczegóły</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
-                <TableCell>{order.date}</TableCell>
-                <TableCell>{order.status}</TableCell>
-                <TableCell align="right">{order.value.toFixed(2)}</TableCell>
-                <TableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => navigate(`/orders/${order.id}`)}
-                  >
-                    Podgląd
-                  </Button>
-                </TableCell>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 4 }}>
+      {/* Nagłówek poza Paper, ale wyrównany do szerokości tabeli */}
+      <Box sx={{ maxWidth: 900, width: "100%", mb: 2 }}>
+        <Typography variant="h4" sx={{ textAlign: "left", paddingLeft: 2 }}>
+          Zamówienia
+        </Typography>
+      </Box>
+
+      <Card sx={{ padding: 3, maxWidth: 900, width: "100%" }}>
+        <CardContent>
+        <TableContainer sx={{ width: "100%" }}>
+          <Table sx={{ minWidth: 650 }} aria-label="orders table">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID zamówienia</TableCell>
+                <TableCell>Data</TableCell>
+                <TableCell>E-mail klienta</TableCell>
+                <TableCell align="right">Wartość&nbsp;(zł)</TableCell>
+                <TableCell align="center">Szczegóły</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+            </TableHead>
+            <TableBody>
+              {orders.map((order) => (
+                <TableRow key={order.id}>
+                  <TableCell>{order.id}</TableCell>
+                  <TableCell>{order.date}</TableCell>
+                  <TableCell>{order.status}</TableCell>
+                  <TableCell align="right">{order.value.toFixed(2)}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => navigate(`/orders/${order.id}`)}
+                    >
+                      Podgląd
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        </CardContent>
+      </Card>
+    </Box>
   );
 }

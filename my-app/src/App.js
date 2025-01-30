@@ -21,6 +21,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme.js';
 import axios from 'axios';
 import { CartProvider } from "./contexts/CartContext";
+import EditArtwork from "./pages/EditArtwork.js";
 
 // Tworzenie kontekstu autoryzacji
 export const AuthContext = createContext(null);
@@ -98,6 +99,7 @@ function App() {
               <Route path="/profile" element={<MyProfile />} />
               <Route path="/register" element={<Register />} />
               <Route path="/artworks/:id" element={<Artwork />} />
+              <Route path="/edit/:id" element={<EditArtwork />} />
               <Route path="/artists/:id" element={<ArtistProfile />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/orders/:id" element={<OrderDetails />} />

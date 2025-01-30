@@ -1,7 +1,16 @@
 import React, { useState } from "react";
-import { Box, Typography, Radio, RadioGroup, FormControlLabel, Paper } from "@mui/material";
+import {
+  Box,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Card,
+  Typography,
+} from "@mui/material";
 
-function ShippingMethods() {
+export default function ShippingMethods() {
   const [selectedShipping, setSelectedShipping] = useState("courier");
 
   // Dostępne opcje wysyłki
@@ -17,51 +26,41 @@ function ShippingMethods() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        width: "100%",
-        marginTop: 2,
-      }}
-    >
-      <Typography
-        variant="h4"
+    <>
+    <Typography variant="h5" sx={{ mb: 2 }}>
+    Wybierz sposób wysyłki
+  </Typography>
+    <FormControl component="fieldset" fullWidth>
+      <Card
         sx={{
-          textAlign: "left",
-          width: "100%",
+          padding: 2,
+          border: "2px solid #9c27b0", // Fioletowa ramka
+          transition: "border-color 0.3s",
         }}
       >
-        Wybierz sposób wysyłki
-      </Typography>
-      <RadioGroup value={selectedShipping} onChange={handleChange}>
-        {shippingOptions.map((option) => (
-          <Paper
-            key={option.id}
-            elevation={2}
-            sx={{
-              padding: 2,
-              marginBottom: 1,
-              display: "flex",
-              alignItems: "center",
-              border: "2px solid #9c27b0", // Fioletowa ramka dla wszystkich opcji
-              transition: "border-color 0.3s",
-            }}
-          >
-            <FormControlLabel
-              value={option.id}
-              control={<Radio />}
-              label={option.label}
+        <RadioGroup value={selectedShipping} onChange={handleChange}>
+          {shippingOptions.map((option) => (
+            <Box
+              key={option.id}
               sx={{
-                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                padding: "8px 12px",
+                borderRadius: "4px",
+                transition: "background-color 0.3s",
               }}
-            />
-          </Paper>
-        ))}
-      </RadioGroup>
-    </Box>
+            >
+              <FormControlLabel
+                value={option.id}
+                control={<Radio />}
+                label={option.label}
+                sx={{ flex: 1 }}
+              />
+            </Box>
+          ))}
+        </RadioGroup>
+      </Card>
+    </FormControl>
+    </>
   );
 }
-
-export default ShippingMethods;

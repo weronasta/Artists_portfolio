@@ -67,7 +67,7 @@ function ArtworkForm({ artwork, onSubmit }) {
         sx={{
           width: "40%",
           display: "flex",
-          alignItems: "center",
+          alignItems: "top",
           justifyContent: "center",
           cursor: "pointer",
           border: "1px solid",
@@ -118,7 +118,7 @@ function ArtworkForm({ artwork, onSubmit }) {
       style={{
         maxWidth: "100%",
         maxHeight: "100%",
-        objectFit: "contain",
+        objectFit: "cover",
       }}
     />
   </Box>
@@ -151,37 +151,6 @@ function ArtworkForm({ artwork, onSubmit }) {
 </>
 
 </Box>
-
-
-        {/* Overlay z przyciskiem "Zmień zdjęcie" */}
-        {imagePreview && isHovered && (
-          <Box
-            className="overlay"
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: 2,
-              opacity: 0,
-              transition: "opacity 0.3s ease-in-out",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => document.getElementById("upload-image").click()}
-            >
-              Zmień zdjęcie
-            </Button>
-          </Box>
-        )}
       </Paper>
 
       {/* Formularz */}

@@ -107,7 +107,7 @@ function ArtworkForm({ artwork, onSubmit }) {
       />
     </Box>
   ) : (
-    <Typography>Dodaj zdjęcie</Typography>
+    <Typography></Typography>
   )}
 
   {/* File Upload Section */}

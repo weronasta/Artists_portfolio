@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-function ArtistDetails({artistID}) {
+function ArtistDetails({artistID, isLoggedUser}) {
   const { id } = useParams();
   const [artist, setArtist] = useState({});
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ function ArtistDetails({artistID}) {
           sx={{
             width: "100%",
             height: "250px",
-            backgroundColor: "#871EEB",
+            // backgroundColor: "#871EEB",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
@@ -68,25 +68,25 @@ function ArtistDetails({artistID}) {
           <Typography variant="h2" sx={{ fontWeight: "bold" }}>
             {artist.username || "Artysta"}
           </Typography>
+
+          {isLoggedUser === "yes" ? (
+          <>
           <Box sx={{ display: "flex", gap: 5 }}>
-            {/* <Box>
-              <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                {artist.artworksCount || 0}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Dodane prace - NICE TO HAVE
-              </Typography>
-            </Box> */}
             {/* Przyciski */}
             <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
             <Button variant="contained" color="primary"  onClick={() => navigate(`/add`)}>
                 Dodaj pracę
             </Button>
-            {/* <Button variant="contained" color="secondary">
+            <Button variant="contained" color="secondary" onClick={() => navigate(`/edit-artist/${artist.id}`)}>
                 Edytuj profil
-            </Button> */}
+            </Button>
+            <Button variant="contained" color="error"  onClick={() => navigate(`/add`)}>
+                Usuń konto
+            </Button>
             </Box>
           </Box>
+          </>
+          ) : ( <Typography></Typography>)}
         </Box>
 
         {/* Opis profilu */}

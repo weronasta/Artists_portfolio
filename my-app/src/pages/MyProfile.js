@@ -53,7 +53,7 @@ function MyProfile() {
   return (
     <Container>
       <Box>
-        <ArtistDetails artistID={user.id} />
+        <ArtistDetails artistID={user.id} isLoggedUser={"yes"}/>
         {/* Galeria zdjęć */}
         <Box sx={{ px: 3, py: 2 }}>
           <Typography variant="h4" sx={{ mb: 2 }}>

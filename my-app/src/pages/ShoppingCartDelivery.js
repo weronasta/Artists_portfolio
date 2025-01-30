@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button, Paper } from "@mui/material";
+import { Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ShippingMethods from "../components/ShippingMethods";
 import PaymentMethods from "../components/PaymentMethods";
@@ -24,11 +24,9 @@ function ShoppingCartDelivery() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        width: "100%",
         maxWidth: "1200px",
         mx: "auto",
         padding: 4,
-        bgcolor: "background.default",
       }}
     >
 
@@ -48,19 +46,21 @@ function ShoppingCartDelivery() {
       </Typography>
 
       {/* Input na email */}
-      <Box sx={{ width: "100%", mb: 4 }}>
+      <Box component="form" sx={{ width: "80%", mb: 4 }}>
         <TextField
-          label="Adres email"
-          variant="outlined"
-          fullWidth
+          required
+          id="outlined"
+          label="Email"
+          defaultValue="nazwa@domena.com"
           value={email}
+          fullWidth
           onChange={handleEmailChange}
         />
       </Box>
       
 
       {/* Komponenty do wyboru metod dostawy i płatności */}
-      <Box sx={{ width: "100%", mb: 4 }}>
+      <Box sx={{ width: "80%", mb: 4 }}>
         <ShippingMethods />
         <PaymentMethods />
       </Box>
@@ -78,7 +78,7 @@ function ShoppingCartDelivery() {
             textTransform: "none",
           }}
         >
-          Wstecz
+          Powrót
         </Button>
 
           <Button

@@ -151,7 +151,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder=""
+                placeholder="nazwa@domena.com"
                 autoComplete="email"
                 autoFocus
                 required

@@ -14,7 +14,7 @@ function CartSummary() {
   const totalPrice = cartItems.reduce((acc, item) => acc + item.currentPrice * item.quantity, 0);
 
   // Kroki dla Steppera
-  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
+  const steps = ["Cart", "Delivery", "Summary"];
 
   const handlePlaceOrder = async () => {
     const saleData = {

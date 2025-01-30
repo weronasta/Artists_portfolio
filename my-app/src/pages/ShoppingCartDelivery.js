@@ -16,7 +16,7 @@ function ShoppingCartDelivery() {
   };
 
   // Ustalamy kroki Steppera
-  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
+  const steps = ["Cart", "Delivery", "Summary"];
 
   return (
     <Box

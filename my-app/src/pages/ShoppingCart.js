@@ -11,7 +11,7 @@ function ShoppingCart() {
   const isEmpty = cartItems.length === 0;
 
   // Ustalamy kroki Steppera
-  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
+  const steps = ["Cart", "Delivery", "Summary"];
 
   // Obliczamy sumę cen w koszyku
   const totalPrice = cartItems.reduce(

@@ -47,108 +47,111 @@ function ShoppingCart() {
         Koszyk
       </Typography>
 
-      {isEmpty ? (
-        // Wyświetlanie komunikatu i przycisku, jeśli koszyk jest pusty
-        <Box sx={{ textAlign: "center", padding: 4 }}>
-          <Typography variant="h6" color="text.secondary">
-            Twój koszyk jest pusty
-          </Typography>
-          <Button
-            component={Link}
-            to="/gallery"
-            sx={{
-              marginTop: 2,
-              backgroundColor: "primary.main",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "primary.dark",
-              },
-            }}
-          >
-            Zobacz galerię prac
-          </Button>
-        </Box>
-      ) : (
-        // Renderowanie koszyka, gdy są produkty
-        <Box width="100%" mb={4}>
-          {cartItems.map((item) => (
-            <Paper
-              key={item.id}
-              elevation={3}
+      {/* Cała sekcja koszyka w Box o szerokości 80% */}
+      <Box sx={{ width: "80%", mb: 4 }}>
+        {isEmpty ? (
+          // Wyświetlanie komunikatu i przycisku, jeśli koszyk jest pusty
+          <Box sx={{ textAlign: "center", padding: 4 }}>
+            <Typography variant="h6" color="text.secondary">
+              Twój koszyk jest pusty
+            </Typography>
+            <Button
+              component={Link}
+              to="/gallery"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                padding: 2,
-                marginBottom: 2,
+                marginTop: 2,
+                backgroundColor: "primary.main",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                },
               }}
             >
-              <Box
+              Zobacz galerię prac
+            </Button>
+          </Box>
+        ) : (
+          // Renderowanie koszyka, gdy są produkty
+          <Box width="100%" mb={4}>
+            {cartItems.map((item) => (
+              <Paper
+                key={item.id}
+                elevation={3}
                 sx={{
-                  width: "100px",
-                  height: "100px",
-                  overflow: "hidden",
-                  marginRight: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  padding: 2,
+                  marginBottom: 2,
                 }}
               >
-                <img
-                  src={require(`../assets/images/artworks/${item.imageLink}`)}
-                  alt={item.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h6">{item.name}</Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Cena: {item.currentPrice.toFixed(2)} zł
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Button
-                  onClick={() =>
-                    updateQuantity(item.id, item.quantity - 1)
-                  }
-                  disabled={item.quantity <= 1}
+                <Box
+                  sx={{
+                    width: "100px",
+                    height: "100px",
+                    overflow: "hidden",
+                    marginRight: 2,
+                  }}
                 >
-                  -
-                </Button>
-                <Typography>{item.quantity}</Typography>
-                <Button
-                  onClick={() =>
-                    updateQuantity(item.id, item.quantity + 1)
-                  }
-                  disabled={item.quantity === item.numberOf}
-                >
-                  +
-                </Button>
-              </Box>
-              <Button onClick={() => removeFromCart(item.id)}>Usuń</Button>
-            </Paper>
-          ))}
+                  <img
+                    src={require(`../assets/images/artworks/${item.imageLink}`)}
+                    alt={item.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6">{item.name}</Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    Cena: {item.currentPrice.toFixed(2)} zł
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Button
+                    onClick={() =>
+                      updateQuantity(item.id, item.quantity - 1)
+                    }
+                    disabled={item.quantity <= 1}
+                  >
+                    -
+                  </Button>
+                  <Typography>{item.quantity}</Typography>
+                  <Button
+                    onClick={() =>
+                      updateQuantity(item.id, item.quantity + 1)
+                    }
+                    disabled={item.quantity === item.numberOf}
+                  >
+                    +
+                  </Button>
+                </Box>
+                <Button onClick={() => removeFromCart(item.id)}>Usuń</Button>
+              </Paper>
+            ))}
+          </Box>
+        )}
+
+        {/* Suma cen */}
+        <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Suma: {totalPrice.toFixed(2)} zł
+          </Typography>
         </Box>
-      )}
 
-      {/* Suma cen */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Suma: {totalPrice.toFixed(2)} zł
-        </Typography>
-      </Box>
-
-      {/* Przycisk przejścia do kolejnego kroku */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/cartdelivery" // Zmiana linku do kolejnej strony
-          sx={{
-            width: "200px",
-            fontSize: "16px",
-            textTransform: "none",
-          }}
-        >
-          Przejdź dalej
-        </Button>
+        {/* Przycisk przejścia do kolejnego kroku */}
+        <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%", marginTop: 4 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/cartdelivery" // Zmiana linku do kolejnej strony
+            sx={{
+              width: "200px",
+              fontSize: "16px",
+              textTransform: "none",
+            }}
+          >
+            Przejdź dalej
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

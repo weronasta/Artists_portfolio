@@ -233,25 +233,6 @@ def login():
     # return jsonify({"message": "Login successful!"}), 200
 
 
-# Middleware do weryfikacji tokenu w chronionych endpointach
-# @app.before_request
-# def before_request():
-#     if request.endpoint in ['profile']:  # Endpointy, które wymagają autoryzacji
-#         token = request.headers.get('Authorization')  # Pobieramy token z nagłówka
-#         if token is None:
-#             print("Sraka")
-#             abort(401, description="Token is missing.")
-
-#         # Usuwamy "Bearer" z tokena
-#         token = token.split(" ")[1]
-#         decoded = verify_token(token)
-
-#         if decoded is None:
-#             print("Invalid or expired token")
-#             abort(401, description="Invalid or expired token.")
-
-#         request.user = decoded  # Dodajemy dane użytkownika do obiektu request (np. id artysty)
-
 
 # Endpoint GET, który pobiera dane użytkownika (profil)
 @app.route("/profile", methods=["GET"])
@@ -441,6 +422,8 @@ def add_sale():
 # Ścieżka do folderu assets w aplikacji React
 UPLOAD_FOLDER = './my-app/src/assets/images/artworks'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+UPLOAD_FOLDER2 = './my-app/src/assets/images/artists'
+app.config['UPLOAD_FOLDER2'] = UPLOAD_FOLDER2
 
 # Dozwolone rozszerzenia plików
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
@@ -603,15 +586,7 @@ def update_artwork(artwork_id):
             """,
                 (artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number, artwork_id),
             )
-        
-        # cursor.execute(
-        #     """
-        #     UPDATE artworks
-        #     SET name = ?, description = ?, currentPrice = ?, imageLink = ?, availabilityType = ?, numberOf = ?
-        #     WHERE id = ?
-        # """,
-        #     (artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number, artwork_id),
-        # )
+    
 
         conn.commit()  # Zatwierdzamy zmiany w bazie danych
         conn.close()
@@ -620,10 +595,6 @@ def update_artwork(artwork_id):
         return jsonify({'message': 'Błąd podczas edycji dzieła'}), 400
 
     return jsonify({'message': 'Dzieło zostało zaktualizowane'}), 200
-
-        # return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
-    # print("Niedozwolony format pliku")
-    # return jsonify({'message': 'Niedozwolony format pliku'}), 400
 
 
 
@@ -658,6 +629,93 @@ def delete_artwork(artwork_id):
     conn.close()
 
     return jsonify({'message': 'Dzieło zostało usunięte'}), 200
+
+
+# endpoint for updating an artist
+@app.route("/update_artist/<int:artist_id>", methods=["PUT"])
+def update_artist(artist_id):
+    if 'image' not in request.files:
+        file = None
+        print("Nie przesłano pliku")
+    else:
+        file = request.files['image']
+        # if file.filename == '':
+        #     print("Nie wybrano pliku")
+        #     return jsonify({'message': 'Nie wybrano pliku'}), 400
+    
+    # token is stored in the headers
+    token = request.headers.get("Authorization")
+    if token is None:
+        abort(401, description="Token is missing.")
+
+    # Usuwamy "Bearer" z tokena
+    token = token.split(" ")[1]
+    decoded = verify_token(token)
+
+    if decoded is None:
+        abort(401, description="Invalid or expired token.")
+
+    artist_id = decoded["id"]
+
+    if file and allowed_file(file.filename):
+        # Upewnij się, że folder istnieje
+        os.makedirs(app.config['UPLOAD_FOLDER2'], exist_ok=True)
+        filename = file.filename
+        file_path = os.path.join(UPLOAD_FOLDER2, filename)
+
+        # Jeśli plik istnieje, generujemy nową nazwę
+        if os.path.exists(file_path):
+            filename = get_unique_filename(filename)
+            file_path = os.path.join(UPLOAD_FOLDER2, filename)
+        
+        save_path = os.path.join(app.config['UPLOAD_FOLDER2'], filename)
+        file.save(save_path)
+    elif file:
+        print("Niedozwolony format pliku")
+        return jsonify({'message': 'Niedozwolony format pliku'}), 400
+    
+
+    artist_username = request.form.get("username")
+    artist_bio = request.form.get("bio")
+
+    if file:
+        artist_avatarLink = filename
+    else:
+        artist_avatarLink = None
+    
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        if artist_avatarLink is None:
+            cursor.execute(
+                """
+                UPDATE artists
+                SET username = ?, bio = ?
+                WHERE id = ?
+            """,
+                (artist_username, artist_bio, artist_id),
+            )
+        else:
+            cursor.execute(
+                """
+                UPDATE artists
+                SET username = ?, bio = ?, avatarLink = ?
+                WHERE id = ?
+            """,
+                (artist_username, artist_bio, artist_avatarLink, artist_id),
+            )
+    
+
+        conn.commit()  # Zatwierdzamy zmiany w bazie danych
+        conn.close()
+    except:
+        print("Błąd podczas edycji profilu")
+        return jsonify({'message': 'Błąd podczas edycji profilu'}), 400
+
+    return jsonify({'message': 'Profil zostazaktualizowany'}), 200
+
 
 
 if __name__ == "__main__":

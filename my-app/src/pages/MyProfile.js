@@ -7,15 +7,21 @@ import axios from "axios";
 function MyProfile() {
   const [user, setUser] = useState([]); // Stan do przechowywania danych o użytkowniku
   const [loading, setLoading] = useState(true); // Stan ładowania danych
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     // Funkcja do pobrania danych o użytkowniku
+    // const token = localStorage.getItem("authToken");
+    //   if (!token) {
+    //     console.error("No token found");
+    //     return;
+    //   }
     const fetchUserData = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        console.error("No token found");
-        return;
-      }
+      // const token = localStorage.getItem("authToken");
+      // if (!token) {
+      //   console.error("No token found");
+      //   return;
+      // }
     
       try {
         console.log("token", token);
@@ -53,7 +59,7 @@ function MyProfile() {
   return (
     <Container>
       <Box>
-        <ArtistDetails artistID={user.id} isLoggedUser={"yes"}/>
+        <ArtistDetails artistID={user.id} isLoggedUser={"yes"} token={token}/>
         {/* Galeria zdjęć */}
         <Box sx={{ px: 3, py: 2 }}>
           <Typography variant="h4" sx={{ mb: 2 }}>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-function ArtistDetails({artistID, isLoggedUser}) {
+function ArtistDetails({artistID, isLoggedUser, token}) {
   const { id } = useParams();
   const [artist, setArtist] = useState({});
   const [loading, setLoading] = useState(true);

@@ -30,8 +30,8 @@ function ShoppingCartDelivery() {
       }}
     >
 
-{/* Stepper */}
-<Box sx={{ width: "100%", mb: 4 }}>
+      {/* Stepper */}
+      <Box sx={{ width: "100%", mb: 4}}>
         <Stepper activeStep={1} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>
@@ -45,41 +45,43 @@ function ShoppingCartDelivery() {
         Wybór metody dostawy i płatności
       </Typography>
 
-      {/* Input na email */}
-      <Box component="form" sx={{ width: "80%", mb: 4 }}>
-        <TextField
-          required
-          id="outlined"
-          label="Email"
-          defaultValue="nazwa@domena.com"
-          value={email}
-          fullWidth
-          onChange={handleEmailChange}
-        />
-      </Box>
-      
-
-      {/* Komponenty do wyboru metod dostawy i płatności */}
+      {/* Cała sekcja w jednym większym Boxie, aby przyciski były w tej samej szerokości */}
       <Box sx={{ width: "80%", mb: 4 }}>
+        {/* Input na email */}
+        <Box component="form" sx={{ mb: 4 }}>
+          <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+                  Wpisz swój email
+                </Typography>
+          <TextField
+            required
+            id="outlined"
+            label="Email"
+            defaultValue="nazwa@domena.com"
+            value={email}
+            fullWidth
+            onChange={handleEmailChange}
+          />
+        </Box>
+
+        {/* Komponenty do wyboru metod dostawy i płatności */}
         <ShippingMethods />
         <PaymentMethods />
-      </Box>
 
-      {/* Przycisk przejścia do kolejnego kroku */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", marginTop: 4 }}>
-      <Button
-          variant="contained"
-          color="secondary"
-          component={Link}
-          to="/cart"
-          sx={{
-            width: "200px",
-            fontSize: "16px",
-            textTransform: "none",
-          }}
-        >
-          Powrót
-        </Button>
+        {/* Przycisk przejścia do kolejnego kroku */}
+        <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", marginTop: 4 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            component={Link}
+            to="/cart"
+            sx={{
+              width: "200px",
+              fontSize: "16px",
+              textTransform: "none",
+            }}
+          >
+            Powrót
+          </Button>
 
           <Button
             variant="contained"
@@ -91,10 +93,12 @@ function ShoppingCartDelivery() {
               width: "200px",
               fontSize: "16px",
               textTransform: "none",
-            }}>
-              Przejdź dalej
+            }}
+          >
+            Przejdź dalej
           </Button>
         </Box>
+      </Box>
     </Box>
   );
 }

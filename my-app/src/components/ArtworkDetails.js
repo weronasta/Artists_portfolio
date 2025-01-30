@@ -94,10 +94,10 @@ function ArtworkDetails() {
             {artwork.description}
           </Typography>
           <Typography variant="body1" fontWeight="bold" color="text.primary">
-            Dostępność: {artwork.availabilityType}
+            Availability: {artwork.availabilityType}
           </Typography>
           <Typography variant="h6" color="text.primary">
-            Cena: {artwork.currentPrice} zł
+            Price: {artwork.currentPrice} zł
           </Typography>
           <Box
             display="flex"
@@ -107,7 +107,7 @@ function ArtworkDetails() {
             gap={2}
           >
             <Typography variant="body1" fontWeight="bold">
-              Ilość:
+              Quantity:
             </Typography>
             <IconButton
               color="primary"
@@ -132,7 +132,7 @@ function ArtworkDetails() {
             onClick={handleAddToCart}
             disabled={artwork.numberOf <= 0}
           >
-            Dodaj do koszyka
+            Add to cart
           </Button>
         </Box>
       </Box>

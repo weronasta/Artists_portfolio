@@ -8,37 +8,70 @@ function ArtworkForm({ artwork, onSubmit }) {
   const [currentPrice, setCurrentPrice] = useState("");
   const [numberOf, setNumberOf] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(""); // Dodajemy stan dla podglądu obrazu
-  const [currentImage, setCurrentImage] = useState(""); // Dodajemy stan dla podglądu obrazu
-  const [isHovered, setIsHovered] = useState(false); // Dodajemy stan dla efektu hover
-//   const [imageUrl, setImageUrl] = useState("");
+  const [currentImage, setCurrentImage] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Zmienna do trzymania błędów w formularzu
+  const [errors, setErrors] = useState({
+    titleError: false,
+    descriptionError: false,
+    priceError: false,
+    quantityError: false,
+  });
 
   useEffect(() => {
-    console.log("artwork", artwork);
     if (artwork) {
       setTitle(artwork.name);
       setDescription(artwork.description);
       setCurrentPrice(artwork.currentPrice);
       setNumberOf(artwork.numberOf);
-      setCurrentImage(artwork.imageLink); // Ustawiamy link do istniejącego obrazu
-      // set selected image to the existing image using require
-    //   setSelectedImage(require(`../assets/images/artworks/${artwork.imageLink}`));
-      
+      setCurrentImage(artwork.imageLink);
     }
   }, [artwork]);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        // const url = URL.createObjectURL(file);
-        // setImageUrl(url);
-        setSelectedImage(file);
-        // setImagePreview(URL.createObjectURL(file)); // Ustawiamy podgląd nowego obrazu
+  const validateInputs = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    if (!title.trim()) {
+      newErrors.titleError = true;
+      isValid = false;
+    } else {
+      newErrors.titleError = false;
     }
+
+    if (!description.trim()) {
+      newErrors.descriptionError = true;
+      isValid = false;
+    } else {
+      newErrors.descriptionError = false;
+    }
+
+    if (!currentPrice || isNaN(currentPrice)) {
+      newErrors.priceError = true;
+      isValid = false;
+    } else {
+      newErrors.priceError = false;
+    }
+
+    if (!numberOf || !Number.isInteger(Number(numberOf))) {
+      newErrors.quantityError = true;
+      isValid = false;
+    } else {
+      newErrors.quantityError = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!validateInputs()) {
+      alert("Please fill in all required fields and correct errors");
+      return;
+    }
+
     onSubmit({
       title,
       description,
@@ -53,15 +86,14 @@ function ArtworkForm({ artwork, onSubmit }) {
       component="form"
       sx={{
         display: "flex",
-        flexDirection: "row", // Obrazek po lewej stronie formularza
+        flexDirection: "row",
         gap: 4,
         maxWidth: 1000,
         margin: "0 auto",
-        marginTop: 4, // Margines na górze formularza
+        marginTop: 4,
       }}
       onSubmit={handleSubmit}
     >
-      {/* Sekcja obrazu */}
       <Paper
         elevation={3}
         sx={{
@@ -75,199 +107,130 @@ function ArtworkForm({ artwork, onSubmit }) {
           backgroundColor: "inherit",
           position: "relative",
           overflow: "hidden",
-          height: "500px", // Ustawiamy stałą wysokość obrazu
-          maxHeight: "100%", // Wysokość dopasowana do wysokości formularza
+          height: "500px",
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <Box sx={{ maxWidth: "600px", margin: "0 auto" }}>
-  {/* Current Image Preview Container */}
-  {currentImage ? (
-    <Box
-      sx={{
-        width: "100%",
-        maxHeight: "150px",
-        mb: 2,
-        border: "1px solid #ddd",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <img
-        src={require(`../assets/images/artworks/${artwork.imageLink}`) // Existing image preview
-        }
-        alt="Current Artwork"
-        style={{
-          maxWidth: "100%",
-          maxHeight: "100%",
-          objectFit: "contain",
-        }}
-      />
-    </Box>
-  ) : (
-    <Typography></Typography>
-  )}
-
-  {/* File Upload Section */}
-  {selectedImage ? (
-          <img
-          src={URL.createObjectURL(selectedImage)}
-            alt="Preview"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transition: "all 0.3s ease-in-out",
-            }}
-          />
-          
-        ) : (
-          <>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              style={{ display: "none" }}
-              id="upload-image"
+          {selectedImage ? (
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              alt="Preview"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
             />
-            <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: 1,
-                }}
-              >
-                <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
-                <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
-              </Box>
-            </label>
-          </>
-        )} 
-</Box>
-
-
-        {/* {selectedImage ? (
-          <img
-          src={URL.createObjectURL(selectedImage)}
-            alt="Preview"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transition: "all 0.3s ease-in-out",
-            }}
-          />
-          
-        ) : (
-          <>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              style={{ display: "none" }}
-              id="upload-image"
-            />
-            <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: 1,
-                }}
-              >
-                <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
-                <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
-              </Box>
-            </label>
-          </>
-        )} */}
-
-        {/* Overlay z przyciskiem "Zmień zdjęcie" */}
-        {imagePreview && isHovered && (
-          <Box
-            className="overlay"
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: 2,
-              opacity: 0,
-              transition: "opacity 0.3s ease-in-out",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => document.getElementById("upload-image").click()}
+          ) : currentImage ? (
+            <Box
+              sx={{
+                width: "100%",
+                maxHeight: "400px",
+                mb: 2,
+                border: "1px solid #ddd",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                opacity: 0.2,
+              }}
             >
-              Zmień zdjęcie
-            </Button>
-          </Box>
-        )}
+              <img
+                src={require(`../assets/images/artworks/${artwork.imageLink}`)}
+                alt="Current Artwork"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
+          ) : (
+            <Typography></Typography>
+          )}
+
+          <input
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                setSelectedImage(file);
+              }
+            }}
+            accept="image/*"
+            style={{ display: "none" }}
+            id="upload-image"
+          />
+          <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+                gap: 1,
+              }}
+            >
+              <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
+              <Typography>Drag and drop an image or choose from computer</Typography>
+            </Box>
+          </label>
+        </Box>
       </Paper>
 
-      {/* Formularz */}
       <Box sx={{ width: "60%" }}>
         <TextField
-          label="Tytuł"
+          label="Title"
           variant="outlined"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
-          sx={{ marginBottom: 2 }} // Dodanie marginesu dolnego
+          error={errors.titleError}
+          helperText={errors.titleError ? "This input cannot be empty" : ""}
+          sx={{ marginBottom: 2 }}
         />
 
         <TextField
-          label="Opis"
+          label="Description"
           variant="outlined"
           multiline
           rows={4}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           fullWidth
-          sx={{ marginBottom: 2 }} // Dodanie marginesu dolnego
+          error={errors.descriptionError}
+          helperText={errors.descriptionError ? "This input cannot be empty" : ""}
+          sx={{ marginBottom: 2 }}
         />
 
         <TextField
-          label="Cena"
+          label="Price"
           variant="outlined"
           value={currentPrice}
           onChange={(e) => setCurrentPrice(e.target.value)}
           fullWidth
-          sx={{ marginBottom: 2 }} // Dodanie marginesu dolnego
+          error={errors.priceError}
+          helperText={errors.priceError ? "Price have to be a number" : ""}
+          sx={{ marginBottom: 2 }}
         />
 
         <TextField
-          label="Dostępna liczba prac"
+          label="Quantity"
           variant="outlined"
           value={numberOf}
           onChange={(e) => setNumberOf(e.target.value)}
           fullWidth
-          sx={{ marginBottom: 2 }} // Dodanie marginesu dolnego
+          error={errors.quantityError}
+          helperText={errors.quantityError ? "Quantity have to be an integer" : ""}
+          sx={{ marginBottom: 2 }}
         />
 
         <Button type="submit" variant="contained" color="primary">
-          Zapisz zmiany
+          Save changes
         </Button>
       </Box>
     </Box>

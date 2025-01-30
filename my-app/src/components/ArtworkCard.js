@@ -2,8 +2,11 @@ import React from "react";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
+import axios from "axios";
 
-function ArtworkCard({ artwork, cardType }) {
+
+
+function ArtworkCard({ artwork, cardType}) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -18,6 +21,34 @@ function ArtworkCard({ artwork, cardType }) {
   const handleEditWork = () => {
     navigate(`/edit/${artwork.id}`); // Przekierowanie do edytowania pracy
   };
+  const handleDeleteWork = async (id) => {
+    const token = localStorage.getItem("authToken");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+    if (window.confirm("Do you want to delete this artwork??")) {
+      // Usunięcie pracy
+      // call to api
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      try {
+          const response = await axios.delete(`http://127.0.0.1:5000/delete_artwork/${id}`,{});
+          if (response.status === 200) {
+            console.log("Deleted artwork with id: ", id);
+            window.location.reload();
+          } else {
+            console.error("Error deleting artwork");
+          }
+      }
+      catch (error) {
+          console.error("Error deleting artwork:", error);
+      }
+
+      alert(`Deleted artwork with id: ${id}`);
+    }
+  };
+
+  
 
   const imageUrl = require(`../assets/images/artworks/${artwork.imageLink}`);
 
@@ -76,14 +107,14 @@ function ArtworkCard({ artwork, cardType }) {
               onClick={handleAddToCart}
               disabled={artwork.numberOf <= 0}
             >
-              Dodaj do koszyka
+              Add to cart
             </Button>
             <Button
               variant="contained"
               color="secondary"
               onClick={() => navigate(`/artworks/${artwork.id}`)}
             >
-              Zobacz szczegóły
+              See details
             </Button>
           </>
         ) : (
@@ -93,14 +124,21 @@ function ArtworkCard({ artwork, cardType }) {
               color="primary"
               onClick={handleEditWork}
             >
-              Edytuj pracę
+              Edit artwork
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => handleDeleteWork(artwork.id)}
+            >
+              Delete artwork
             </Button>
             <Button
               variant="contained"
               color="secondary"
               onClick={() => navigate(`/artworks/${artwork.id}`)}
             >
-              Zobacz szczegóły
+              See details
             </Button>
           </>
         )}

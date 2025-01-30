@@ -14,7 +14,7 @@ function CartSummary() {
   const totalPrice = cartItems.reduce((acc, item) => acc + item.currentPrice * item.quantity, 0);
 
   // Kroki dla Steppera
-  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
+  const steps = ["Cart", "Delivery", "Summary"];
 
   const handlePlaceOrder = async () => {
     const saleData = {
@@ -64,13 +64,13 @@ function CartSummary() {
       </Box>
 
       <Typography variant="h4" gutterBottom>
-        Podsumowanie zamówienia
+        Summary
       </Typography>
 
       {/* Lista kupionych produktów */}
       {cartItems.length === 0 ? (
         <Typography variant="h6" color="text.secondary">
-          Twój koszyk jest pusty
+          Your cart is empty
         </Typography>
       ) : (
         <Box width="100%" mb={4}>
@@ -102,10 +102,10 @@ function CartSummary() {
               <Box sx={{ flex: 1 }}>
                 <Typography variant="h6">{item.name}</Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Cena: {item.currentPrice.toFixed(2)} zł
+                  Price: {item.currentPrice.toFixed(2)} zł
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Ilość: {item.quantity}
+                  Quantity: {item.quantity}
                 </Typography>
               </Box>
             </Paper>
@@ -116,7 +116,7 @@ function CartSummary() {
       {/* Suma cen */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Suma: {totalPrice.toFixed(2)} zł
+          Total: {totalPrice.toFixed(2)} zł
         </Typography>
       </Box>
 
@@ -133,7 +133,7 @@ function CartSummary() {
             textTransform: "none",
           }}
         >
-          Wstecz
+          Back
         </Button>
         
         <Button
@@ -146,7 +146,7 @@ function CartSummary() {
           }}
           onClick={handlePlaceOrder}
         >
-          Złóż zamówienie
+          Place order
         </Button>
       </Box>
     </Box>

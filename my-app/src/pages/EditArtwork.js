@@ -37,9 +37,9 @@ function EditArtwork() {
       const response = await axios.put(`http://127.0.0.1:5000/update_artwork/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Zmiany zapisane!");
+      alert("Changes saved!");
     } catch (error) {
-      alert("Błąd podczas zapisywania zmian.");
+      alert("Error saving changes.");
     }
   };
 
@@ -47,7 +47,7 @@ function EditArtwork() {
     <ArtworkForm artwork={artwork} onSubmit={handleEditArtwork} />
     
   ) : (
-    <p>Ładowanie...</p>
+    <p>Loading...</p>
   );
 }
 

@@ -13,7 +13,7 @@ function ArtistProfile() {
     {/* Galeria zdjęć */}
     <Box sx={{ px: 3, py: 2 }}>
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Galeria prac
+        Artworks
       </Typography>
       <ArtworksGallery artistId={id} cardType={"cart"} />
     </Box>

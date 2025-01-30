@@ -63,7 +63,7 @@ function OtherArtworksSlider() {
   return (
     <Box sx={{ width: '100%' }}> {/* Ustawiamy szerokość slidera na 100% */}
       <Typography variant="h5" mb={2}>
-        Inne dzieła artysty
+        Other artworks by this artist
       </Typography>
       <Slider {...sliderSettings} style={{ width: '100%' }}> {/* Dodajemy szerokość 100% na slider */}
         {otherArtworks.map((artwork) => (

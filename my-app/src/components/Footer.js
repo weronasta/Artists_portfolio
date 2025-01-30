@@ -18,22 +18,22 @@ const Footer = () => {
         {/* Kolumna 1: Informacje */}
         <Box sx={{ flexBasis: "30%", minWidth: "200px" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-            Informacje
+            Information
           </Typography>
           <Box>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/privacy-policy" style={{ color: "inherit", textDecoration: "none" }}>
-                Polityka prywatności
+                Privacy Policy
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/terms-of-service" style={{ color: "inherit", textDecoration: "none" }}>
-                Regulamin serwisu
+                Regulations
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/contact" style={{ color: "inherit", textDecoration: "none" }}>
-                Kontakt
+                Contact
               </Link>
             </Typography>
           </Box>
@@ -42,27 +42,27 @@ const Footer = () => {
         {/* Kolumna 2: Obsługa klienta */}
         <Box sx={{ flexBasis: "30%", minWidth: "200px" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-            Obsługa klienta
+            Customer service
           </Typography>
           <Box>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/payment-methods" style={{ color: "inherit", textDecoration: "none" }}>
-                Formy płatności
+                Payment methods
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/delivery-options" style={{ color: "inherit", textDecoration: "none" }}>
-                Formy i koszty dostawy
+                Delivery options
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/returns-exchanges" style={{ color: "inherit", textDecoration: "none" }}>
-                Zwroty
+                Returns
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/complaints" style={{ color: "inherit", textDecoration: "none" }}>
-                Reklamacje
+                Complaints
               </Link>
             </Typography>
           </Box>
@@ -71,22 +71,22 @@ const Footer = () => {
         {/* Kolumna 3: Twoje konto */}
         <Box sx={{ flexBasis: "30%", minWidth: "200px" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-            Twoje konto
+            My account
           </Typography>
           <Box>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/profile" style={{ color: "inherit", textDecoration: "none" }}>
-                Twój profil
+                My profile
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/account-settings" style={{ color: "inherit", textDecoration: "none" }}>
-                Ustawienia konta
+                Account settings
               </Link>
             </Typography>
             <Typography variant="body2" sx={{ mb: 0.5 }}>
               <Link to="/order-status" style={{ color: "inherit", textDecoration: "none" }}>
-                Zamówienia
+                Orders
               </Link>
             </Typography>
           </Box>

@@ -66,7 +66,7 @@ const ArtistsSlider = () => {
   return (
     <Box mb={4}>
       <Typography variant="h4" gutterBottom>
-        Nasi Artyści
+       Our amazing artists
       </Typography>
       {loading ? (
         <CircularProgress /> // Wyświetlenie loadera podczas ładowania

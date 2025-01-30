@@ -11,7 +11,7 @@ function ShoppingCart() {
   const isEmpty = cartItems.length === 0;
 
   // Ustalamy kroki Steppera
-  const steps = ["Koszyk", "Dostawa", "Podsumowanie"];
+  const steps = ["Cart", "Delivery", "Summary"];
 
   // Obliczamy sumę cen w koszyku
   const totalPrice = cartItems.reduce(
@@ -44,7 +44,7 @@ function ShoppingCart() {
       </Box>
 
       <Typography variant="h4" gutterBottom>
-        Koszyk
+        Cart
       </Typography>
 
       {/* Cała sekcja koszyka w Box o szerokości 80% */}
@@ -53,7 +53,7 @@ function ShoppingCart() {
           // Wyświetlanie komunikatu i przycisku, jeśli koszyk jest pusty
           <Box sx={{ textAlign: "center", padding: 4 }}>
             <Typography variant="h6" color="text.secondary">
-              Twój koszyk jest pusty
+              Your cart is empty
             </Typography>
             <Button
               component={Link}
@@ -67,7 +67,7 @@ function ShoppingCart() {
                 },
               }}
             >
-              Zobacz galerię prac
+              See artworks
             </Button>
           </Box>
         ) : (
@@ -101,7 +101,7 @@ function ShoppingCart() {
                 <Box sx={{ flex: 1 }}>
                   <Typography variant="h6">{item.name}</Typography>
                   <Typography variant="body1" color="text.secondary">
-                    Cena: {item.currentPrice.toFixed(2)} zł
+                    Price: {item.currentPrice.toFixed(2)} zł
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -132,7 +132,7 @@ function ShoppingCart() {
         {/* Suma cen */}
         <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            Suma: {totalPrice.toFixed(2)} zł
+            Total: {totalPrice.toFixed(2)} zł
           </Typography>
         </Box>
 
@@ -149,7 +149,7 @@ function ShoppingCart() {
               textTransform: "none",
             }}
           >
-            Przejdź dalej
+            Next
           </Button>
         </Box>
       </Box>

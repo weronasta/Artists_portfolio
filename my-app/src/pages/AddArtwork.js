@@ -15,9 +15,9 @@ function AddArtwork() {
       const response = await axios.post("http://127.0.0.1:5000/add_artwork", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert(`Obrazek przesłany! Ścieżka: ${response.data.path}`);
+      alert(`Artwork added!`);
     } catch (error) {
-      alert("Błąd podczas przesyłania pliku.");
+      alert("Error adding images.");
     }
   };
 

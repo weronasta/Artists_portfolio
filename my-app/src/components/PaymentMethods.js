@@ -14,11 +14,11 @@ function PaymentMethods() {
 
   // Dostępne opcje płatności
   const paymentOptions = [
-    { id: "credit-card", label: "Karta kredytowa / debetowa" },
+    { id: "credit-card", label: "Credit card" },
     { id: "paypal", label: "PayPal" },
     { id: "blik", label: "BLIK" },
-    { id: "bank-transfer", label: "Przelew bankowy" },
-    { id: "cash-on-delivery", label: "Płatność przy odbiorze" },
+    { id: "bank-transfer", label: "Bank fransfer" },
+    { id: "cash-on-delivery", label: "Cash on delivery" },
   ];
 
   // Obsługa zmiany opcji płatności
@@ -29,7 +29,7 @@ function PaymentMethods() {
   return (
     <>
       <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-        Wybierz metodę płatności
+        Choose payment method
       </Typography>
       <FormControl component="fieldset" fullWidth>
         <Card

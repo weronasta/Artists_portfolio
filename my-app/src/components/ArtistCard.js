@@ -60,7 +60,7 @@ const ArtistCard = ({ artist }) => {
           color="primary"
           onClick={() => navigate(`/artists/${artist.id}`)} // Przejdź do szczegółów artysty
         >
-          Zobacz profil
+          See profile
         </Button>
       </Box>
     </Box>

@@ -14,7 +14,7 @@ function Home() {
       {/* Sekcja Najnowsze Prace */}
       <Box mb={4}>
         <Typography variant="h4" gutterBottom>
-          Najnowsze Prace
+          Explore the latest artworks
         </Typography>
         <Box>
         <ArtworksGallery artistId={1} cardType={"cart"}/>

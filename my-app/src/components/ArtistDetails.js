@@ -75,13 +75,10 @@ function ArtistDetails({artistID, isLoggedUser, token}) {
             {/* Przyciski */}
             <Box sx={{ px: 3, py: 2, display: "flex", gap: 2 }}>
             <Button variant="contained" color="primary"  onClick={() => navigate(`/add`)}>
-                Dodaj pracę
+                Add artwork
             </Button>
             <Button variant="contained" color="secondary" onClick={() => navigate(`/edit-artist/${artist.id}`)}>
-                Edytuj profil
-            </Button>
-            <Button variant="contained" color="error"  onClick={() => navigate(`/add`)}>
-                Usuń konto
+                Edit profile
             </Button>
             </Box>
           </Box>

@@ -10,22 +10,11 @@ function MyProfile() {
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
-    // Funkcja do pobrania danych o użytkowniku
-    // const token = localStorage.getItem("authToken");
-    //   if (!token) {
-    //     console.error("No token found");
-    //     return;
-    //   }
+
     const fetchUserData = async () => {
-      // const token = localStorage.getItem("authToken");
-      // if (!token) {
-      //   console.error("No token found");
-      //   return;
-      // }
     
       try {
         console.log("token", token);
-        // add auth token to the request
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         const response = await axios.get('http://127.0.0.1:5000/profile', {
         });
@@ -49,11 +38,11 @@ function MyProfile() {
   }, []);
 
   if (loading) {
-    return <Typography>Ładowanie...</Typography>; // Pokazuje ładowanie, jeśli dane nie zostały jeszcze załadowane
+    return <Typography>Loading...</Typography>; // Pokazuje ładowanie, jeśli dane nie zostały jeszcze załadowane
   }
 
   if (!user) {
-    return <Typography>Zaloguj się.</Typography>; // Jeśli brak danych o użytkowniku
+    return <Typography>Log in.</Typography>; // Jeśli brak danych o użytkowniku
   }
 
   return (
@@ -63,7 +52,7 @@ function MyProfile() {
         {/* Galeria zdjęć */}
         <Box sx={{ px: 3, py: 2 }}>
           <Typography variant="h4" sx={{ mb: 2 }}>
-            Galeria prac
+            Artworks
           </Typography>
           <ArtworksGallery artistId={user.id} cardType={"edit"}/> {/* Przekazujemy id artysty do galerii */}
         </Box>

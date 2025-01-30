@@ -42,9 +42,9 @@ function EditProfile() {
       const response = await axios.put(`http://127.0.0.1:5000/update_artist/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Zmiany zapisane!");
+      alert("Profile changes saved!");
     } catch (error) {
-      alert("Błąd podczas zapisywania zmian.");
+      alert("Error saving changes.");
     }
   };
 
@@ -52,7 +52,7 @@ function EditProfile() {
     <ArtistForm artist={artist} onSubmit={handleEditArtist} />
     
   ) : (
-    <p>Ładowanie...</p>
+    <p>Opps... Loading....</p>
   );
 }
 

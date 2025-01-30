@@ -36,7 +36,7 @@ export default function OrdersPage() {
       {/* Nagłówek poza Paper, ale wyrównany do szerokości tabeli */}
       <Box sx={{ maxWidth: 900, width: "100%", mb: 2 }}>
         <Typography variant="h4" sx={{ textAlign: "left", paddingLeft: 2 }}>
-          Zamówienia
+          Client orders
         </Typography>
       </Box>
 
@@ -46,11 +46,11 @@ export default function OrdersPage() {
           <Table sx={{ minWidth: 650 }} aria-label="orders table">
             <TableHead>
               <TableRow>
-                <TableCell>ID zamówienia</TableCell>
-                <TableCell>Data</TableCell>
-                <TableCell>E-mail klienta</TableCell>
-                <TableCell align="right">Wartość&nbsp;(zł)</TableCell>
-                <TableCell align="center">Szczegóły</TableCell>
+                <TableCell>Order ID</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Client's email</TableCell>
+                <TableCell align="right">Total price&nbsp;(zł)</TableCell>
+                <TableCell align="center">Details</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -66,7 +66,7 @@ export default function OrdersPage() {
                       color="primary"
                       onClick={() => navigate(`/orders/${order.id}`)}
                     >
-                      Podgląd
+                      More
                     </Button>
                   </TableCell>
                 </TableRow>

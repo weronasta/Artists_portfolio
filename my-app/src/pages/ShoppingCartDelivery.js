@@ -42,7 +42,7 @@ function ShoppingCartDelivery() {
       </Box>
 
       <Typography variant="h4" gutterBottom>
-        Wybór metody dostawy i płatności
+       Delivery and payment
       </Typography>
 
       {/* Cała sekcja w jednym większym Boxie, aby przyciski były w tej samej szerokości */}
@@ -50,7 +50,7 @@ function ShoppingCartDelivery() {
         {/* Input na email */}
         <Box component="form" sx={{ mb: 4 }}>
           <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-                  Wpisz swój email
+                  Enter your e-mail
                 </Typography>
           <TextField
             required
@@ -80,7 +80,7 @@ function ShoppingCartDelivery() {
               textTransform: "none",
             }}
           >
-            Powrót
+            Back
           </Button>
 
           <Button
@@ -95,7 +95,7 @@ function ShoppingCartDelivery() {
               textTransform: "none",
             }}
           >
-            Przejdź dalej
+            Next
           </Button>
         </Box>
       </Box>

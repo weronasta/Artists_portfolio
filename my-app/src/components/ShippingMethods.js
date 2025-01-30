@@ -15,9 +15,9 @@ export default function ShippingMethods() {
 
   // Dostępne opcje wysyłki
   const shippingOptions = [
-    { id: "courier", label: "Kurier - 15.00 zł" },
-    { id: "parcelLocker", label: "Paczkomat - 10.00 zł" },
-    { id: "postOffice", label: "Odbiór w punkcie - 8.00 zł" },
+    { id: "courier", label: "Courier" },
+    { id: "parcelLocker", label: "Parcel locker" },
+    { id: "postOffice", label: "Post office" },
   ];
 
   // Obsługa zmiany opcji wysyłki
@@ -28,7 +28,7 @@ export default function ShippingMethods() {
   return (
     <>
     <Typography variant="h5" sx={{ mb: 2 }}>
-    Wybierz sposób wysyłki
+    Choose delivery method
   </Typography>
     <FormControl component="fieldset" fullWidth>
       <Card

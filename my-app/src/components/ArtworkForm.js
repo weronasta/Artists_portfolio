@@ -68,7 +68,7 @@ function ArtworkForm({ artwork, onSubmit }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validateInputs()) {
-      alert("Proszę poprawić błędy w formularzu.");
+      alert("Please fill in all required fields and correct errors");
       return;
     }
 
@@ -176,7 +176,7 @@ function ArtworkForm({ artwork, onSubmit }) {
               }}
             >
               <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
-              <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
+              <Typography>Drag and drop an image or choose from computer</Typography>
             </Box>
           </label>
         </Box>
@@ -184,18 +184,18 @@ function ArtworkForm({ artwork, onSubmit }) {
 
       <Box sx={{ width: "60%" }}>
         <TextField
-          label="Tytuł"
+          label="Title"
           variant="outlined"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
           error={errors.titleError}
-          helperText={errors.titleError ? "To pole nie może być puste" : ""}
+          helperText={errors.titleError ? "This input cannot be empty" : ""}
           sx={{ marginBottom: 2 }}
         />
 
         <TextField
-          label="Opis"
+          label="Description"
           variant="outlined"
           multiline
           rows={4}
@@ -203,34 +203,34 @@ function ArtworkForm({ artwork, onSubmit }) {
           onChange={(e) => setDescription(e.target.value)}
           fullWidth
           error={errors.descriptionError}
-          helperText={errors.descriptionError ? "To pole nie może być puste" : ""}
+          helperText={errors.descriptionError ? "This input cannot be empty" : ""}
           sx={{ marginBottom: 2 }}
         />
 
         <TextField
-          label="Cena"
+          label="Price"
           variant="outlined"
           value={currentPrice}
           onChange={(e) => setCurrentPrice(e.target.value)}
           fullWidth
           error={errors.priceError}
-          helperText={errors.priceError ? "Cena musi być liczbą" : ""}
+          helperText={errors.priceError ? "Price have to be a number" : ""}
           sx={{ marginBottom: 2 }}
         />
 
         <TextField
-          label="Dostępna liczba prac"
+          label="Quantity"
           variant="outlined"
           value={numberOf}
           onChange={(e) => setNumberOf(e.target.value)}
           fullWidth
           error={errors.quantityError}
-          helperText={errors.quantityError ? "Liczba prac musi być liczbą całkowitą" : ""}
+          helperText={errors.quantityError ? "Quantity have to be an integer" : ""}
           sx={{ marginBottom: 2 }}
         />
 
         <Button type="submit" variant="contained" color="primary">
-          Zapisz zmiany
+          Save changes
         </Button>
       </Box>
     </Box>

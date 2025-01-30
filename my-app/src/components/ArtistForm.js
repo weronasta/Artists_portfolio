@@ -49,7 +49,7 @@ function ArtistForm({ artist, onSubmit }) {
     const handleSubmit = (event) => {
       event.preventDefault();
       if (!validateInputs()) {
-        alert("Proszę poprawić błędy w formularzu.");
+        alert("Please fill in all required fields and correct errors");
         return;
       }
   
@@ -155,7 +155,7 @@ function ArtistForm({ artist, onSubmit }) {
                 }}
               >
                 <CloudUploadOutlinedIcon sx={{ fontSize: 48, color: "primary.main" }} />
-                <Typography>Przeciągnij i upuść obrazek lub kliknij</Typography>
+                <Typography>Drag and drop an image or choose from computer</Typography>
               </Box>
             </label>
           </Box>
@@ -163,18 +163,18 @@ function ArtistForm({ artist, onSubmit }) {
   
         <Box sx={{ width: "60%" }}>
           <TextField
-            label="Tytuł"
+            label="Username"
             variant="outlined"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             fullWidth
             error={errors.usernameError}
-            helperText={errors.usernameError ? "To pole nie może być puste" : ""}
+            helperText={errors.usernameError ? "This input cannot be empty" : ""}
             sx={{ marginBottom: 2 }}
           />
   
           <TextField
-            label="Opis"
+            label="Bio"
             variant="outlined"
             multiline
             rows={4}
@@ -182,11 +182,11 @@ function ArtistForm({ artist, onSubmit }) {
             onChange={(e) => setBio(e.target.value)}
             fullWidth
             error={errors.bioError}
-            helperText={errors.bioError ? "To pole nie może być puste" : ""}
+            helperText={errors.bioError ? "This input cannot be empty" : ""}
             sx={{ marginBottom: 2 }}
           />
           <Button type="submit" variant="contained" color="primary">
-            Zapisz zmiany
+            Save changes
           </Button>
         </Box>
       </Box>

@@ -16,11 +16,11 @@ export default function OrderDetails() {
   return (
     <Box sx={{ padding: 3, maxWidth: 900, margin: "auto", marginTop: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Szczegóły zamówienia #{id}
+        Order details #{id}
       </Typography>
 
       <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Produkty w zamówieniu:
+        Products
       </Typography>
 
         {sampleProducts.map((product) => (
@@ -40,12 +40,6 @@ export default function OrderDetails() {
                     {product.title}
                   </Typography>
                   <Typography color="text.secondary">{product.price.toFixed(2)} zł</Typography>
-                </Box>
-                {/* Przycisk po prawej */}
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Button variant="contained" color="primary">
-                    Zamów ponownie
-                  </Button>
                 </Box>
               </Box>
             </Card>

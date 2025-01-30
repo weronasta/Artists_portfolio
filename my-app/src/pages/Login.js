@@ -125,7 +125,7 @@ export default function Login() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Zaloguj się
+            Log in
           </Typography>
           {loginError && (
             <Typography color="error" sx={{ textAlign: 'center' }}>
@@ -161,7 +161,7 @@ export default function Login() {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Hasło</FormLabel>
+              <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -183,18 +183,18 @@ export default function Login() {
               variant="contained"
               onClick={validateInputs}
             >
-              Zaloguj się
+              Log in
             </Button>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
-              Nie posiadasz konta?{' '}
+              Do not have an account?{' '}
               <Link
                 href="/register"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Zarejestruj się
+                Sign up
               </Link>
             </Typography>
           </Box>

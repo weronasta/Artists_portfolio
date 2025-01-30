@@ -141,7 +141,7 @@ function Register() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Zarejestruj się
+            Sign up
             </Typography>
             {registrationError && (
             <Typography color="error" sx={{ textAlign: 'center' }}>
@@ -160,12 +160,11 @@ function Register() {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="username">Nazwa użytkownika</FormLabel>
+              <FormLabel htmlFor="username">Username</FormLabel>
               <TextField
                 error={usernameError}
                 id="username"
                 name="username"
-                placeholder="Wprowadź nazwę użytkownika"
                 autoFocus
                 required
                 fullWidth
@@ -179,33 +178,30 @@ function Register() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="your@email.com"
                 required
                 fullWidth
                 variant="outlined"
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Hasło</FormLabel>
+              <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
                 error={passwordError}
                 id="password"
                 type="password"
                 name="password"
-                placeholder="Wprowadź hasło"
                 required
                 fullWidth
                 variant="outlined"
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="confirm-password">Potwierdź hasło</FormLabel>
+              <FormLabel htmlFor="confirm-password">Confirm password</FormLabel>
               <TextField
                 error={confirmPasswordError}
                 id="confirm-password"
                 type="password"
                 name="confirm-password"
-                placeholder="Potwierdź hasło"
                 required
                 fullWidth
                 variant="outlined"
@@ -217,18 +213,18 @@ function Register() {
               variant="contained"
               onClick={validateInputs}
             >
-              Załóż konto
+              Sign up
             </Button>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
-              Masz konto?{' '}
+              Do you already have an account?{' '}
               <Link
                 href="/login"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Zaloguj się
+                Log in
               </Link>
             </Typography>
           </Box>

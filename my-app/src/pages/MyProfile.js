@@ -56,7 +56,7 @@ function MyProfile() {
         <ArtistDetails artistID={user.id} />
         {/* Galeria zdjęć */}
         <Box sx={{ px: 3, py: 2 }}>
-          <Typography variant="h5" sx={{ mb: 2 }}>
+          <Typography variant="h4" sx={{ mb: 2 }}>
             Galeria prac
           </Typography>
           <ArtworksGallery artistId={user.id} cardType={"edit"}/> {/* Przekazujemy id artysty do galerii */}

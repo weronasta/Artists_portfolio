@@ -23,9 +23,7 @@ export default function OrderDetails() {
         Produkty w zamówieniu:
       </Typography>
 
-      <Grid container spacing={1}>
         {sampleProducts.map((product) => (
-          <Grid item xs={12} key={product.id}>
             <Card sx={{ display: "flex", padding: 2, marginBottom: 2 }}>
               {/* Obrazek po lewej */}
               <CardMedia
@@ -45,15 +43,13 @@ export default function OrderDetails() {
                 </Box>
                 {/* Przycisk po prawej */}
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Button variant="outlined" color="secondary">
+                  <Button variant="contained" color="primary">
                     Zamów ponownie
                   </Button>
                 </Box>
               </Box>
             </Card>
-          </Grid>
         ))}
-      </Grid>
     </Box>
   );
 }

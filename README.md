@@ -1,15 +1,15 @@
 # Project Overview
-This web application combines an artist’s portfolio with online ordering functionality. It provides users with an immersive experience to explore the artist's work and place online orders.
+This web application combines an artist’s portfolio with online ordering functionality. It provides users with the ability to explore the artist's work and place online orders. The technologies used include **React** for the frontend, **Python Flask** for the backend, and **SQLite** for the database.
 
 # Key features
 
 ### Home
-* presentation of the artist’s latest works in a gallery format.
-* section presenting artists.
+* presentation of the artist’s latest works in a gallery format
+* section presenting artists
 
 ### Artworks gallery
-* grid display of artworks with thumbnails.
-* option to add items to the cart or open details.
+* grid display of artworks with thumbnails
+* option to add items to the cart or open artwork details
 
 ### Artwork details
 * detailed view of individual artworks, including:
@@ -18,11 +18,11 @@ This web application combines an artist’s portfolio with online ordering funct
     * description
     * price
     * availability status (available, sold out)
-* option to add the artwork to the cart.
+* option to add the artwork to the cart
 
 ### Artists gallery
-* grid display of artists with avatars.
-* option to open artist's profile.
+* grid display of artists with avatars
+* option to open artist's profile
 
 ### Artist profile
 * detailed view of individual artist, including:
@@ -31,8 +31,8 @@ This web application combines an artist’s portfolio with online ordering funct
     * gallery with all artist's artworks
 
 ### Cart
-* display and management of products in the cart.
-* ability to place orders (without payment processing).
+* display and management of products in the cart
+* ability to place orders (without payment processing)
 
 ### Artist management panel
 * functionality for the artist to manage their portfolio:
@@ -43,28 +43,54 @@ This web application combines an artist’s portfolio with online ordering funct
 
 ### Artists registration module
 * registration
-* login
-* jwt token
+* login (with JWT for endpoint authentication)
 
+# How to run:
+## Installation:
+### Backend API:
+- Python=3.12.2
+- Flask=3.1.0
+- Flask-Cors=5.0.0
 
-Zainstaluj Node.js jak nie masz (my juz to mamy)
-Zainstaluj flask
-
-Otwórz terminal
+to install (assuming you have python installed):
 ```bash
-pip install flask-cors
+pip install flask=3.1.0
+pip install flask-cors=5.0.0
+pip install pyjwt=2.10.1
+```
+
+### Frontend:
+- Node.js
+- React
+- react-router-dom
+- @mui/material
+- @emotion/react
+- @emotion/styled
+- @mui/icons-material
+- slick-carousel
+- axios
+
+to install (assuming you have npm installed):
+```bash
 cd my-app
 npm install --save react-router-dom
 npm install @mui/material
 npm install @emotion/react
-npm install @emotion/styled 
+npm install @emotion/styled
 npm install @mui/icons-material
 npm install slick-carousel
 npm install axios
-pip install pyjwt
 ```
 
-# Requirements:
-## backend API:
-- Python=3.12.2
-- Flask=3.1.0
+
+## Running the application:
+in one terminal window:
+```bash
+cd my-app
+npm start
+```
+
+in another terminal window (in the root directory):
+```bash
+python3 backend_api.py
+```

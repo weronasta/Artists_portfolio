@@ -481,7 +481,7 @@ def add_artwork():
         artwork_description = request.form.get("description")
         artwork_price = request.form.get("currentPrice")
         artwork_imagelink = filename
-        artwork_availability = "Dostępne"
+        artwork_availability = "Available"
         artwork_number = request.form.get("numberOf")
 
         try:
@@ -557,7 +557,7 @@ def update_artwork(artwork_id):
     artwork_name = request.form.get("name")
     artwork_description = request.form.get("description")
     artwork_price = request.form.get("currentPrice")
-    artwork_availability = "Dostępne"
+    artwork_availability = "Available"
     artwork_number = request.form.get("numberOf")
 
     if file:

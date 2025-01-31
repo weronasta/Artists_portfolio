@@ -1,5 +1,5 @@
 # Project Overview
-This web application combines an artist’s portfolio with online ordering functionality. It provides users with the ability to explore the artist's work and place online orders. The technologies used include **React** for the frontend, **Python Flask** for the backend, and **SQLite** for the database.
+This web application combines an artist’s portfolio with online ordering functionality. It provides users with the ability to explore the artist's work and place online orders. The technologies used include **React** and **MaterialUI** for the frontend, **Python Flask** for the backend, and **SQLite** for the database.
 
 # Key features
 

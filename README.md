@@ -58,7 +58,7 @@ to install (assuming you have python installed):
 ```bash
 pip install Flask==3.1.0
 pip install Flask-Cors==5.0.0
-pip install pyjwt=2.10.1
+pip install pyjwt==2.10.1
 ```
 
 ### Frontend:
@@ -75,7 +75,8 @@ pip install pyjwt=2.10.1
 to install (assuming you have npm installed):
 ```bash
 cd my-app
-npm install --save react-router-dom
+npm update -g npm
+npm install react react-router react-router-dom --save
 npm install @mui/material
 npm install @emotion/react
 npm install @emotion/styled
@@ -94,5 +95,5 @@ npm start
 
 in another terminal window (in the root directory):
 ```bash
-python3 backend_api.py
+python backend_api.py
 ```

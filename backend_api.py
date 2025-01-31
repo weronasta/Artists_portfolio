@@ -6,43 +6,69 @@ import jwt
 import datetime, time
 import os
 
+SECRET_KEY = "your_secret_key"  # key for encoding and decoding JWT
+UPLOAD_FOLDER = "./my-app/src/assets/images/artworks"  # folder for artworks
+UPLOAD_FOLDER2 = "./my-app/src/assets/images/artists"  # folder for artists
+ALLOWED_EXTENSIONS = {
+    "png",
+    "jpg",
+    "jpeg",
+    "gif",
+    "webp",
+}  # allowed file extensions for images
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-SECRET_KEY = "your_secret_key"  # Klucz tajny do podpisywania tokenów JWT
+# Set the upload folder for images
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["UPLOAD_FOLDER2"] = UPLOAD_FOLDER2
 
 
-# Funkcja do weryfikacji JWT
+def get_unique_filename(filename):
+    base, extension = os.path.splitext(filename)
+    timestamp = int(time.time() * 1000)  # Use timestamp to generate a unique filename
+    return f"{base}_{timestamp}{extension}"
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 def verify_token(token):
     try:
         decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         return decoded
     except jwt.ExpiredSignatureError:
-        return None  # Token wygasł
+        return None  # Token is expired
     except jwt.InvalidTokenError:
-        return None  # Nieprawidłowy toke
+        return None  # Token is invalid
 
 
-# Funkcja do połączenia się z bazą danych SQLite
 def get_db_connection():
-    conn = sqlite3.connect("my_database.db")  # Nazwa pliku bazy danych
-    conn.row_factory = sqlite3.Row  # Aby móc odwoływać się do kolumn przez nazwy
+    """
+    Function to establish a connection to the SQLite database
+    """
+    conn = sqlite3.connect("my_database.db")  # database file name
+    conn.row_factory = sqlite3.Row  # to return rows as dictionaries
     return conn
 
 
-# Endpoint GET, który pobiera dane o wszystkich dziełach sztuki
 @app.route("/artworks", methods=["GET"])
 def get_artworks():
+    """
+    Endpoint GET, that retrieves data about all artworks
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Zapytanie SQL, które pobiera wszystkie dzieła sztuki
+    # get all artworks from the database
     cursor.execute("SELECT * FROM artworks WHERE availabilityType <> 'Deleted'")
 
-    # Pobieramy wszystkie wiersze z tabeli
+    # fetch all rows from the table
     artworks = cursor.fetchall()
 
-    # Konwertujemy wyniki do listy słowników (JSON)
+    # Convert the results to a list of dictionaries (JSON)
     result = []
     for artwork in artworks:
         result.append(
@@ -58,31 +84,33 @@ def get_artworks():
             }
         )
 
-    conn.close()  # Zamykamy połączenie z bazą danych
+    conn.close()  # Close the connection to the database
 
-    # Zwracamy dane w formacie JSON
+    # Return the data in JSON format
     return jsonify(result)
 
 
-# Endpoint GET, który pobiera dane o konkretnym dziele sztuki
 @app.route("/artworks/<int:id>", methods=["GET"])
 def get_artwork(id):
+    """
+    Endpoint GET, that retrieves data about a specific artwork
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Zapytanie SQL, które pobiera dzieło sztuki o konkretnym id
+    # SQL query to retrieve artwork with a specific id
     cursor.execute("SELECT * FROM artworks WHERE id = ?", (id,))
 
-    # Pobieramy jeden wiersz z tabeli
+    # fetch one row from the table
     artwork = cursor.fetchone()
 
-    conn.close()  # Zamykamy połączenie z bazą danych
+    conn.close()
 
-    # Sprawdzamy, czy znaleziono dzieło sztuki
+    # Check if the artwork was found
     if artwork is None:
         return {"error": "Artwork not found"}, 404
 
-    # Konwertujemy wynik do słownika (JSON)
+    # Convert the result to a dictionary (JSON)
     result = {
         "id": artwork["id"],
         "artist_id": artwork["artist_id"],
@@ -94,23 +122,24 @@ def get_artwork(id):
         "numberOf": artwork["numberOf"],
     }
 
-    # Zwracamy dane w formacie JSON
     return jsonify(result)
 
 
-# Endpoint GET, który pobiera wszystkich artystów
 @app.route("/artists", methods=["GET"])
 def get_artists():
+    """
+    Endpoint GET, that retrieves data about all artists
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Zapytanie SQL, które pobiera wszystkich artystów
+    # get all artists from the database
     cursor.execute("SELECT id, username, avatarLink, bio FROM artists")
 
-    # Pobieramy wszystkie wiersze z tabeli
+    # fetch all rows from the table
     artists = cursor.fetchall()
 
-    # Konwertujemy wyniki do listy słowników (JSON)
+    # Convert the results to a list of dictionaries (JSON)
     result = []
     for artist in artists:
         result.append(
@@ -122,55 +151,55 @@ def get_artists():
             }
         )
 
-    conn.close()  # Zamykamy połączenie z bazą danych
-
-    # Zwracamy dane w formacie JSON
+    conn.close()
     return jsonify(result)
 
 
-# Endpoint GET, który pobiera dane o konkretnym artyście
 @app.route("/artists/<int:id>", methods=["GET"])
 def get_artist(id):
+    """
+    Endpoint GET, that retrieves data about a specific artist
+    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Zapytanie SQL, które pobiera artystę o konkretnym id
+    # SQL query to retrieve an artist with a specific id
     cursor.execute("SELECT * FROM artists WHERE id = ?", (id,))
 
-    # Pobieramy jeden wiersz z tabeli
+    # fetch one row from the table
     artist = cursor.fetchone()
 
-    conn.close()  # Zamykamy połączenie z bazą danych
+    conn.close()
 
-    # Sprawdzamy, czy znaleziono dzieło sztuki
+    # Check if the artist was found
     if artist is None:
         return {"error": "Artist not found"}, 404
 
-    # Konwertujemy wynik do słownika (JSON)
+    # Convert the result to a dictionary (JSON)
     result = {
         "id": artist["id"],
         "username": artist["username"],
         "avatarLink": artist["avatarLink"],
         "bio": artist["bio"],
     }
-
-    # Zwracamy dane w formacie JSON
     return jsonify(result)
 
 
-# Endpoint GET, który pobiera dane o wszystkich dziełach sztuki danego artysty
 @app.route("/artworks/artist/<int:artist_id>", methods=["GET"])
 def get_artworks_by_artist(artist_id):
+    """
+    Endpoint GET, that retrieves data about all artworks by a specific artist"""
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Zapytanie SQL, które pobiera dzieła sztuki dla konkretnego artysty
-    cursor.execute("SELECT * FROM artworks WHERE artist_id = ? AND availabilityType <> 'Deleted'", (artist_id,))
+    # get all artworks from the database
+    cursor.execute(
+        "SELECT * FROM artworks WHERE artist_id = ? AND availabilityType <> 'Deleted'",
+        (artist_id,),
+    )
 
-    # Pobieramy wszystkie wiersze z tabeli
-    artworks = cursor.fetchall()
+    artworks = cursor.fetchall()  # fetch all rows from the table
 
-    # Konwertujemy wyniki do listy słowników (JSON)
     result = []
     for artwork in artworks:
         result.append(
@@ -186,25 +215,24 @@ def get_artworks_by_artist(artist_id):
             }
         )
 
-    conn.close()  # Zamykamy połączenie z bazą danych
-
-    # Zwracamy dane w formacie JSON
+    conn.close()
     return jsonify(result)
 
 
-# Endpoint do logowania użytkownika
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.get_json()  # Pobieramy dane z żądania
+    """
+    Endpoint POST, that logs in a user"""
+    data = request.get_json()  # get the data from the request
 
-    # Sprawdzamy, czy dane są prawidłowe
+    # Check if the required fields are present
     if not data.get("email") or not data.get("password"):
         abort(400, description="Email and password are required.")
 
     login = data["email"]
     password = data["password"]
 
-    # Sprawdzamy, czy użytkownik istnieje
+    # check if the user exists in the database
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM artists WHERE login = ?", (login,))
@@ -214,85 +242,76 @@ def login():
         conn.close()
         abort(401, description="Invalid email or password.")
 
+    # check if the password is correct
     if not check_password_hash(user["password"], password):
         print("Invalid password")
         conn.close()
         abort(401, description="Invalid email or password.")
 
+    # generate a JWT token
     token = jwt.encode(
         {
             "id": user["id"],
             "exp": datetime.datetime.utcnow()
-            + datetime.timedelta(hours=1),  # Ważność tokenu na 1 godzinę
+            + datetime.timedelta(hours=1),  # token expires in 1 hour
         },
         SECRET_KEY,
         algorithm="HS256",
     )
     conn.close()
     return jsonify({"message": "Login successful!", "token": token}), 200
-    # return jsonify({"message": "Login successful!"}), 200
 
 
-
-# Endpoint GET, który pobiera dane użytkownika (profil)
 @app.route("/profile", methods=["GET"])
 def profile():
-    # Pobieramy token z nagłówka 'Authorization'
+    """
+    Endpoint GET, that retrieves data about a user (profile)"""
+
+    # Get the token from the 'Authorization' header
     token = request.headers.get("Authorization")
-    print(token)
 
     if token is None:
-        print("Dupa")
         abort(401, description="Token is missing.")
 
-    # Usuwamy "Bearer" z tokena
+    # remove "Bearer" from the token
     token = token.split(" ")[1]
-
-    # Weryfikujemy token
     decoded = verify_token(token)
-    print(f"{decoded=}")
 
     if decoded is None:
-        print("Kotek")
         abort(401, description="Invalid or expired token.")
 
-    # Pobieramy ID użytkownika z dekodowanego tokenu
     user_id = decoded["id"]
-    print(f"{user_id=}")
 
-    # Tworzymy połączenie z bazą danych
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Pobieramy dane użytkownika na podstawie jego ID
+    # get the user from the database
     cursor.execute("SELECT * FROM artists WHERE id = ?", (user_id,))
     user = cursor.fetchone()
-    print(f"{user=}")
-
     conn.close()
 
+    # Check if the user was found
     if user is None:
         abort(404, description="User not found.")
 
-    # Konwertujemy dane użytkownika na słownik (JSON)
+    # Convert the result to a dictionary (JSON)
     result = {
         "id": user["id"],
         "username": user["username"],
         "avatarLink": user["avatarLink"],
         "bio": user["bio"],
     }
-    print(f"{result=}")
-
     return jsonify(result), 200
 
 
-# Endpoint POST do rejestracji użytkownika
 @app.route("/register", methods=["POST"])
 def register():
-    # Pobieramy dane z żądania
+    """
+    Endpoint POST, that registers a new user"""
+    # get the data from the request
     data = request.get_json()
 
-    # Walidujemy dane wejściowe
+    # Check if the required fields are present
     if (
         not data
         or not data.get("username")
@@ -305,24 +324,24 @@ def register():
     login = data["login"]
     password = data["password"]
 
-    # Hashujemy hasło
+    # hash the password
     hashed_password = generate_password_hash(password)
 
-    # Sprawdzamy, czy login już istnieje
+    # check if the user already exists in the database
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM artists WHERE login = ?", (login,))
     existing_user = cursor.fetchone()
     cursor.execute("SELECT * FROM artists WHERE username = ?", (username,))
     existing_user2 = cursor.fetchone()
-
     if existing_user:
         conn.close()
         abort(400, description="Login already exists")
     elif existing_user2:
         conn.close()
         abort(400, description="Username already exists")
-    # Wstawiamy nowego użytkownika do tabeli artists
+
+    # adding a new user to the artists table
     cursor.execute(
         """
         INSERT INTO artists (username, login, password, isAdmin, avatarLink, bio)
@@ -336,16 +355,17 @@ def register():
     return jsonify({"message": "User registered successfully"}), 201
 
 
-# endpoint for adding a sale with sale items
 @app.route("/add_sale", methods=["POST"])
 def add_sale():
-    # Odczytujemy dane z JSON w żądaniu
+    """
+    Endpoint POST, that adds a new sale with sale items"""
+    # Try-except block to handle the case when the JSON is not provided
     try:
         new_sale = request.get_json()["saleData"]
     except:
         new_sale = None
 
-    # Walidacja danych wejściowych
+    # Check if the required fields are present
     if not new_sale or not new_sale.get("user_email") or not new_sale.get("items"):
         abort(400, description="Missing required fields: user_email or items")
 
@@ -355,7 +375,7 @@ def add_sale():
 
     conn = get_db_connection()
     cursor = conn.cursor()
-
+    # adding a new sale to the sales table
     cursor.execute(
         """
         INSERT INTO sales (user_email, created_at)
@@ -363,10 +383,10 @@ def add_sale():
     """,
         (user_email, created_at),
     )
-
+    # get the id of the last inserted sale
     cursor.execute("SELECT max(id) FROM sales")
     sale_id = cursor.fetchone()[0]
-
+    # adding sale items to the sale_items table
     for item in items:
         cursor.execute(
             """
@@ -375,7 +395,7 @@ def add_sale():
         """,
             (sale_id, item["piece"], item["quantity"], item["total_price"]),
         )
-
+    # update the number of items in the artworks table
     for item in items:
         cursor.execute(
             """
@@ -401,79 +421,60 @@ def add_sale():
         conn.close()
         abort(400, description="Not enough items in stock")
 
+    # update the availabilityType in the artworks table
     cursor.execute(
         """
         UPDATE artworks
-        SET availabilityType = "Wyprzedane"
+        SET availabilityType = "Sold out"
         WHERE numberOf = 0
     """
     )
 
-    conn.commit()  # Zatwierdzamy zmiany w bazie danych
+    conn.commit()
     conn.close()
 
     return (
         jsonify({"message": "Sale added successfully"}),
         201,
-    )  # Zwracamy odpowiedź z komunikatem
+    )
 
 
-
-# Ścieżka do folderu assets w aplikacji React
-UPLOAD_FOLDER = './my-app/src/assets/images/artworks'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-UPLOAD_FOLDER2 = './my-app/src/assets/images/artists'
-app.config['UPLOAD_FOLDER2'] = UPLOAD_FOLDER2
-
-# Dozwolone rozszerzenia plików
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
-
-def get_unique_filename(filename):
-    base, extension = os.path.splitext(filename)
-    timestamp = int(time.time() * 1000)  # Użyj milisekund jako unikalnego sufiksu
-    return f"{base}_{timestamp}{extension}"
-
-# Sprawdzanie czy plik ma prawidłowe rozszerzenie
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# Endpoint do uploadu pliku
-@app.route('/add_artwork', methods=['POST'])
+@app.route("/add_artwork", methods=["POST"])
 def add_artwork():
-    if 'image' not in request.files:
-        return jsonify({'message': 'Nie przesłano pliku'}), 400
+    """
+    Endpoint POST, that adds a new artwork"""
+    # check if the image is in the request
+    if "image" not in request.files:
+        return jsonify({"message": "Nie przesłano pliku"}), 400
 
-    file = request.files['image']
+    file = request.files["image"]
 
-    if file.filename == '':
-        return jsonify({'message': 'Nie wybrano pliku'}), 400
-    
-    # token is stored in the headers
+    if file.filename == "":
+        return jsonify({"message": "Nie wybrano pliku"}), 400
+
     token = request.headers.get("Authorization")
     if token is None:
         abort(401, description="Token is missing.")
-
-    # Usuwamy "Bearer" z tokena
+    # remove "Bearer" from the token
     token = token.split(" ")[1]
     decoded = verify_token(token)
-
     if decoded is None:
         abort(401, description="Invalid or expired token.")
-
     artist_id = decoded["id"]
 
+    # check if the file is allowed
     if file and allowed_file(file.filename):
-        # Upewnij się, że folder istnieje
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        # make sure the folder exists
+        os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
         filename = file.filename
         file_path = os.path.join(UPLOAD_FOLDER, filename)
 
-        # Jeśli plik istnieje, generujemy nową nazwę
+        # if the file exists, generate a new name
         if os.path.exists(file_path):
             filename = get_unique_filename(filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
-        
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(save_path)
 
         artwork_name = request.form.get("name")
@@ -491,60 +492,67 @@ def add_artwork():
                 INSERT INTO artworks (artist_id, name, description, currentPrice, imageLink, availabilityType, numberOf)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
-                (artist_id, artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number),
+                (
+                    artist_id,
+                    artwork_name,
+                    artwork_description,
+                    artwork_price,
+                    artwork_imagelink,
+                    artwork_availability,
+                    artwork_number,
+                ),
             )
 
-            conn.commit()  # Zatwierdzamy zmiany w bazie danych
+            conn.commit()
             conn.close()
         except:
-            return jsonify({'message': 'Błąd podczas dodawania dzieła do bazy danych'}), 400
+            return (
+                jsonify({"message": "Błąd podczas dodawania dzieła do bazy danych"}),
+                400,
+            )
 
-        return jsonify({'message': 'Plik został zapisany!', 'path': f'{filename}'}), 200
+        return jsonify({"message": "Plik został zapisany!", "path": f"{filename}"}), 200
 
-    return jsonify({'message': 'Niedozwolony format pliku'}), 400
+    return jsonify({"message": "Niedozwolony format pliku"}), 400
 
-# endpoint for updating an artwork
+
 @app.route("/update_artwork/<int:artwork_id>", methods=["PUT"])
 def update_artwork(artwork_id):
-    if 'image' not in request.files:
+    """
+    Endpoint PUT, that updates an artwork"""
+
+    # check if the image is in the request
+    if "image" not in request.files:
         file = None
     else:
-        file = request.files['image']
-        # if file.filename == '':
-        #     print("Nie wybrano pliku")
-        #     return jsonify({'message': 'Nie wybrano pliku'}), 400
-    
+        file = request.files["image"]
+
     # token is stored in the headers
     token = request.headers.get("Authorization")
     if token is None:
         abort(401, description="Token is missing.")
-
-    # Usuwamy "Bearer" z tokena
-    token = token.split(" ")[1]
+    token = token.split(" ")[1]  # remove "Bearer" from the token
     decoded = verify_token(token)
-
     if decoded is None:
         abort(401, description="Invalid or expired token.")
-
     artist_id = decoded["id"]
 
+    # check if the file is allowed
     if file and allowed_file(file.filename):
-        # Upewnij się, że folder istnieje
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        # make sure the folder exists
+        os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
         filename = file.filename
         file_path = os.path.join(UPLOAD_FOLDER, filename)
 
-        # Jeśli plik istnieje, generujemy nową nazwę
+        # if the file exists, generate a new name
         if os.path.exists(file_path):
             filename = get_unique_filename(filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
-        
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(save_path)
     elif file:
-        print("Niedozwolony format pliku")
-        return jsonify({'message': 'Niedozwolony format pliku'}), 400
-    
+        return jsonify({"message": "Niedozwolony format pliku"}), 400
 
     artwork_name = request.form.get("name")
     artwork_description = request.form.get("description")
@@ -556,7 +564,6 @@ def update_artwork(artwork_id):
         artwork_imagelink = filename
     else:
         artwork_imagelink = None
-    
 
     try:
         conn = get_db_connection()
@@ -564,10 +571,11 @@ def update_artwork(artwork_id):
         # see if the artwork is owned by the artist
         cursor.execute("SELECT artist_id FROM artworks WHERE id = ?", (artwork_id,))
         artwork = cursor.fetchone()
+        # if the artist is not the owner of the artwork, return an error
         if artwork["artist_id"] != artist_id:
-            print("Nie jesteś właścicielem dzieła")
-            return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
+            return jsonify({"message": "Nie jesteś właścicielem dzieła"}), 400
 
+        # if the image is not provided, update the artwork without the image
         if artwork_imagelink is None:
             cursor.execute(
                 """
@@ -575,44 +583,54 @@ def update_artwork(artwork_id):
                 SET name = ?, description = ?, currentPrice = ?, availabilityType = ?, numberOf = ?
                 WHERE id = ?
             """,
-                (artwork_name, artwork_description, artwork_price, artwork_availability, artwork_number, artwork_id),
+                (
+                    artwork_name,
+                    artwork_description,
+                    artwork_price,
+                    artwork_availability,
+                    artwork_number,
+                    artwork_id,
+                ),
             )
         else:
+            # update the artwork with the image
             cursor.execute(
                 """
                 UPDATE artworks
                 SET name = ?, description = ?, currentPrice = ?, imageLink = ?, availabilityType = ?, numberOf = ?
                 WHERE id = ?
             """,
-                (artwork_name, artwork_description, artwork_price, artwork_imagelink, artwork_availability, artwork_number, artwork_id),
+                (
+                    artwork_name,
+                    artwork_description,
+                    artwork_price,
+                    artwork_imagelink,
+                    artwork_availability,
+                    artwork_number,
+                    artwork_id,
+                ),
             )
-    
 
-        conn.commit()  # Zatwierdzamy zmiany w bazie danych
+        conn.commit()
         conn.close()
     except:
-        print("Błąd podczas edycji dzieła")
-        return jsonify({'message': 'Błąd podczas edycji dzieła'}), 400
-
-    return jsonify({'message': 'Dzieło zostało zaktualizowane'}), 200
+        return jsonify({"message": "Błąd podczas edycji dzieła"}), 400
+    return jsonify({"message": "Dzieło zostało zaktualizowane"}), 200
 
 
-
-# Endpoint DELETE do usuwania dzieła sztuki
 @app.route("/delete_artwork/<int:artwork_id>", methods=["DELETE"])
 def delete_artwork(artwork_id):
+    """
+    Endpoint DELETE, that deletes an artwork"""
+
     # token is stored in the headers
     token = request.headers.get("Authorization")
     if token is None:
         abort(401, description="Token is missing.")
-
-    # Usuwamy "Bearer" z tokena
-    token = token.split(" ")[1]
+    token = token.split(" ")[1]  # remove "Bearer" from the token
     decoded = verify_token(token)
-
     if decoded is None:
         abort(401, description="Invalid or expired token.")
-
     artist_id = decoded["id"]
 
     conn = get_db_connection()
@@ -621,10 +639,11 @@ def delete_artwork(artwork_id):
     # see if the artwork is owned by the artist
     cursor.execute("SELECT artist_id FROM artworks WHERE id = ?", (artwork_id,))
     artwork = cursor.fetchone()
+    # if the artist is not the owner of the artwork, return an error
     if artwork["artist_id"] != artist_id:
-        return jsonify({'message': 'Nie jesteś właścicielem dzieła'}), 400
-    
-    # instead of deleting the artwork, we can just set the availabilityType to "Usunięte"
+        return jsonify({"message": "Nie jesteś właścicielem dzieła"}), 400
+
+    # instead of deleting the artwork, we can just set the availabilityType to "Deleted"
     cursor.execute(
         """
         UPDATE artworks
@@ -633,57 +652,48 @@ def delete_artwork(artwork_id):
     """,
         (artwork_id,),
     )
-    
-    # cursor.execute("DELETE FROM artworks WHERE id = ?", (artwork_id,))
+
     conn.commit()
     conn.close()
+    return jsonify({"message": "Dzieło zostało usunięte"}), 200
 
-    return jsonify({'message': 'Dzieło zostało usunięte'}), 200
 
-
-# endpoint for updating an artist
 @app.route("/update_artist/<int:artist_id>", methods=["PUT"])
 def update_artist(artist_id):
-    if 'image' not in request.files:
+    """
+    Endpoint PUT, that updates an artist"""
+
+    # check if the image is in the request
+    if "image" not in request.files:
         file = None
-        print("Nie przesłano pliku")
     else:
-        file = request.files['image']
-        # if file.filename == '':
-        #     print("Nie wybrano pliku")
-        #     return jsonify({'message': 'Nie wybrano pliku'}), 400
-    
+        file = request.files["image"]
+
     # token is stored in the headers
     token = request.headers.get("Authorization")
     if token is None:
         abort(401, description="Token is missing.")
-
-    # Usuwamy "Bearer" z tokena
-    token = token.split(" ")[1]
+    token = token.split(" ")[1]  # remove "Bearer" from the token
     decoded = verify_token(token)
-
     if decoded is None:
         abort(401, description="Invalid or expired token.")
-
     artist_id = decoded["id"]
 
     if file and allowed_file(file.filename):
-        # Upewnij się, że folder istnieje
-        os.makedirs(app.config['UPLOAD_FOLDER2'], exist_ok=True)
+        # make sure the folder exists
+        os.makedirs(app.config["UPLOAD_FOLDER2"], exist_ok=True)
         filename = file.filename
         file_path = os.path.join(UPLOAD_FOLDER2, filename)
 
-        # Jeśli plik istnieje, generujemy nową nazwę
+        # if the file exists, generate a new name
         if os.path.exists(file_path):
             filename = get_unique_filename(filename)
             file_path = os.path.join(UPLOAD_FOLDER2, filename)
-        
-        save_path = os.path.join(app.config['UPLOAD_FOLDER2'], filename)
+
+        save_path = os.path.join(app.config["UPLOAD_FOLDER2"], filename)
         file.save(save_path)
     elif file:
-        print("Niedozwolony format pliku")
-        return jsonify({'message': 'Niedozwolony format pliku'}), 400
-    
+        return jsonify({"message": "Niedozwolony format pliku"}), 400
 
     artist_username = request.form.get("username")
     artist_bio = request.form.get("bio")
@@ -692,12 +702,11 @@ def update_artist(artist_id):
         artist_avatarLink = filename
     else:
         artist_avatarLink = None
-    
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-
+        # if the image is not provided, update the artist without the image
         if artist_avatarLink is None:
             cursor.execute(
                 """
@@ -716,16 +725,12 @@ def update_artist(artist_id):
             """,
                 (artist_username, artist_bio, artist_avatarLink, artist_id),
             )
-    
 
-        conn.commit()  # Zatwierdzamy zmiany w bazie danych
+        conn.commit()
         conn.close()
     except:
-        print("Błąd podczas edycji profilu")
-        return jsonify({'message': 'Błąd podczas edycji profilu'}), 400
-
-    return jsonify({'message': 'Profil zostazaktualizowany'}), 200
-
+        return jsonify({"message": "Błąd podczas edycji profilu"}), 400
+    return jsonify({"message": "Profil zostazaktualizowany"}), 200
 
 
 if __name__ == "__main__":

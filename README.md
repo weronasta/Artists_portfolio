@@ -18,3 +18,7 @@ npm install axios
 pip install pyjwt
 ```
 
+# Requirements:
+## backend API:
+- Python=3.12.2
+- Flask=3.1.0

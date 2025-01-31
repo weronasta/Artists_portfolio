@@ -56,8 +56,8 @@ This web application combines an artist’s portfolio with online ordering funct
 
 to install (assuming you have python installed):
 ```bash
-pip install flask=3.1.0
-pip install flask-cors=5.0.0
+pip install Flask=3.1.0
+pip install Flask-cors=5.0.0
 pip install pyjwt=2.10.1
 ```
 

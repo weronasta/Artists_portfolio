@@ -199,7 +199,7 @@ function ResponsiveAppBar() {
                         if (setting === 'Logout') {
                           localStorage.removeItem('authToken'); // Wylogowanie
                           setIsLoggedIn(false);
-                          alert('Wylogowano pomyślnie');
+                          alert('You have been logged out.');
                         }
                         else if (setting === 'Profile') {
                           // Przekierowanie do strony o adresie /profile
@@ -218,7 +218,7 @@ function ResponsiveAppBar() {
                 to="/login"
                 sx={{ color: 'white', my: 2 }}
               >
-                Zaloguj
+                Log in
               </Button>
             )}
           </Box>

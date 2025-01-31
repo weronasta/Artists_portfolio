@@ -70,7 +70,7 @@ function OtherArtworksSlider() {
           <Box key={artwork.id} sx={{ 
             padding: "0 15px",
            }}>
-            <ArtworkCard artwork={artwork} />
+            <ArtworkCard artwork={artwork} cardType={"cart"}/>
           </Box>
         ))}
       </Slider>

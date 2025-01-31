@@ -19,10 +19,12 @@ This web application combines an artist’s portfolio with online ordering funct
     * price
     * availability status (available, sold out)
 * option to add the artwork to the cart
+* Note: all images are stored locally at: `my-app/src/assets/images/artworks`
 
 ### Artists gallery
 * grid display of artists with avatars
 * option to open artist's profile
+* Note: all images are stored locally at: `my-app/src/assets/images/artists`
 
 ### Artist profile
 * detailed view of individual artist, including:
